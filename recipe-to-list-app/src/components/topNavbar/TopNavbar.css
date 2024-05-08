@@ -1,0 +1,22 @@
+.navbar--top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: .5em;
+}
+
+.navbar--top--left {
+    display: flex;
+    align-items: center;
+}
+
+.logo--img {
+    height: 40px;
+    margin-right: 1em;
+}
+
+.top-navbar__title {
+    text-transform: uppercase;
+    font-size: 1.5em;
+    /* font-weight: bolder; */
+}

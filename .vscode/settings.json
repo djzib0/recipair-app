@@ -1,12 +1,12 @@
 {
     "folder-color.pathColors": [
         {
-            "folderPath": "react-with-ts\\recipe-to-list-app\\src\\components\\",
-            "color": "foldercolorizer.LawnGreen"
-        },
-        {
             "folderPath": "react-with-ts\\recipe-to-list-app\\src\\pages\\",
             "color": "foldercolorizer.MediumOrchid"
+        },
+        {
+            "folderPath": "react-with-ts\\recipe-to-list-app\\src\\components\\",
+            "color": "foldercolorizer.LimeGreen"
         }
     ]
 }

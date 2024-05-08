@@ -4,3 +4,9 @@ export type PostProps = {
     title: string,
     body: string
 }
+
+export type MenuItem = {
+    id: number,
+    icon: JSX.Element;
+    linkTo: string
+}
