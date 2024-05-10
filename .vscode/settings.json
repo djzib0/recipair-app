@@ -13,6 +13,10 @@
         },
         {
             "folderPath": "react-with-ts\\recipe-to-list-app\\firebaseConfig\\firebaseConfig.tsx\\"
+        },
+        {
+            "folderPath": "react-with-ts\\recipe-to-list-app\\src\\types\\",
+            "color": "foldercolorizer.LightYellow"
         }
     ]
 }

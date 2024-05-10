@@ -5,7 +5,7 @@ import Recipes from './pages/Recipes';
 import { Routes, Route } from 'react-router-dom';
 // styles imports
 import './App.css';
-
+import AddRecipeForm from './pages/AddRecipeForm';
 
 
 function App() {
@@ -16,6 +16,7 @@ function App() {
         <Route element={<NavbarLayout />}>
           <Route path='/' element={<Recipes />}>
           </Route>
+          <Route path='/recipes/add' element={<AddRecipeForm />} />
         </Route>
 
       </Routes>
