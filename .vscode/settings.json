@@ -7,6 +7,12 @@
         {
             "folderPath": "react-with-ts\\recipe-to-list-app\\src\\components\\",
             "color": "foldercolorizer.LimeGreen"
+        },
+        {
+            "folderPath": "react-with-ts\\recipe-to-list-app\\"
+        },
+        {
+            "folderPath": "react-with-ts\\recipe-to-list-app\\firebaseConfig\\firebaseConfig.tsx\\"
         }
     ]
 }
