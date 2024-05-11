@@ -19,14 +19,14 @@ export type CookingStep = {
 }
 
 export type Ingredient = {
-    recipeId: string;
     name: string;
+    quantity: number;
     unit: Unit
 }
 
 export type Recipe = {
     title: string;
     description: string;
-    step?: CookingStep[];
+    steps?: CookingStep[];
     ingredients?: Ingredient[];
 }
