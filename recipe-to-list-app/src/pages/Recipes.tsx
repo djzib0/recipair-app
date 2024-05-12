@@ -24,9 +24,7 @@ export default function Recipes() {
     setRecipesData(fetchedData)
   }, [fetchedData])
 
-  console.log(recipesData, " recipes data in recipes component")
-
-  const menuItemsArr = [
+  const topNavbarItems = [
     {
       id: 1,
       icon: <RiAddCircleFill />,
@@ -36,7 +34,7 @@ export default function Recipes() {
 
   return (
     <div>
-      <TopNavbar title="recipes" menuItems={menuItemsArr}/>
+      <TopNavbar title="recipes" menuItems={topNavbarItems}/>
     </div>
   )
 }

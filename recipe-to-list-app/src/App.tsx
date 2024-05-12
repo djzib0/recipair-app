@@ -11,7 +11,7 @@ import AddRecipeForm from './pages/AddRecipeForm';
 function App() {
   
   return (
-    <div>
+    <div className='app__container'>
       <Routes>
         <Route element={<NavbarLayout />}>
           <Route path='/' element={<Recipes />}>

@@ -1,39 +1,31 @@
+// components import
+import TopNavbar from "../components/topNavbar/TopNavbar";
 // custom hooks import
 import { useState } from "react";
 import useDatabase from "../customHooks/useDatabase"
-// react hook import
-import { SubmitHandler, useForm } from "react-hook-form";
+// react hook and zod imports
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 // types import
 import { CookingStep, Recipe, Ingredient } from "../types/types";
 import { Unit } from "../enums/enums";
+// icons import
+import { BiArrowBack } from "react-icons/bi";
+import StepFormModal from "../components/stepFormModal/StepFormModal";
 
 const schema = z.object({
-  email: z.string().email(),
-  password: z.string().min(8)
+  title: z.string(),
+  description: z.string()
 })
 
-type FormFields = z.infer<typeof schema>;
-
-// type FormFields = {
-//   email: string;
-//   password: string;
-// }
+type FormFields = z.infer<typeof schema>
 
 export default function AddRecipeForm() {
 
-  const { 
-    register, 
-    handleSubmit,
-    setError,
-    formState: {errors, isSubmitting} } = useForm<FormFields>(
-      {defaultValues: {
-        email: "test@email.com"
-      },
-      resolver: zodResolver(schema)
-    });
-  
+  // destructurize useForm
+  const { register } = useForm<FormFields>();
+
   const { addRecipe } = useDatabase();
 
   const [newRecipe, setNewRecipe] = useState<Recipe>(
@@ -45,40 +37,40 @@ export default function AddRecipeForm() {
     }
   )
 
+  // state variables
   const [steps, setSteps] = useState<CookingStep[]>([]);
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
+  const [showCookingStepForm, setShowCookingStepForm] = useState<boolean>(false);
+
+  // array with object for topnavbar
+  const topNavbarItems = [
+    {
+      id: 1,
+      icon: <BiArrowBack />,
+      linkTo: '/'
+    }
+  ]
 
 
   const handleClick = () => {
     addRecipe(newRecipe)
   }
 
-  const onSubmit: SubmitHandler<FormFields> = async (data) => {
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      throw new Error();
-    } catch (error) {
-      setError("email", {
-        message: "This email is already taken"
-      })
-    }
-    console.log(data)
-  }
-
   function addStep() {
-    const newArr: CookingStep[] = steps.concat(
-      {
-        stepNumber: 1,
-        description: "test"}
-    )
+    // const newArr: CookingStep[] = steps.concat(
+    //   {
+    //     stepNumber: 1,
+    //     description: "test"}
+    // )
+    setShowCookingStepForm(prevState => !prevState)
 
-    setSteps(newArr)
-    setNewRecipe(prevState => {
-      return {
-        ...prevState,
-        steps: steps
-      }
-    })
+    // setSteps(newArr)
+    // setNewRecipe(prevState => {
+    //   return {
+    //     ...prevState,
+    //     steps: steps
+    //   }
+    // })
     }
 
     const addIngredient = () => {
@@ -101,19 +93,14 @@ export default function AddRecipeForm() {
 
   return (
     <div>
+      <TopNavbar title="Add recipe" menuItems={topNavbarItems}  />
       AddRecipe
       <button onClick={handleClick}>Press me</button>
       <button onClick={addStep}>Add step</button>
       <button onClick={addIngredient}>Add ingredient</button>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <input {...register("email")} type="text" />
-          {errors.email && <p>{errors.email.message}</p>}
-        <input {...register("password")} type="text" />
-          {errors.password && <p>{errors.password.message}</p>}
-        <button disabled={isSubmitting}  type="submit">
-          {isSubmitting ? "Loading..." : "Submit"}
-        </button>
-      </form>
+      <StepFormModal classTitle=
+        {showCookingStepForm ? "sliding-modal--bottom": "sliding-modal--bottom--disabled"}
+         />
     </div>
   )
 }

@@ -8,6 +8,7 @@
     position: fixed;
     bottom: 0;
     color: rgb(134, 134, 134);
+    max-width: 480px;
 }
 
 .navbar-element__container {
