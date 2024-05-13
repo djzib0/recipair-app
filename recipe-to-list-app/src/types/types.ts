@@ -14,7 +14,6 @@ export type MenuItem = {
 }
 
 export type CookingStep = {
-    stepNumber: number;
     description: string;
 }
 

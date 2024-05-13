@@ -4,7 +4,7 @@ import TopNavbar from "../components/topNavbar/TopNavbar";
 import { useState } from "react";
 import useDatabase from "../customHooks/useDatabase"
 // react hook and zod imports
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm} from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 // types import
@@ -24,7 +24,10 @@ type FormFields = z.infer<typeof schema>
 export default function AddRecipeForm() {
 
   // destructurize useForm
-  const { register } = useForm<FormFields>();
+  const { 
+    register,
+    handleSubmit
+   } = useForm<FormFields>();
 
   const { addRecipe } = useDatabase();
 
@@ -51,26 +54,34 @@ export default function AddRecipeForm() {
     }
   ]
 
+  // functions
 
-  const handleClick = () => {
-    addRecipe(newRecipe)
+  const onSubmit: SubmitHandler<FormFields> = (data) => {
+    console.log(data)
   }
 
+  const handleClick = () => {
+    // addRecipe(newRecipe)
+    console.log("the button has been clicked")
+    addStep()
+  }
+
+  console.log(newRecipe)
+
   function addStep() {
-    // const newArr: CookingStep[] = steps.concat(
-    //   {
-    //     stepNumber: 1,
-    //     description: "test"}
-    // )
+    const newArr: CookingStep[] = steps.concat(
+      {
+        description: "test"}
+    )
     setShowCookingStepForm(prevState => !prevState)
 
-    // setSteps(newArr)
-    // setNewRecipe(prevState => {
-    //   return {
-    //     ...prevState,
-    //     steps: steps
-    //   }
-    // })
+    setSteps(newArr)
+    setNewRecipe(prevState => {
+      return {
+        ...prevState,
+        steps: steps
+      }
+    })
     }
 
     const addIngredient = () => {
@@ -92,15 +103,37 @@ export default function AddRecipeForm() {
     }
 
   return (
-    <div>
+    <main>
       <TopNavbar title="Add recipe" menuItems={topNavbarItems}  />
-      AddRecipe
-      <button onClick={handleClick}>Press me</button>
-      <button onClick={addStep}>Add step</button>
-      <button onClick={addIngredient}>Add ingredient</button>
-      <StepFormModal classTitle=
-        {showCookingStepForm ? "sliding-modal--bottom": "sliding-modal--bottom--disabled"}
-         />
-    </div>
+      <div className="content__container">
+        <button onClick={addStep}>Add step</button>
+        <button onClick={addIngredient}>Add ingredient</button>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <label htmlFor="recipe_title">Title</label>
+          <textarea 
+            {...register("title")}
+            id="recipe_title"
+          />
+          <label htmlFor="recipe_description">Description</label>
+          <textarea 
+            {...register("description")}
+            // type="text"
+            id="recipe_description"
+          />
+          <button 
+            disabled={showCookingStepForm} 
+            type="submit"
+            className="confirm__btn"
+          >
+            ADD RECIPE
+          </button>
+        </form>
+          
+      </div>
+      <StepFormModal 
+        classTitle={showCookingStepForm ? "sliding-modal--bottom": "sliding-modal--bottom--disabled"}
+        handleFunction={handleClick}
+      />
+    </main>
   )
 }

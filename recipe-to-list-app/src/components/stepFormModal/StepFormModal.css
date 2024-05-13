@@ -1,25 +1,36 @@
-.sliding-modal--bottom {
-    background-color: red;
+.sliding-modal--bottom,
+.sliding-modal--bottom--disabled {
     display: flex;
+    flex-direction: column;
     position: fixed;
+    width: 100vw;
+    z-index: 100;
+    height: 200px;
+    overflow: visible;
+    padding: 1em;
+    background-color: rgb(105, 200, 255);
+}
+
+.sliding-modal--bottom {
     animation-name: bottom-appear;
     animation-duration: .2s;
     bottom: 56px;
-    height: 200px;
-    z-index: -100;
 }
 
 .sliding-modal--bottom--disabled {
     animation-name: bottom-disappear;
-    animation-duration: 5s;
-    background-color: red;
-    display: flex;
-    position: fixed;
-    animation-name: bottom-disappear;
     animation-duration: .2s;
     bottom: -300px;
-    height: 200px;
-    z-index: -100;
+}
+
+.close-modal__btn {
+    color: rgb(0, 98, 139);
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    font-size: 2em;
+    background-color: transparent;
+    border: 0;
 }
 
 @keyframes bottom-appear {
