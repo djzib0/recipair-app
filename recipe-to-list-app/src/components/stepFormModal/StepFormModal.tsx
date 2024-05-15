@@ -1,12 +1,8 @@
 // styles import
 import './StepFormModal.css'
 import '../../App.css'
-// types import
-import { CookingStep } from '../../types/types';
 // icons import
 import { IoMdCloseCircleOutline } from "react-icons/io";
-
-
 
 type StepFormModalProps = {
   classTitle: string;
