@@ -1,7 +1,7 @@
 // components import
 import TopNavbar from "../components/topNavbar/TopNavbar";
 // custom hooks import
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // import useDatabase from "../customHooks/useDatabase"
 // react hook and zod imports
 import { SubmitHandler, useForm} from "react-hook-form";
@@ -46,6 +46,14 @@ export default function AddRecipeForm() {
   const [steps, setSteps] = useState<CookingStep[]>([]);
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
   const [showCookingStepForm, setShowCookingStepForm] = useState<boolean>(false);
+  const [refreshPage, setRefreshPage] = useState(true);
+
+  useEffect(() => {
+    console.log("refreshing page")
+    console.log(newRecipe, "new recipe after refresh")
+    console.log(steps, " steps after refresh")
+  }, [refreshPage] )
+
 
   // array with object for topnavbar
   const topNavbarItems = [
@@ -59,36 +67,35 @@ export default function AddRecipeForm() {
   // functions
 
   const onSubmit: SubmitHandler<FormFields> = (data) => {
+    console.log(newRecipe)
     console.log(data)
   }
 
-  const handleClick = () => {
-    // addRecipe(newRecipe)
-    console.log("the button has been clicked")
-    addStep()
-  }
-
-  console.log(newRecipe)
-
-  const addStep= () => {
-    const newArr: CookingStep[] = steps.concat(
-      {
-        description: "test"}
-    )
-    setShowCookingStepForm(true)
-
-    setSteps(newArr)
-    setNewRecipe(prevState => {
-      return {
-        ...prevState,
-        steps: steps
-      }
-    })
+  const openStepFormModal = () => {
+    setShowCookingStepForm(true);
   }
 
   const closeShowCookingStepForm = () => {
     setShowCookingStepForm(false);
     console.log("closing step modal")
+  }
+
+  const addStep= (stepDescription: string) => {
+    const newArr: CookingStep[] = steps.concat(
+      {
+        description: stepDescription
+      }
+    )
+    setSteps(newArr)
+    setNewRecipe(prevState => {
+      return {
+        ...prevState,
+        steps: newArr
+      }
+    })
+    console.log("new recipe is ", newRecipe)
+    closeShowCookingStepForm()
+    setRefreshPage(prevState => !prevState)
   }
 
   const addIngredient = () => {
@@ -113,7 +120,7 @@ export default function AddRecipeForm() {
     <main>
       <TopNavbar title="Add recipe" menuItems={topNavbarItems}  />
       <div className="content__container">
-        <button onClick={addStep}>Add step</button>
+        <button onClick={openStepFormModal}>Add step</button>
         <button onClick={addIngredient}>Add ingredient</button>
         <form onSubmit={handleSubmit(onSubmit)}>
           <label htmlFor="recipe_title">Title</label>
@@ -124,7 +131,6 @@ export default function AddRecipeForm() {
           <label htmlFor="recipe_description">Description</label>
           <textarea 
             {...register("description")}
-            // type="text"
             id="recipe_description"
           />
           <button 
@@ -139,7 +145,7 @@ export default function AddRecipeForm() {
       </div>
       <StepFormModal 
         classTitle={showCookingStepForm ? "sliding-modal--bottom": "sliding-modal--bottom--disabled"}
-        handleFunction={handleClick}
+        addStep={addStep}
         closeModal={closeShowCookingStepForm}
       />
     </main>
