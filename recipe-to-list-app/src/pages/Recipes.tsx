@@ -19,6 +19,8 @@ export default function Recipes() {
     getRecipesData();
   }, [])
 
+  console.log(recipesData)
+
   // set recipes data with the fetched data
   useEffect(() => {
     setRecipesData(fetchedData)

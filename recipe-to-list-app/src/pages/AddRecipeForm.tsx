@@ -2,7 +2,7 @@
 import TopNavbar from "../components/topNavbar/TopNavbar";
 // custom hooks import
 import { useState } from "react";
-import useDatabase from "../customHooks/useDatabase"
+// import useDatabase from "../customHooks/useDatabase"
 // react hook and zod imports
 import { SubmitHandler, useForm} from "react-hook-form";
 import { z } from "zod";
@@ -26,10 +26,12 @@ export default function AddRecipeForm() {
   // destructurize useForm
   const { 
     register,
-    handleSubmit
-   } = useForm<FormFields>();
+    handleSubmit,
+   } = useForm<FormFields>(
+    {resolver: zodResolver(schema)}
+   );
 
-  const { addRecipe } = useDatabase();
+  // const { addRecipe } = useDatabase();
 
   const [newRecipe, setNewRecipe] = useState<Recipe>(
     {
