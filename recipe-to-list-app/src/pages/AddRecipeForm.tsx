@@ -70,12 +70,12 @@ export default function AddRecipeForm() {
 
   console.log(newRecipe)
 
-  function addStep() {
+  const addStep= () => {
     const newArr: CookingStep[] = steps.concat(
       {
         description: "test"}
     )
-    setShowCookingStepForm(prevState => !prevState)
+    setShowCookingStepForm(true)
 
     setSteps(newArr)
     setNewRecipe(prevState => {
@@ -84,25 +84,30 @@ export default function AddRecipeForm() {
         steps: steps
       }
     })
-    }
+  }
 
-    const addIngredient = () => {
-      const newArr: Ingredient[] = ingredients.concat(
-        {
-          name: "carrot",
-          quantity: 0.5,
-          unit: Unit.Kilogram
-        }
-      )
+  const closeShowCookingStepForm = () => {
+    setShowCookingStepForm(false);
+    console.log("closing step modal")
+  }
 
-      setIngredients(newArr);
-      setNewRecipe(prevState => {
-        return {
-          ...prevState,
-          ingredients: ingredients
-        }
-      })
-    }
+  const addIngredient = () => {
+    const newArr: Ingredient[] = ingredients.concat(
+      {
+        name: "carrot",
+        quantity: 0.5,
+        unit: Unit.Kilogram
+      }
+    )
+
+    setIngredients(newArr);
+    setNewRecipe(prevState => {
+      return {
+        ...prevState,
+        ingredients: ingredients
+      }
+    })
+  }
 
   return (
     <main>
@@ -135,6 +140,7 @@ export default function AddRecipeForm() {
       <StepFormModal 
         classTitle={showCookingStepForm ? "sliding-modal--bottom": "sliding-modal--bottom--disabled"}
         handleFunction={handleClick}
+        closeModal={closeShowCookingStepForm}
       />
     </main>
   )

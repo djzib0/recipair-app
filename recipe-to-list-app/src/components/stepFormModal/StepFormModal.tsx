@@ -7,16 +7,17 @@ import { IoMdCloseCircleOutline } from "react-icons/io";
 type StepFormModalProps = {
   classTitle: string;
   handleFunction: () => void;
+  closeModal: () => void;
 }
 
 export default function StepFormModal(props: StepFormModalProps) {
 
-  const { classTitle, handleFunction } = props;
+  const { classTitle, handleFunction, closeModal } = props;
 
   return (
     <div className={classTitle}>
       <button className='close-modal__btn'>
-        <IoMdCloseCircleOutline />
+        <IoMdCloseCircleOutline onClick={closeModal} />
       </button>
       <form className='modal__form'>  
         <label 
