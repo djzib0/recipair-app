@@ -12,6 +12,7 @@ type StepFormModalProps = {
   classTitle: string;
   addStep: (description: string) => void;
   closeModal: () => void;
+  isOn: boolean;
 }
 
 const schema = z.object({
@@ -26,23 +27,28 @@ export default function StepFormModal(props: StepFormModalProps) {
   const {
     register,
     handleSubmit,
+    resetField
   } = useForm<FormFields>(
-    {resolver: zodResolver(schema)}
+    {defaultValues: {
+      description: ""
+    },
+    resolver: zodResolver(schema)}
   )
 
   const onSubmit: SubmitHandler<FormFields> = (data) => {
     console.log(data, " in modal")
     addStep(data.description)
+    resetField("description")
   }
 
-  const { classTitle, addStep, closeModal } = props;
+  const { classTitle, addStep, closeModal, isOn } = props;
 
   return (
     <div className={classTitle}>
       <button className='close-modal__btn'>
-        <IoMdCloseCircleOutline onClick={closeModal} />
+        <IoMdCloseCircleOutline onClick={() => {closeModal(); resetField("description")}} />
       </button>
-      <form className='modal__form' onSubmit={handleSubmit(onSubmit)}>  
+      {isOn && <form className='modal__form' onSubmit={handleSubmit(onSubmit)}>  
         <label 
           htmlFor='step_description'
           className='modal__form__label'
@@ -58,7 +64,7 @@ export default function StepFormModal(props: StepFormModalProps) {
           >
           Add
         </button>
-      </form>
+      </form>}
     </div>
   )
 }

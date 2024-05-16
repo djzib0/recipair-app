@@ -1,8 +1,9 @@
+import { useEffect, useState } from "react";
 // components import
 import TopNavbar from "../components/topNavbar/TopNavbar";
 // custom hooks import
-import { useEffect, useState } from "react";
-// import useDatabase from "../customHooks/useDatabase"
+import useModal from "../customHooks/useModal";
+import useDatabase from "../customHooks/useDatabase"
 // react hook and zod imports
 import { SubmitHandler, useForm} from "react-hook-form";
 import { z } from "zod";
@@ -31,27 +32,25 @@ export default function AddRecipeForm() {
     {resolver: zodResolver(schema)}
    );
 
-  // const { addRecipe } = useDatabase();
+  const { addRecipe } = useDatabase();
 
+  // utilize useForm custom hook
+  const { isModalOn, toggleModal} = useModal();
+
+  // state variables
   const [newRecipe, setNewRecipe] = useState<Recipe>(
     {
-      title: "Pyzy z gnojem",
-      description: "Tasty pyzy z gnojem",
+      title: "",
+      description: "",
       steps: [],
       ingredients: []
     }
   )
-
-  // state variables
   const [steps, setSteps] = useState<CookingStep[]>([]);
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
-  const [showCookingStepForm, setShowCookingStepForm] = useState<boolean>(false);
   const [refreshPage, setRefreshPage] = useState(true);
 
   useEffect(() => {
-    console.log("refreshing page")
-    console.log(newRecipe, "new recipe after refresh")
-    console.log(steps, " steps after refresh")
   }, [refreshPage] )
 
 
@@ -65,22 +64,16 @@ export default function AddRecipeForm() {
   ]
 
   // functions
-
   const onSubmit: SubmitHandler<FormFields> = (data) => {
-    console.log(newRecipe)
-    console.log(data)
+    addRecipe({
+      title: data.title,
+      description: data.description,
+      steps: newRecipe.steps,
+      ingredients: newRecipe.ingredients
+    })
   }
 
-  const openStepFormModal = () => {
-    setShowCookingStepForm(true);
-  }
-
-  const closeShowCookingStepForm = () => {
-    setShowCookingStepForm(false);
-    console.log("closing step modal")
-  }
-
-  const addStep= (stepDescription: string) => {
+  const addStep = (stepDescription: string) => {
     const newArr: CookingStep[] = steps.concat(
       {
         description: stepDescription
@@ -93,8 +86,7 @@ export default function AddRecipeForm() {
         steps: newArr
       }
     })
-    console.log("new recipe is ", newRecipe)
-    closeShowCookingStepForm()
+    toggleModal(false)
     setRefreshPage(prevState => !prevState)
   }
 
@@ -116,11 +108,58 @@ export default function AddRecipeForm() {
     })
   }
 
+  const changeStepPosition = (index: number, changeUp: boolean) => {
+    let newArr: CookingStep[] | undefined = newRecipe.steps;
+    // switch position with lower index (move up on the displayed list)
+    if (newArr && changeUp) {
+      // switch position with lower index (move up on the displayed list)
+      [newArr[index], newArr[index - 1]] = [newArr[index -1], newArr[index]]
+    } else if (newArr && !changeUp) {
+      // switch position with higher index (move donw on the displayed list)
+      [newArr[index], newArr[index + 1]] = [newArr[index +1], newArr[index]]
+    }
+    // set new array as a recipe property - steps
+    setNewRecipe(prevState => {
+      return {
+        ...prevState,
+        steps: newArr
+      }
+    })
+    setRefreshPage(prevState => !prevState)
+  }
+
+  const removeStep = (index: number) => {
+    // define new variable for cooking steps 
+    const newArr: CookingStep[] | undefined = newRecipe.steps
+    // remove the step by given index
+    newArr?.splice(index, 1)
+    // set new array as a recipe property - steps
+    setNewRecipe(prevState => {
+      return {
+        ...prevState,
+        steps: newArr
+      }
+    })
+    setRefreshPage(prevState => !prevState)
+  }
+
+  const stepsArr: JSX.Element[] | undefined = newRecipe.steps?.map((item, index) => {
+    const maxIndex = newRecipe.steps?.length;
+    return (
+      <div key={index}>
+        {`${index + 1}. ${item.description}`}
+        <button type="button" onClick={() => removeStep(index)}>Remove</button>
+        {index > 0 && <button onClick={() => changeStepPosition(index, true)}>UP</button>}
+        {maxIndex && index < maxIndex  && <button onClick={() => changeStepPosition(index, false)}>DOWN</button>}
+      </div>
+    )
+  })
+
   return (
     <main>
       <TopNavbar title="Add recipe" menuItems={topNavbarItems}  />
       <div className="content__container">
-        <button onClick={openStepFormModal}>Add step</button>
+        <button onClick={() => toggleModal(true)}>Add step</button>
         <button onClick={addIngredient}>Add ingredient</button>
         <form onSubmit={handleSubmit(onSubmit)}>
           <label htmlFor="recipe_title">Title</label>
@@ -134,19 +173,20 @@ export default function AddRecipeForm() {
             id="recipe_description"
           />
           <button 
-            disabled={showCookingStepForm} 
+            disabled={isModalOn} 
             type="submit"
             className="confirm__btn"
           >
             ADD RECIPE
           </button>
         </form>
-          
+        {stepsArr}
       </div>
       <StepFormModal 
-        classTitle={showCookingStepForm ? "sliding-modal--bottom": "sliding-modal--bottom--disabled"}
+        classTitle={isModalOn ? "sliding-modal--bottom": "sliding-modal--bottom--disabled"}
         addStep={addStep}
-        closeModal={closeShowCookingStepForm}
+        closeModal={() => toggleModal(false)}
+        isOn={isModalOn}
       />
     </main>
   )
