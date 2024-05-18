@@ -1,10 +1,10 @@
 
 export enum Unit {
-    Kilogram,
-    Gram,
-    Piece,
-    Liter,
-    Mililiter,
+    Kilogram = "kg",
+    Gram = "g",
+    Piece = "pc",
+    Liter = "l",
+    Mililiter = "ml",
 }
 
 export const UNITS_WITH_ABBREVIATION = [

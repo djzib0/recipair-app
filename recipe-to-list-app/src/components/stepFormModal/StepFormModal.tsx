@@ -16,7 +16,7 @@ type StepFormModalProps = {
 }
 
 const schema = z.object({
-  description: z.string(),
+  description: z.string().min(1),
 })
 
 type FormFields = z.infer<typeof schema>
@@ -27,7 +27,8 @@ export default function StepFormModal(props: StepFormModalProps) {
   const {
     register,
     handleSubmit,
-    resetField
+    resetField,
+    formState: {errors},
   } = useForm<FormFields>(
     {defaultValues: {
       description: ""
@@ -36,7 +37,6 @@ export default function StepFormModal(props: StepFormModalProps) {
   )
 
   const onSubmit: SubmitHandler<FormFields> = (data) => {
-    console.log(data, " in modal")
     addStep(data.description)
     resetField("description")
   }
@@ -53,11 +53,11 @@ export default function StepFormModal(props: StepFormModalProps) {
           htmlFor='step_description'
           className='modal__form__label'
           >
-          Step description
+          {errors.description ? errors.description.message : "Step description"}
         </label>
-        <input {...register("description")}
-          type='text' 
+        <textarea {...register("description")} 
           id='step_description'
+          placeholder='Your next step...'
         />
         <button 
           className='confirm__btn--small'

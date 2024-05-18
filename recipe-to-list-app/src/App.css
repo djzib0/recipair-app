@@ -221,6 +221,7 @@ label {
 
 .modal__form__label {
   text-align: left;
+  font-size: .8em;
 }
 
 label.light {

@@ -15,10 +15,11 @@ import { Unit } from "../enums/enums";
 import { BiArrowBack } from "react-icons/bi";
 import StepFormModal from "../components/stepFormModal/StepFormModal";
 import RecipeStepContainer from "../components/recipeStepContainer/RecipeStepContainer";
+import IngredientFormModal from "../components/ingredientFormModal/IngredientFormModal";
 
 const schema = z.object({
-  title: z.string(),
-  description: z.string()
+  title: z.string().min(1),
+  description: z.string().min(1)
 })
 
 type FormFields = z.infer<typeof schema>
@@ -29,6 +30,7 @@ export default function AddRecipeForm() {
   const { 
     register,
     handleSubmit,
+    formState: {errors},
    } = useForm<FormFields>(
     {resolver: zodResolver(schema)}
    );
@@ -36,7 +38,12 @@ export default function AddRecipeForm() {
   const { addRecipe } = useDatabase();
 
   // utilize useForm custom hook
-  const { isModalOn, toggleModal} = useModal();
+  const { 
+    isStepModalOn,
+    toggleStepModal,
+    isIngredientModalOn,
+    toggleIngredientModal,
+  } = useModal();
 
   // state variables
   const [newRecipe, setNewRecipe] = useState<Recipe>(
@@ -87,7 +94,7 @@ export default function AddRecipeForm() {
         steps: newArr
       }
     })
-    toggleModal(false)
+    toggleStepModal(false)
     setRefreshPage(prevState => !prevState)
   }
 
@@ -164,21 +171,33 @@ export default function AddRecipeForm() {
     <main>
       <TopNavbar title="Add recipe" menuItems={topNavbarItems}  />
       <div className="content__container">
-        <button onClick={() => toggleModal(true)}>Add step</button>
-        <button onClick={addIngredient}>Add ingredient</button>
+        <button onClick={() => toggleStepModal(true)}>Add step</button>
+        <button onClick={() => toggleIngredientModal(true)}>Add ingredient</button>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <label htmlFor="recipe_title">Title</label>
+          <label 
+            htmlFor="recipe_title"
+            className="modal__form__label"
+          >
+            {errors.title ? `${errors.title.message}` : "Title"}
+          </label>
           <textarea 
             {...register("title")}
             id="recipe_title"
+            placeholder="Your title here..."
           />
-          <label htmlFor="recipe_description">Description</label>
+          <label 
+            htmlFor="recipe_description"
+            className="modal__form__label"
+          >
+            {errors.description ? `${errors.description.message}` : "Description"}
+          </label>
           <textarea 
             {...register("description")}
             id="recipe_description"
+            placeholder="Your description here..."
           />
           <button 
-            disabled={isModalOn} 
+            disabled={isStepModalOn || isIngredientModalOn} 
             type="submit"
             className="confirm__btn"
           >
@@ -188,10 +207,16 @@ export default function AddRecipeForm() {
         {stepsArr}
       </div>
       <StepFormModal 
-        classTitle={isModalOn ? "sliding-modal--bottom": "sliding-modal--bottom--disabled"}
+        classTitle={isStepModalOn ? "sliding-modal--bottom": "sliding-modal--bottom--disabled"}
         addStep={addStep}
-        closeModal={() => toggleModal(false)}
-        isOn={isModalOn}
+        closeModal={() => toggleStepModal(false)}
+        isOn={isStepModalOn}
+      />
+      <IngredientFormModal
+         classTitle={isIngredientModalOn ? "sliding-modal--bottom": "sliding-modal--bottom--disabled"}
+         addStep={addIngredient}
+         closeModal={() => toggleIngredientModal(false)}
+         isOn={isIngredientModalOn}
       />
     </main>
   )

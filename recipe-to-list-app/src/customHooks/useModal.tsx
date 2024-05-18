@@ -2,14 +2,22 @@ import { useState } from 'react'
 
 export default function useModal() {
 
-  const [isModalOn, setIsModalOn] = useState(false);
+  const [isStepModalOn, setIsStepModalOn] = useState(false);
+  const [isIngredientModalOn, setIsIngredientModalOn] = useState(false);
   
-  const toggleModal = (isOn: boolean) => {
-    setIsModalOn(isOn)
+  const toggleStepModal = (isOn: boolean) => {
+    setIsStepModalOn(isOn)
   }
 
+  const toggleIngredientModal = (isOn: boolean) => {
+    setIsIngredientModalOn(isOn)
+  }
+
+
   return {
-    isModalOn,
-    toggleModal,
+    isStepModalOn,
+    toggleStepModal,
+    isIngredientModalOn,
+    toggleIngredientModal,
   }
 }
