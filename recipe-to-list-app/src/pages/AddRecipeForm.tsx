@@ -14,6 +14,7 @@ import { Unit } from "../enums/enums";
 // icons import
 import { BiArrowBack } from "react-icons/bi";
 import StepFormModal from "../components/stepFormModal/StepFormModal";
+import RecipeStepContainer from "../components/recipeStepContainer/RecipeStepContainer";
 
 const schema = z.object({
   title: z.string(),
@@ -145,12 +146,16 @@ export default function AddRecipeForm() {
 
   const stepsArr: JSX.Element[] | undefined = newRecipe.steps?.map((item, index) => {
     const maxIndex = newRecipe.steps?.length;
+    console.log(maxIndex, index)
     return (
       <div key={index}>
-        {`${index + 1}. ${item.description}`}
-        <button type="button" onClick={() => removeStep(index)}>Remove</button>
-        {index > 0 && <button onClick={() => changeStepPosition(index, true)}>UP</button>}
-        {maxIndex && index < maxIndex  && <button onClick={() => changeStepPosition(index, false)}>DOWN</button>}
+        <RecipeStepContainer 
+          index={index}
+          description={item.description}
+          maxIndex={maxIndex}
+          removeStep={() => removeStep(index)}
+          changeStepPosition={changeStepPosition}
+          />
       </div>
     )
   })

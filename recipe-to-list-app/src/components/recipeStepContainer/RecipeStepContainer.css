@@ -1,0 +1,45 @@
+.recipe-step__container {
+    display: flex;
+    margin: 0 1.5em;
+    margin-bottom: .5em;
+    padding: .2em;
+    border-radius: .2em;
+    font-size: .8em;
+    background-color: white;
+    box-shadow: 1px 1px 5px 1px rgb(209, 209, 209);
+}
+
+.step-number__container {
+    width: 8%;
+}
+
+.step-description__container {
+    width: 71%;
+}
+
+.step-cta__container {
+    width: 20%;
+    display: flex;
+}
+
+.cta__btn-small {
+    background-color: transparent;
+    border: none;
+    width: 15px;
+    height: 15px;
+    font-size: 1em;
+    padding: 0;
+    margin: 0;
+    margin-top: 3px;
+}
+
+.step-cta--up,
+.step-cta--down,
+.step-cta--delete {
+    width: 33%;
+}
+
+.btn-icon--small {
+    width: 10px;
+    height: 10px;
+}
