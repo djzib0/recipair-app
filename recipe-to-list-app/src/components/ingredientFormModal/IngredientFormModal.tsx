@@ -12,7 +12,7 @@ import { Unit } from '../../enums/enums';
 
 type IngredientFormModalProps = {
   classTitle: string;
-  addStep: (description: string) => void;
+  addIngredient: (name: string, quantity: number, unit: Unit ) => void;
   closeModal: () => void;
   isOn: boolean;
 }
@@ -20,7 +20,6 @@ type IngredientFormModalProps = {
 const schema = z.object({
   description: z.string().min(1),
   quantity: z.coerce.number().min(0.1),
-  // quantity: z.preprocess((a) => parseInt(z.string().parse(a), 2)),
   unit: z.string().min(1),
 })
 
@@ -28,7 +27,7 @@ type FormFields = z.infer<typeof schema>
 
 export default function IngredientFormModal(props: IngredientFormModalProps) {
 
-  // destructurize useForm
+  // destructuring useForm
   const {
     register,
     handleSubmit,
@@ -41,20 +40,27 @@ export default function IngredientFormModal(props: IngredientFormModalProps) {
     resolver: zodResolver(schema)}
   )
 
-  const onSubmit: SubmitHandler<FormFields> = (data) => {
-    // addStep(data.description)
-    console.log(data)
-    // resetField("description")
-  }
+   // destructuring props
+   const { classTitle, addIngredient, closeModal, isOn } = props;
 
-  // destructurizing props
-  const { classTitle, closeModal, isOn } = props;
+
+  const onSubmit: SubmitHandler<FormFields> = (data) => {
+
+    let unit: Unit = Unit[data.unit as keyof typeof Unit]
+    addIngredient(
+      data.description,
+      data.quantity,
+      unit
+    )
+    console.log("test")
+    closeIngredientForm();
+  }
 
   // functions
   const closeIngredientForm = () => {
     resetField("description");
     resetField("quantity");
-    resetField("quantity");
+    resetField("unit");
     closeModal();
   }
 

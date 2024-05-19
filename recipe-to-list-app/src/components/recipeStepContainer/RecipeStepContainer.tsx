@@ -16,7 +16,7 @@ type RecipeStepContainerProps = {
 export default function RecipeStepContainer(props: RecipeStepContainerProps) {
 
   const { index, description, maxIndex, removeStep, changeStepPosition} = props;
-  console.log(index, " index in step container")
+
   return (
     <div className="recipe-step__container">
       <div className='step-number__container'>

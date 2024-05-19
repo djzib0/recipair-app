@@ -23,7 +23,7 @@ type FormFields = z.infer<typeof schema>
 
 export default function StepFormModal(props: StepFormModalProps) {
 
-  // destructurize useForm
+  // destructuring useForm
   const {
     register,
     handleSubmit,

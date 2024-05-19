@@ -16,6 +16,7 @@ import { BiArrowBack } from "react-icons/bi";
 import StepFormModal from "../components/stepFormModal/StepFormModal";
 import RecipeStepContainer from "../components/recipeStepContainer/RecipeStepContainer";
 import IngredientFormModal from "../components/ingredientFormModal/IngredientFormModal";
+import RecipeIngredientContainer from "../components/recipeIngredientContainer/RecipeIngredientContainer";
 
 const schema = z.object({
   title: z.string().min(1),
@@ -26,7 +27,7 @@ type FormFields = z.infer<typeof schema>
 
 export default function AddRecipeForm() {
 
-  // destructurize useForm
+  // destructuring useForm
   const { 
     register,
     handleSubmit,
@@ -60,7 +61,6 @@ export default function AddRecipeForm() {
 
   useEffect(() => {
   }, [refreshPage] )
-
 
   // array with object for topnavbar
   const topNavbarItems = [
@@ -98,22 +98,23 @@ export default function AddRecipeForm() {
     setRefreshPage(prevState => !prevState)
   }
 
-  const addIngredient = () => {
+  const addIngredient = (name: string, quantity: number, unit: Unit) => {
     const newArr: Ingredient[] = ingredients.concat(
       {
-        name: "carrot",
-        quantity: 0.5,
-        unit: Unit.Kilogram
+        name: name,
+        quantity: quantity,
+        unit: unit
       }
     )
-
     setIngredients(newArr);
     setNewRecipe(prevState => {
       return {
         ...prevState,
-        ingredients: ingredients
+        ingredients: newArr
       }
     })
+    toggleStepModal(false)
+    setRefreshPage(prevState => !prevState)
   }
 
   const changeStepPosition = (index: number, changeUp: boolean) => {
@@ -137,8 +138,8 @@ export default function AddRecipeForm() {
   }
 
   const removeStep = (index: number) => {
-    // define new variable for cooking steps 
-    const newArr: CookingStep[] | undefined = newRecipe.steps
+    // define new array for cooking steps 
+    const newArr: CookingStep[] | undefined = newRecipe.steps;
     // remove the step by given index
     newArr?.splice(index, 1)
     // set new array as a recipe property - steps
@@ -151,9 +152,24 @@ export default function AddRecipeForm() {
     setRefreshPage(prevState => !prevState)
   }
 
+  const removeIngredient = (index: number) => {
+    // define new array for ingredients
+    const newArr: Ingredient[] | undefined = newRecipe.ingredients;
+    // remoe the ingredient by given index
+    newArr?.splice(index, 1)
+    // set new array as a recipe property - ingredients
+    setNewRecipe(prevState => {
+      return {
+        ...prevState,
+        ingredients: newArr
+      }
+      setRefreshPage(prevState => !prevState);
+    })
+
+  }
+
   const stepsArr: JSX.Element[] | undefined = newRecipe.steps?.map((item, index) => {
     const maxIndex = newRecipe.steps?.length;
-    console.log(maxIndex, index)
     return (
       <div key={index}>
         <RecipeStepContainer 
@@ -163,6 +179,20 @@ export default function AddRecipeForm() {
           removeStep={() => removeStep(index)}
           changeStepPosition={changeStepPosition}
           />
+      </div>
+    )
+  })
+
+  const ingredientsArr: JSX.Element[] | undefined = newRecipe.ingredients?.map((item, index) => {
+    return (
+      <div key={index}>
+        <RecipeIngredientContainer
+          index={index}
+          name={item.name}
+          quantity={item.quantity}
+          unit={item.unit}
+          removeIngredient={removeIngredient}
+        />
       </div>
     )
   })
@@ -205,6 +235,7 @@ export default function AddRecipeForm() {
           </button>
         </form>
         {stepsArr}
+        {ingredientsArr}
       </div>
       <StepFormModal 
         classTitle={isStepModalOn ? "sliding-modal--bottom": "sliding-modal--bottom--disabled"}
@@ -214,7 +245,7 @@ export default function AddRecipeForm() {
       />
       <IngredientFormModal
          classTitle={isIngredientModalOn ? "sliding-modal--bottom": "sliding-modal--bottom--disabled"}
-         addStep={addIngredient}
+         addIngredient={addIngredient}
          closeModal={() => toggleIngredientModal(false)}
          isOn={isIngredientModalOn}
       />

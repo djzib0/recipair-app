@@ -1,27 +1,40 @@
 
 export enum Unit {
-    Kilogram = "kg",
     Gram = "g",
-    Piece = "pc",
-    Liter = "l",
+    Kilogram = "kg",
     Mililiter = "ml",
+    Liter = "l",
+    Piece = "pc",
 }
 
-export const UNITS_WITH_ABBREVIATION = [
-    {
-        name: 'kilogram',
-        abbreviation: 'kg'
-    },
-    {
-        name: 'gram',
-        abbreviation: 'g'
-    },
-    {
-        name: 'liter',
-        abbreviation: 'ltr'
-    },
-    {
-        name: 'mililiter',
-        abbreviation: 'ml'
-    },
-]
+export enum IngredientType {
+    MilkProducts,
+    FatsAndOils,
+    Fruits,
+    GrainNutsAndBakingProducts,
+    HerbsAndSpices,
+    Meat,
+    Fish,
+    PastaAndRice,
+    Vegetables,
+    Other,
+}
+
+// export const UNITS_WITH_ABBREVIATION = [
+//     {
+//         name: 'kilogram',
+//         abbreviation: 'kg'
+//     },
+//     {
+//         name: 'gram',
+//         abbreviation: 'g'
+//     },
+//     {
+//         name: 'liter',
+//         abbreviation: 'ltr'
+//     },
+//     {
+//         name: 'mililiter',
+//         abbreviation: 'ml'
+//     },
+// ]
