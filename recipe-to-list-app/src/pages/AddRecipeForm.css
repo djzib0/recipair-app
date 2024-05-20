@@ -1,0 +1,63 @@
+.recipe__img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: .5em;
+    border: 1px solid rgb(216, 216, 216);
+}
+
+.toggle-modal-menu__btn {
+    background-color: rgb(0, 162, 255);
+    position: fixed;
+    bottom: 70px;
+    right: .5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 2.4em;
+    /* font-weight: bolder; */
+    border: none;
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+}
+
+.modal-menu__container {
+    display: flex;
+    padding: 0 2em;
+    justify-content: space-between;
+    position: fixed;
+    width: 100%;
+    bottom: 132px;
+    right: 0;
+}
+
+.modal-cta__btn {
+    background-color: rgb(0, 162, 255);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-family: "Ubuntu", sans-serif;
+    font-size: 1em;
+    font-weight: bolder;
+    border: none;
+    border-radius: .5em;
+    height: 50px;
+    width: 140px;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+.toggle-modal-menu__btn,
+.modal-cta__btn {
+    -webkit-box-shadow: 3px 2px 8px -1px rgb(101, 101, 101);
+    -moz-box-shadow: 3px 2px 8px -1px rgb(101, 101, 101);
+    box-shadow: 3px 2px 8px -1px rgb(101, 101, 101);
+}

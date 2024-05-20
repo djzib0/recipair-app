@@ -17,6 +17,8 @@ import StepFormModal from "../components/stepFormModal/StepFormModal";
 import RecipeStepContainer from "../components/recipeStepContainer/RecipeStepContainer";
 import IngredientFormModal from "../components/ingredientFormModal/IngredientFormModal";
 import RecipeIngredientContainer from "../components/recipeIngredientContainer/RecipeIngredientContainer";
+// styles import
+import './AddRecipeForm.css'
 
 const schema = z.object({
   title: z.string().min(1),
@@ -40,6 +42,8 @@ export default function AddRecipeForm() {
 
   // utilize useForm custom hook
   const { 
+    isModalMenuOn,
+    toggleModalMenu,
     isStepModalOn,
     toggleStepModal,
     isIngredientModalOn,
@@ -201,8 +205,6 @@ export default function AddRecipeForm() {
     <main>
       <TopNavbar title="Add recipe" menuItems={topNavbarItems}  />
       <div className="content__container">
-        <button onClick={() => toggleStepModal(true)}>Add step</button>
-        <button onClick={() => toggleIngredientModal(true)}>Add ingredient</button>
         <form onSubmit={handleSubmit(onSubmit)}>
           <label 
             htmlFor="recipe_title"
@@ -226,6 +228,10 @@ export default function AddRecipeForm() {
             id="recipe_description"
             placeholder="Your description here..."
           />
+          <img 
+            src="https://www.mojegotowanie.pl/media/cache/default_big_main_photo/uploads/media/recipe/0002/02/lasagne-z-sosem-beszamelowym.jpeg"
+            className="recipe__img"
+          />
           <button 
             disabled={isStepModalOn || isIngredientModalOn} 
             type="submit"
@@ -237,6 +243,28 @@ export default function AddRecipeForm() {
         {stepsArr}
         {ingredientsArr}
       </div>
+      <button 
+        className="toggle-modal-menu__btn"
+        onClick={toggleModalMenu}
+      >
+        +
+      </button>
+      {isModalMenuOn && 
+      <div className="modal-menu__container">
+        <button 
+          onClick={() => toggleStepModal(true)}
+          className="modal-cta__btn"
+        >
+          + step
+        </button>
+        <button 
+          onClick={() => toggleIngredientModal(true)}
+          className="modal-cta__btn"
+        >
+          + ingredient
+        </button>
+      </div>}
+
       <StepFormModal 
         classTitle={isStepModalOn ? "sliding-modal--bottom": "sliding-modal--bottom--disabled"}
         addStep={addStep}
@@ -244,11 +272,11 @@ export default function AddRecipeForm() {
         isOn={isStepModalOn}
       />
       <IngredientFormModal
-         classTitle={isIngredientModalOn ? "sliding-modal--bottom": "sliding-modal--bottom--disabled"}
-         addIngredient={addIngredient}
-         closeModal={() => toggleIngredientModal(false)}
-         isOn={isIngredientModalOn}
-      />
+        classTitle={isIngredientModalOn ? "sliding-modal--bottom": "sliding-modal--bottom--disabled"}
+        addIngredient={addIngredient}
+        closeModal={() => toggleIngredientModal(false)}
+        isOn={isIngredientModalOn}
+      />      
     </main>
   )
 }

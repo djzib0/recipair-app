@@ -17,6 +17,22 @@
         {
             "folderPath": "react-with-ts\\recipe-to-list-app\\src\\types\\",
             "color": "foldercolorizer.LightYellow"
+        },
+        {
+            "folderPath": "react-with-ts\\recipe-to-list-app\\src\\customHooks\\",
+            "color": "foldercolorizer.Tomato"
+        },
+        {
+            "folderPath": "react-with-ts\\recipe-to-list-app\\src\\enums\\",
+            "color": "foldercolorizer.LightMaroon"
+        },
+        {
+            "folderPath": "react-with-ts\\recipe-to-list-app\\src\\layouts\\",
+            "color": "foldercolorizer.Ecru"
+        },
+        {
+            "folderPath": "react-with-ts\\recipe-to-list-app\\src\\utils\\",
+            "color": "foldercolorizer.DodgerBlue"
         }
     ]
 }

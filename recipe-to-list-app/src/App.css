@@ -2,6 +2,8 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  background-color: rgb(242, 255, 239);
+  font-family: "Ubuntu", Helvetica, sans-serif
 }
 
 a {
@@ -86,11 +88,13 @@ a {
   max-width: 480px;
   margin: 0 auto;
   background-color: rgb(242, 255, 239);
-  font-family: "Roboto", sans-serif;
+  font-family: "Ubuntu", sans-serif;
+  font-weight: bolder;
 }
 
 .content__container {
   padding: 1em;
+  margin-bottom: 170px;
 }
 
 @keyframes logo-spin {
@@ -130,6 +134,7 @@ body {
 }
 
 form {
+  font-family: "Ubuntu", sans-serif;
   /* max-width: 300px; */
   /* margin: 10px auto; */
   padding: 10px 20px;
@@ -158,6 +163,7 @@ input[type="time"],
 input[type="url"],
 textarea,
 select {
+  font-family: "Ubuntu";
   background: rgba(255,255,255,0.1);
   border: none;
   font-size: 16px;
