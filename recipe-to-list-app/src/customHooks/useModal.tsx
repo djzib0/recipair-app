@@ -5,6 +5,7 @@ export default function useModal() {
   const [isModalMenuOn, setIsModalMenuOn] = useState(false);
   const [isStepModalOn, setIsStepModalOn] = useState(false);
   const [isIngredientModalOn, setIsIngredientModalOn] = useState(false);
+  const [isImgUrlModalOn, setIsImgUrlModalOn] = useState(false);
   
   const toggleModalMenu = () => {
     setIsModalMenuOn(prevState => !prevState);
@@ -19,6 +20,10 @@ export default function useModal() {
     setIsIngredientModalOn(isOn)
   }
 
+  const toggleImgUrlModalOn = (isOn: boolean) => {
+    setIsImgUrlModalOn(isOn)
+  }
+
   return {
     isModalMenuOn,
     toggleModalMenu,
@@ -26,5 +31,7 @@ export default function useModal() {
     toggleStepModal,
     isIngredientModalOn,
     toggleIngredientModal,
+    isImgUrlModalOn,
+    toggleImgUrlModalOn
   }
 }

@@ -1,5 +1,5 @@
 // styles import
-import './StepFormModal.css'
+import './ImgUrlFormModal.css'
 import '../../App.css'
 // icons import
 import { IoMdCloseCircleOutline } from "react-icons/io";
@@ -8,57 +8,61 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-type StepFormModalProps = {
-  classTitle: string;
-  addStep: (description: string) => void;
-  closeModal: () => void;
-  isOn: boolean;
+type ImgUrlFormModalProps = {
+    classTitle: string;
+    addImgUrl: (imgUrl: string) => void;
+    closeModal: () => void;
+    isOn: boolean;
 }
 
 const schema = z.object({
-  description: z.string().min(1),
+    imgUrl: z.string().url()
 })
 
 type FormFields = z.infer<typeof schema>
 
-export default function StepFormModal(props: StepFormModalProps) {
+export default function ImgUrlFormModal(props: ImgUrlFormModalProps) {
 
   // destructuring useForm
   const {
     register,
     handleSubmit,
     resetField,
-    formState: {errors},
+    formState: {errors}
   } = useForm<FormFields>(
     {defaultValues: {
-      description: ""
+      imgUrl: ""
     },
     resolver: zodResolver(schema)}
   )
 
-  const onSubmit: SubmitHandler<FormFields> = (data) => {
-    addStep(data.description)
-    resetField("description")
-  }
+   //destructuring props
+   const { classTitle, addImgUrl, closeModal, isOn } = props;
 
-  // destructuring props
-  const { classTitle, addStep, closeModal, isOn } = props;
+  const onSubmit: SubmitHandler<FormFields> = (data) => {
+    console.log(data)
+    addImgUrl(data.imgUrl);
+    resetField("imgUrl")
+    closeModal();
+  }
 
   return (
     <div className={classTitle}>
       <button className='close-modal__btn'>
-        <IoMdCloseCircleOutline onClick={() => {closeModal(); resetField("description")}} />
+        <IoMdCloseCircleOutline onClick={() => {closeModal(); resetField("imgUrl")}} />
       </button>
       {isOn && <form className='modal__form' onSubmit={handleSubmit(onSubmit)}>  
         <label 
-          htmlFor='step_description'
+          htmlFor='img_url'
           className='modal__form__label'
           >
-          {errors.description ? errors.description.message : "Step description"}
+          {errors.imgUrl ? errors.imgUrl.message : "Image url"}
         </label>
-        <textarea {...register("description")} 
-          id='step_description'
-          placeholder='Your next step...'
+        <input {...register("imgUrl")}
+          type='text'
+          id='img_url'
+          autoComplete='off'
+          placeholder='Image url here...'
         />
         <button 
           className='confirm__btn--small'

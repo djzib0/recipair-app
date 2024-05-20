@@ -93,7 +93,7 @@ a {
 }
 
 .content__container {
-  padding: 1em;
+  padding: 1.5em;
   margin-bottom: 170px;
 }
 
@@ -135,10 +135,6 @@ body {
 
 form {
   font-family: "Ubuntu", sans-serif;
-  /* max-width: 300px; */
-  /* margin: 10px auto; */
-  padding: 10px 20px;
-  /* background: #f4f7f8; */
   border-radius: 8px;
 }
 
@@ -170,7 +166,7 @@ select {
   height: auto;
   margin: 0;
   outline: 0;
-  padding: 15px;
+  padding: 1em;
   width: 100%;
   background-color: #e8eeef;
   color: #8a97a0;

@@ -26,6 +26,7 @@ export type Ingredient = {
 export type Recipe = {
     title: string;
     description: string;
+    imgUlr: string;
     steps?: CookingStep[];
     ingredients?: Ingredient[];
 }

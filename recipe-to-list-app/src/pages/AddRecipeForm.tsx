@@ -19,6 +19,9 @@ import IngredientFormModal from "../components/ingredientFormModal/IngredientFor
 import RecipeIngredientContainer from "../components/recipeIngredientContainer/RecipeIngredientContainer";
 // styles import
 import './AddRecipeForm.css'
+// images import
+import noPhotoImg from '../../images/nophoto.jpg'
+import ImgUrlFormModal from "../components/imgUrlFormModal/ImgUrlFormModal";
 
 const schema = z.object({
   title: z.string().min(1),
@@ -48,6 +51,8 @@ export default function AddRecipeForm() {
     toggleStepModal,
     isIngredientModalOn,
     toggleIngredientModal,
+    isImgUrlModalOn,
+    toggleImgUrlModalOn
   } = useModal();
 
   // state variables
@@ -55,12 +60,14 @@ export default function AddRecipeForm() {
     {
       title: "",
       description: "",
+      imgUlr: "",
       steps: [],
       ingredients: []
     }
   )
   const [steps, setSteps] = useState<CookingStep[]>([]);
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
+  const [imgUrl, setImgUrl] = useState("");
   const [refreshPage, setRefreshPage] = useState(true);
 
   useEffect(() => {
@@ -80,9 +87,15 @@ export default function AddRecipeForm() {
     addRecipe({
       title: data.title,
       description: data.description,
+      imgUlr: newRecipe.imgUlr,
       steps: newRecipe.steps,
       ingredients: newRecipe.ingredients
     })
+  }
+
+  const onImageError = (e: any) => {
+    e.target.onError = null;
+    e.target.src = "../../images/placeholderImg.jpg"
   }
 
   const addStep = (stepDescription: string) => {
@@ -119,6 +132,15 @@ export default function AddRecipeForm() {
     })
     toggleStepModal(false)
     setRefreshPage(prevState => !prevState)
+  }
+
+  const addImageUrl = (imgUrl: string) => {
+    setNewRecipe(prevState => {
+      return {
+        ...prevState,
+        imgUlr: imgUrl
+      }
+    })
   }
 
   const changeStepPosition = (index: number, changeUp: boolean) => {
@@ -169,7 +191,6 @@ export default function AddRecipeForm() {
       }
       setRefreshPage(prevState => !prevState);
     })
-
   }
 
   const stepsArr: JSX.Element[] | undefined = newRecipe.steps?.map((item, index) => {
@@ -205,6 +226,21 @@ export default function AddRecipeForm() {
     <main>
       <TopNavbar title="Add recipe" menuItems={topNavbarItems}  />
       <div className="content__container">
+
+        <button 
+          className="recipe__img__btn"
+          onClick={() => toggleImgUrlModalOn(true)}
+        >
+          {newRecipe.imgUlr.length === 0 ?
+          <img src={noPhotoImg} className="recipe__img"/> :
+          <img src={newRecipe.imgUlr} 
+            className="recipe__img" 
+            onError={onImageError} />
+
+          }
+          
+        </button>
+
         <form onSubmit={handleSubmit(onSubmit)}>
           <label 
             htmlFor="recipe_title"
@@ -228,10 +264,7 @@ export default function AddRecipeForm() {
             id="recipe_description"
             placeholder="Your description here..."
           />
-          <img 
-            src="https://www.mojegotowanie.pl/media/cache/default_big_main_photo/uploads/media/recipe/0002/02/lasagne-z-sosem-beszamelowym.jpeg"
-            className="recipe__img"
-          />
+        
           <button 
             disabled={isStepModalOn || isIngredientModalOn} 
             type="submit"
@@ -239,16 +272,23 @@ export default function AddRecipeForm() {
           >
             ADD RECIPE
           </button>
+
         </form>
+
+        {stepsArr && stepsArr?.length > 0 && <h4>STEPS</h4>}
         {stepsArr}
+
+        {ingredientsArr && ingredientsArr.length > 0 && <h4>INGREDIENTS</h4>}
         {ingredientsArr}
       </div>
+
       <button 
         className="toggle-modal-menu__btn"
         onClick={toggleModalMenu}
       >
         +
       </button>
+
       {isModalMenuOn && 
       <div className="modal-menu__container">
         <button 
@@ -276,7 +316,14 @@ export default function AddRecipeForm() {
         addIngredient={addIngredient}
         closeModal={() => toggleIngredientModal(false)}
         isOn={isIngredientModalOn}
-      />      
+      /> 
+      <ImgUrlFormModal 
+        classTitle={isImgUrlModalOn ? "sliding-modal--bottom": "sliding-modal--bottom--disabled"}
+        addImgUrl={addImageUrl}
+        closeModal={() => toggleImgUrlModalOn(false)}
+        isOn={isImgUrlModalOn}
+      />
+
     </main>
   )
 }
