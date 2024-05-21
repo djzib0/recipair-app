@@ -1,30 +1,36 @@
 .recipe-ingredient__container {
     display: flex;
-    margin: 0 1.5em;
     margin-bottom: .5em;
-    padding: .2em;
     border-radius: .2em;
     font-size: .8em;
     background-color: white;
     box-shadow: 1px 1px 5px 1px rgb(209, 209, 209);
+    padding: .3em;
+    width: 100%;
 }
 
 .ingredient-number__container {
-    width: 8%;
+    width: 5%;
 }
 
 .ingredient-description__container {
-    width: 71%;
+    display: flex;
+    width: 65%;
+}
+
+.ingredient-description {
+    width: 70%;
 }
 
 .qty-unit__container {
     display: flex;
-    width: 20%;
+    width: 30%;
 }
 
 .ingredient-cta__container {
-    width: 10%;
+    width: 30%;
     display: flex;
+    justify-content: flex-end;
 }
 
 .cta__btn-small {

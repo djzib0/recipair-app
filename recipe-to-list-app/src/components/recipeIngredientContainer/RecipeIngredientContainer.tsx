@@ -23,15 +23,17 @@ export default function RecipeIngredientContainer(props: RecipeIngredientContain
 
   return (
     <div className='recipe-ingredient__container'>
-      <div className='recipe-number__container'>
+      <div className='ingredient-number__container'>
         {index + 1}.
       </div>
       <div className='ingredient-description__container'>
-        {`${firstLetterToUpperCase(name)}`}
-      </div>
-      <div className='qty-unit__container'>
-        <div>{quantity}</div>
-        <div>{unit}</div>
+        <div className='ingredient-description'>
+          {`${firstLetterToUpperCase(name)}`}
+        </div>
+        <div className='qty-unit__container'>
+          <div>{quantity}</div>
+          <div>{unit}</div>
+        </div>
       </div>
       <div className='ingredient-cta__container'>
         <div className='ingredient-cta--delete'>

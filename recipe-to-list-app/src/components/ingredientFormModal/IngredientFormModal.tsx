@@ -8,11 +8,11 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 // enum import
-import { Unit } from '../../enums/enums';
+import { Unit, IngredientType } from '../../enums/enums';
 
 type IngredientFormModalProps = {
   classTitle: string;
-  addIngredient: (name: string, quantity: number, unit: Unit ) => void;
+  addIngredient: (name: string, quantity: number, unit: Unit, ingredientType: IngredientType ) => void;
   closeModal: () => void;
   isOn: boolean;
 }
@@ -21,6 +21,7 @@ const schema = z.object({
   description: z.string().min(1),
   quantity: z.coerce.number().min(0.1),
   unit: z.string().min(1),
+  ingredientType: z.string().min(1)
 })
 
 type FormFields = z.infer<typeof schema>
@@ -47,10 +48,13 @@ export default function IngredientFormModal(props: IngredientFormModalProps) {
   const onSubmit: SubmitHandler<FormFields> = (data) => {
 
     let unit: Unit = Unit[data.unit as keyof typeof Unit]
+    let ingredientType: IngredientType = IngredientType[data.ingredientType as keyof typeof IngredientType]
+
     addIngredient(
       data.description,
       data.quantity,
-      unit
+      unit,
+      ingredientType
     )
     console.log("test")
     closeIngredientForm();
@@ -67,7 +71,18 @@ export default function IngredientFormModal(props: IngredientFormModalProps) {
   // create option list from Unit enum
   const unitsArr = Object.keys(Unit).map((unit, index) => {
     return (
-      <option key={index} value={unit}>{Unit[`${unit as keyof typeof Unit}`]}</option>
+      <option key={index} value={unit}>
+        {Unit[`${unit as keyof typeof Unit}`]}
+      </option>
+    )
+  })
+
+  // create an option list from IngredientType enum
+  const ingredientTypesArr = Object.keys(IngredientType).map((ingredientType, index) => {
+    return (
+      <option key={index} value={ingredientType}>
+        {IngredientType[`${ingredientType as keyof typeof IngredientType}`]}
+      </option>
     )
   })
 
@@ -103,7 +118,7 @@ export default function IngredientFormModal(props: IngredientFormModalProps) {
         />
 
         <label
-          htmlFor='quantity'
+          htmlFor='unit'
           className='modal__form__label'
         >
           {errors.unit ? errors.unit.message : "Unit" }
@@ -113,6 +128,19 @@ export default function IngredientFormModal(props: IngredientFormModalProps) {
           id='unit'
         >
           {unitsArr}
+        </select>
+
+        <label
+          htmlFor='ingredientType'
+          className='modal__form__label'
+        >
+          {errors.unit ? errors.unit.message : "Ingredient type" }
+        </label>
+        <select
+          {...register("ingredientType")}
+          id='ingredientType'
+        >
+          {ingredientTypesArr}
         </select>
 
         <button 

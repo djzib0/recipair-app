@@ -8,9 +8,9 @@ import useDatabase from "../customHooks/useDatabase"
 import { SubmitHandler, useForm} from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-// types import
+// types and enums import
 import { CookingStep, Recipe, Ingredient } from "../types/types";
-import { Unit } from "../enums/enums";
+import { Unit, IngredientType } from "../enums/enums";
 // icons import
 import { BiArrowBack } from "react-icons/bi";
 import StepFormModal from "../components/stepFormModal/StepFormModal";
@@ -91,6 +91,7 @@ export default function AddRecipeForm() {
       steps: newRecipe.steps,
       ingredients: newRecipe.ingredients
     })
+    console.log("submitting new recipe")
   }
 
   const onImageError = (e: any) => {
@@ -115,12 +116,13 @@ export default function AddRecipeForm() {
     setRefreshPage(prevState => !prevState)
   }
 
-  const addIngredient = (name: string, quantity: number, unit: Unit) => {
+  const addIngredient = (name: string, quantity: number, unit: Unit, ingredientType: IngredientType) => {
     const newArr: Ingredient[] = ingredients.concat(
       {
         name: name,
         quantity: quantity,
-        unit: unit
+        unit: unit,
+        ingredientType: ingredientType
       }
     )
     setIngredients(newArr);
@@ -275,10 +277,16 @@ export default function AddRecipeForm() {
 
         </form>
 
-        {stepsArr && stepsArr?.length > 0 && <h4>STEPS</h4>}
+        {stepsArr && stepsArr?.length > 0 && 
+          <h4 className="recipe-form__header">
+            STEPS
+          </h4>}
         {stepsArr}
 
-        {ingredientsArr && ingredientsArr.length > 0 && <h4>INGREDIENTS</h4>}
+        {ingredientsArr && ingredientsArr.length > 0 && 
+        <h4 className="recipe-form__header">
+          INGREDIENTS
+        </h4>}
         {ingredientsArr}
       </div>
 

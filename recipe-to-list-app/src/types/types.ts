@@ -1,4 +1,4 @@
-import { Unit } from "../enums/enums";
+import { Unit, IngredientType } from "../enums/enums";
 
 export type PostProps = {
     key: number;
@@ -20,7 +20,9 @@ export type CookingStep = {
 export type Ingredient = {
     name: string;
     quantity: number;
-    unit: Unit
+    unit: Unit;
+    ingredientType: IngredientType;
+
 }
 
 export type Recipe = {

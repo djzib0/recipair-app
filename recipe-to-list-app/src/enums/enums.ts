@@ -8,16 +8,16 @@ export enum Unit {
 }
 
 export enum IngredientType {
-    MilkProducts,
-    FatsAndOils,
-    Fruits,
-    GrainNutsAndBakingProducts,
-    HerbsAndSpices,
-    Meat,
-    Fish,
-    PastaAndRice,
-    Vegetables,
-    Other,
+    MilkProducts = "milk products",
+    FatsAndOils = "fats and oils",
+    Fruits = "fruits",
+    GrainNutsAndBakingProducts = "grain, nuts and baking products",
+    HerbsAndSpices = "herbs and spices",
+    Meat = "meat",
+    Fish = "fish",
+    PastaAndRice = "pasta and rice",
+    Vegetables = "vegetables",
+    Other = "other",
 }
 
 // export const UNITS_WITH_ABBREVIATION = [
