@@ -1,11 +1,13 @@
 // import React from 'react'
 // components import
 import TopNavbar from "../components/topNavbar/TopNavbar";
+import RecipeListItem from "../components/recipeListItem/RecipeListItem";
 // icons import
 import { RiAddCircleFill } from "react-icons/ri";
 // custom hooks imports
 import useDatabase from '../customHooks/useDatabase'
 import { useEffect, useState } from "react";
+import { Recipe } from "../types/types";
 
 export default function Recipes() {
 
@@ -18,8 +20,6 @@ export default function Recipes() {
     // fetching recipes data from DB
     getRecipesData();
   }, [])
-
-  console.log(recipesData)
 
   // set recipes data with the fetched data
   useEffect(() => {
@@ -34,9 +34,27 @@ export default function Recipes() {
     }
   ]
 
+  // create an array of recipes
+  const recipes: Recipe[] = [];
+  for (let recipe of Object.values(fetchedData)) {
+    recipes.push(recipe)
+  }
+  const recipesArr = recipesData && recipes.map((item, index) => {
+    console.log(item.imgUrl)
+    return (
+      <RecipeListItem
+        imgUrl={item.imgUrl}
+        title={item.title}
+        description={item.description}
+      />
+    )
+  })
+
+
   return (
     <div>
       <TopNavbar title="recipes" menuItems={topNavbarItems}/>
+      {recipesArr}
     </div>
   )
 }

@@ -60,7 +60,7 @@ export default function AddRecipeForm() {
     {
       title: "",
       description: "",
-      imgUlr: "",
+      imgUrl: "",
       steps: [],
       ingredients: []
     }
@@ -87,7 +87,7 @@ export default function AddRecipeForm() {
     addRecipe({
       title: data.title,
       description: data.description,
-      imgUlr: newRecipe.imgUlr,
+      imgUrl: newRecipe.imgUrl,
       steps: newRecipe.steps,
       ingredients: newRecipe.ingredients
     })
@@ -140,7 +140,7 @@ export default function AddRecipeForm() {
     setNewRecipe(prevState => {
       return {
         ...prevState,
-        imgUlr: imgUrl
+        imgUrl: imgUrl
       }
     })
   }
@@ -233,9 +233,9 @@ export default function AddRecipeForm() {
           className="recipe__img__btn"
           onClick={() => toggleImgUrlModalOn(true)}
         >
-          {newRecipe.imgUlr.length === 0 ?
+          {newRecipe.imgUrl.length === 0 ?
           <img src={noPhotoImg} className="recipe__img"/> :
-          <img src={newRecipe.imgUlr} 
+          <img src={newRecipe.imgUrl} 
             className="recipe__img" 
             onError={onImageError} />
 
