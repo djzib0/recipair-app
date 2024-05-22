@@ -40,13 +40,15 @@ export default function Recipes() {
     recipes.push(recipe)
   }
   const recipesArr = recipesData && recipes.map((item, index) => {
-    console.log(item.imgUrl)
     return (
-      <RecipeListItem
-        imgUrl={item.imgUrl}
-        title={item.title}
-        description={item.description}
-      />
+      <div key={index}>
+        <RecipeListItem
+          imgUrl={item.imgUrl}
+          title={item.title}
+          description={item.description}
+          stepsNumber={item.steps?.length}
+        />
+      </div>
     )
   })
 
@@ -54,7 +56,9 @@ export default function Recipes() {
   return (
     <div>
       <TopNavbar title="recipes" menuItems={topNavbarItems}/>
-      {recipesArr}
+      <main className="content__container">
+        {recipesArr}
+      </main>
     </div>
   )
 }
