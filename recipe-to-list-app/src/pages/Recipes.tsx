@@ -1,4 +1,5 @@
-// import React from 'react'
+// react router imports
+import { useParams, Link } from "react-router-dom";
 // components import
 import TopNavbar from "../components/topNavbar/TopNavbar";
 import RecipeListItem from "../components/recipeListItem/RecipeListItem";
@@ -36,19 +37,21 @@ export default function Recipes() {
 
   // create an array of recipes
   const recipes: Recipe[] = [];
-  for (let recipe of Object.values(fetchedData)) {
-    recipes.push(recipe)
+  for (let [id, recipe] of Object.entries(fetchedData)) {
+    let recipeObj = recipe;
+    Object.assign(recipeObj, {id: id})
+    recipes.push(recipeObj)
   }
   const recipesArr = recipesData && recipes.map((item, index) => {
     return (
-      <div key={index}>
+      <Link to={`/recipe/${item.id}`} key={item.id}>
         <RecipeListItem
           imgUrl={item.imgUrl}
           title={item.title}
           description={item.description}
           stepsNumber={item.steps?.length}
-        />
-      </div>
+          />
+      </Link>
     )
   })
 

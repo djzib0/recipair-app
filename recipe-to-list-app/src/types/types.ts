@@ -26,6 +26,7 @@ export type Ingredient = {
 }
 
 export type Recipe = {
+    id?: string;
     title: string;
     description: string;
     imgUrl: string;

@@ -15,8 +15,6 @@ type TopNavbarProps<T> = {
 
 export default function TopNavbar(props: TopNavbarProps<MenuItem> ) {
 
-  console.log()
-
   return (
     <nav className="navbar--top">
       <div className='navbar--top--left'>

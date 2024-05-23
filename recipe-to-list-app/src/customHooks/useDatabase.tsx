@@ -33,6 +33,13 @@ export default function useDatabase() {
         })
     }
 
+    async function getRecipeData(id: string | undefined) {
+        onValue(recipesInDB, (snapshot) => {
+            const data = snapshot.val();
+            setFechtedData(data[`${id}`])
+        })
+    }
+
     async function addRecipe(obj: Recipe) {
         push(recipesInDB, obj)
     }
@@ -41,6 +48,7 @@ export default function useDatabase() {
         fetchedData,
         getRecipesData,
         addRecipe,
+        getRecipeData
     }
 }
 

@@ -40,7 +40,6 @@ export default function ImgUrlFormModal(props: ImgUrlFormModalProps) {
    const { classTitle, addImgUrl, closeModal, isOn } = props;
 
   const onSubmit: SubmitHandler<FormFields> = (data) => {
-    console.log(data)
     addImgUrl(data.imgUrl);
     resetField("imgUrl")
     closeModal();

@@ -56,7 +56,6 @@ export default function IngredientFormModal(props: IngredientFormModalProps) {
       unit,
       ingredientType
     )
-    console.log("test")
     closeIngredientForm();
   }
 

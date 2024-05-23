@@ -67,7 +67,6 @@ export default function AddRecipeForm() {
   )
   const [steps, setSteps] = useState<CookingStep[]>([]);
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
-  const [imgUrl, setImgUrl] = useState("");
   const [refreshPage, setRefreshPage] = useState(true);
 
   useEffect(() => {
@@ -91,7 +90,7 @@ export default function AddRecipeForm() {
       steps: newRecipe.steps,
       ingredients: newRecipe.ingredients
     })
-    console.log("submitting new recipe")
+    ("submitting new recipe")
   }
 
   const onImageError = (e: any) => {
@@ -180,7 +179,7 @@ export default function AddRecipeForm() {
     setRefreshPage(prevState => !prevState)
   }
 
-  const removeIngredient = (index: number) => {
+  const removeIngredient = (index: number): void => {
     // define new array for ingredients
     const newArr: Ingredient[] | undefined = newRecipe.ingredients;
     // remoe the ingredient by given index
