@@ -90,7 +90,6 @@ export default function AddRecipeForm() {
       steps: newRecipe.steps,
       ingredients: newRecipe.ingredients
     })
-    ("submitting new recipe")
   }
 
   const onImageError = (e: any) => {

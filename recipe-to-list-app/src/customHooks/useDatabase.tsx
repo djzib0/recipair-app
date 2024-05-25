@@ -3,7 +3,7 @@ import { useState} from "react";
 import { Recipe } from "../types/types";
 // Firebase imports
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, onValue, push} from 'firebase/database'
+import { getDatabase, ref, onValue, push, get} from 'firebase/database'
 
 
 // Firebase config
@@ -25,6 +25,7 @@ const recipesInDB = ref(database, 'recipes')
 
 export default function useDatabase() {
     const [fetchedData, setFechtedData] = useState([]);
+    const [recipeFetchedData, setRecipeFetchedData] = useState<Recipe>();
 
     async function getRecipesData() {
         onValue(recipesInDB, (snapshot) => {
@@ -34,10 +35,9 @@ export default function useDatabase() {
     }
 
     async function getRecipeData(id: string | undefined) {
-        onValue(recipesInDB, (snapshot) => {
-            const data = snapshot.val();
-            setFechtedData(data[`${id}`])
-        })
+        const snapshot = await get(ref(database, `recipes/${id}`))
+        const data = await snapshot.val();
+        setRecipeFetchedData(data)
     }
 
     async function addRecipe(obj: Recipe) {
@@ -46,6 +46,7 @@ export default function useDatabase() {
 
     return {
         fetchedData,
+        recipeFetchedData,
         getRecipesData,
         addRecipe,
         getRecipeData

@@ -9,9 +9,12 @@ import useDatabase from "../customHooks/useDatabase"
 import { useEffect, useState } from "react"
 // types import
 import { Recipe } from "../types/types"
+// styles import
+import './RecipeDetails.css'
 
 type RecipeDetailsProps = {
   id: string;
+  title: string;
 }
 
 // array with object for topnavbar
@@ -32,25 +35,35 @@ export default function RecipeDetails() {
 
 
   // utilize useDatabase
-  const { getRecipeData, fetchedData } = useDatabase();
+  const { getRecipeData, recipeFetchedData } = useDatabase();
 
   // state variables
-  const [recipeData, setRecipeData] = useState<Recipe[]>();
-
+  const [recipeData, setRecipeData] = useState<Recipe>();
+  
 
   useEffect(() => {
     getRecipeData(id)
   }, [])
 
   useEffect(() => {
-    setRecipeData(fetchedData)
-  }, [fetchedData])
+    setRecipeData(recipeFetchedData)
+  }, [recipeFetchedData])
 
-  console.log(recipeData)  
+  console.log(recipeData, " recipe data")  
 
   return (
     <main>
       <TopNavbar title="Details" menuItems={topNavbarItems} />
+      <div className="content__container">
+        <div className="recipe-details__container">
+          <header className="recipe__title">
+            {recipeData?.title}
+          </header>
+          <img src={recipeData?.imgUrl}
+            className="recipe-details-image__container"
+          />
+        </div>
+      </div>
     </main>
   )
 }

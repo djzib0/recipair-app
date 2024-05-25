@@ -42,7 +42,7 @@ export default function Recipes() {
     Object.assign(recipeObj, {id: id})
     recipes.push(recipeObj)
   }
-  const recipesArr = recipesData && recipes.map((item, index) => {
+  const recipesArr = recipesData && recipes.map((item) => {
     return (
       <Link to={`/recipe/${item.id}`} key={item.id}>
         <RecipeListItem
@@ -50,7 +50,7 @@ export default function Recipes() {
           title={item.title}
           description={item.description}
           stepsNumber={item.steps?.length}
-          />
+        />
       </Link>
     )
   })
