@@ -2,7 +2,7 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  background-color: rgb(242, 255, 239);
+  /* background-color: rgb(242, 255, 239); */
   font-family: 'Montserrat', Times, serif, sans-serif;
 }
 
@@ -14,9 +14,8 @@ a {
 .app__container {
   max-width: 480px;
   margin: 0 auto;
-  background-color: rgb(242, 255, 239);
+  /* background-color: rgb(242, 255, 239); */
   font-family: "Montserrat", sans-serif;
-  font-weight: bolder;
 }
 
 .content__container {

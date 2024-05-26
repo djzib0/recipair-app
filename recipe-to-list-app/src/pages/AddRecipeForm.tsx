@@ -43,7 +43,7 @@ export default function AddRecipeForm() {
 
   const { addRecipe } = useDatabase();
 
-  // utilize useForm custom hook
+  // utilize useModal custom hook
   const { 
     isModalMenuOn,
     toggleModalMenu,
@@ -189,10 +189,11 @@ export default function AddRecipeForm() {
         ...prevState,
         ingredients: newArr
       }
-      setRefreshPage(prevState => !prevState);
     })
+    setRefreshPage(prevState => !prevState);
   }
 
+  // create a map of step components 
   const stepsArr: JSX.Element[] | undefined = newRecipe.steps?.map((item, index) => {
     const maxIndex = newRecipe.steps?.length;
     return (
@@ -208,6 +209,7 @@ export default function AddRecipeForm() {
     )
   })
 
+  // create a map of ingredients components
   const ingredientsArr: JSX.Element[] | undefined = newRecipe.ingredients?.map((item, index) => {
     return (
       <div key={index}>

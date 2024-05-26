@@ -15,6 +15,7 @@ type IngredientFormModalProps = {
   addIngredient: (name: string, quantity: number, unit: Unit, ingredientType: IngredientType ) => void;
   closeModal: () => void;
   isOn: boolean;
+  defaultValue?: string;
 }
 
 const schema = z.object({
@@ -36,7 +37,7 @@ export default function IngredientFormModal(props: IngredientFormModalProps) {
     formState: {errors},
   } = useForm<FormFields>(
     {defaultValues: {
-      description: ""
+      description: props.defaultValue ? props.defaultValue : ""
     },
     resolver: zodResolver(schema)}
   )

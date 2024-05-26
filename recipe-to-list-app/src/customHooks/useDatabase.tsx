@@ -3,7 +3,7 @@ import { useState} from "react";
 import { Recipe } from "../types/types";
 // Firebase imports
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, onValue, push, get} from 'firebase/database'
+import { getDatabase, ref, onValue, push, get, update} from 'firebase/database'
 
 
 // Firebase config
@@ -44,12 +44,18 @@ export default function useDatabase() {
         push(recipesInDB, obj)
     }
 
+    async function editRecipe(obj: Recipe, id: string | undefined) {
+        const exactItem = `recipes/${id}`
+        update(ref(database, exactItem), obj)
+    }
+
     return {
         fetchedData,
         recipeFetchedData,
         getRecipesData,
         addRecipe,
-        getRecipeData
+        getRecipeData,
+        editRecipe,
     }
 }
 
