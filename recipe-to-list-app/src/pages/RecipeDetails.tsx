@@ -12,11 +12,14 @@ import useModal from "../customHooks/useModal";
 import useDatabase from "../customHooks/useDatabase";
 import { useEffect, useState } from "react";
 // types import
-import { Recipe, CookingStep, Ingredient} from "../types/types"
+import { Recipe, CookingStep, Ingredient} from "../types/types";
 // styles import
-import './RecipeDetails.css'
+import './RecipeDetails.css';
 // utils import
-import { addPeriodSuffix } from "../utils/firstLetterToUpperCase"
+import { addPeriodSuffix } from "../utils/firstLetterToUpperCase";
+// images import
+import editIcon from '../../images/icons/edit.png';
+
 
 // array with object for topnavbar
 const topNavbarItems = [
@@ -176,10 +179,17 @@ export default function RecipeDetails() {
       <TopNavbar title="Details" menuItems={topNavbarItems} />
       <div className="content__container">
         <div className="recipe-details__container">
-
-          <header className="recipe__title">
-            {recipeData?.title}
-          </header>
+          <div className="recipe__title">
+            <header>
+              {recipeData?.title}
+            </header>
+            <button 
+              onClick={() => toggleTitleModal(true)}
+              className='recipe-list-item__btn'
+              >
+              <img src={editIcon} />
+            </button>
+          </div>
 
           <img src={recipeData?.imgUrl}
             className="recipe-details-image__container"
@@ -200,7 +210,6 @@ export default function RecipeDetails() {
           </div>
           {isRecipeEdited && <button onClick={redoChanges}>Redo</button>}
           {isRecipeEdited && <button onClick={() => editRecipe(recipeData, id)}>Save changes</button>}
-          <button onClick={() => toggleTitleModal(true)}>Edit title</button>
         </div>
       </div>
 

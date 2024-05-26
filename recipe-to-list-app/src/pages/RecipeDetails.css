@@ -9,9 +9,22 @@
     padding-top: .5em;
 }
 
-.recipe-details__container > header {
+.recipe__title {
+    display: flex;
+    justify-content: space-around;
     font-size: 1.1em;
     font-weight: bolder;
+    width: 100%;
+}
+
+.recipe__title > header {
+    justify-content: flex-start;
+    width: 90%;
+}
+
+.recipe__title > button {
+    align-self: flex-end;
+    width: 10%;
 }
 
 .recipe-details-image__container {
