@@ -19,6 +19,7 @@ import './RecipeDetails.css';
 import { addPeriodSuffix } from "../utils/firstLetterToUpperCase";
 // images import
 import editIcon from '../../images/icons/edit.png';
+import StepFormModal from "../components/stepFormModal/StepFormModal";
 
 
 // array with object for topnavbar
@@ -38,12 +39,24 @@ export default function RecipeDetails() {
   const { id } = params;
 
   // utilize useDatabase
-  const { getRecipeData, recipeFetchedData, editRecipe} = useDatabase();
+  const {
+    getRecipeData, 
+    recipeFetchedData, 
+    editRecipe,
+  } = useDatabase();
 
   // utilize useModal custom hook
   const { 
     isTitleModalOn,
     toggleTitleModal,
+    isStepModalOn,
+    toggleStepModal,
+    editedStep,
+    setStepToEdit,
+    isIngredientModalOn,
+    toggleIngredientModal,
+    isImgUrlModalOn,
+    toggleImgUrlModalOn
   } = useModal();
 
   // state variables
@@ -54,10 +67,9 @@ export default function RecipeDetails() {
     steps: [],
     ingredients: []
   });
-
+  const [steps, setSteps] = useState<CookingStep[]>([]);
   const [isRecipeEdited, setisRecipeEdited] = useState<boolean>(false)
   const [refreshPage, setRefreshPage] = useState<boolean>(true);
-  
 
   useEffect(() => {
     if (!isRecipeEdited) {
@@ -71,7 +83,26 @@ export default function RecipeDetails() {
     }
   }, [recipeFetchedData])
 
+
   // functions
+  const addStep = (stepDescription: string) => {
+    const newArr: CookingStep[] = steps.concat(
+      {
+        description: stepDescription
+      }
+    )
+    setSteps(newArr)
+    setRecipeData(prevState => {
+      return {
+        ...prevState,
+        steps: newArr
+      }
+    })
+    toggleStepModal(false)
+    setRefreshPage(prevState => !prevState)
+  }
+
+
   const removeStep = (index: number): void => {
     // define new array for cooking steps 
     const newArr: CookingStep[] | undefined = recipeData?.steps;
@@ -147,7 +178,7 @@ export default function RecipeDetails() {
   const stepsArr: JSX.Element[] | undefined = recipeData?.steps?.map((item, index) => {
     const maxIndex = recipeData.steps?.length;
     return (
-      <div key={index}>
+      <div key={index} onClick={() => toggleStepModal(true, item.description)}>
         <RecipeStepContainer
           index={index}
           description={item.description}
@@ -210,6 +241,7 @@ export default function RecipeDetails() {
           </div>
           {isRecipeEdited && <button onClick={redoChanges}>Redo</button>}
           {isRecipeEdited && <button onClick={() => editRecipe(recipeData, id)}>Save changes</button>}
+          <button onClick={() => toggleStepModal(true)}>open step modal</button>
         </div>
       </div>
 
@@ -224,6 +256,13 @@ export default function RecipeDetails() {
           defaultValue={recipeData.title}
         />
       }
+      {isStepModalOn && <StepFormModal
+        classTitle={isStepModalOn ? "sliding-modal--bottom": "sliding-modal--bottom--disabled"}
+        addStep={addStep}
+        closeModal={() => toggleStepModal(false)}
+        isOn={isStepModalOn}
+        defaultValue={editedStep}
+      />}
     </main>
   )
 }

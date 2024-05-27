@@ -13,6 +13,7 @@ type StepFormModalProps = {
   addStep: (description: string) => void;
   closeModal: () => void;
   isOn: boolean;
+  defaultValue?: string;
 }
 
 const schema = z.object({
@@ -31,10 +32,12 @@ export default function StepFormModal(props: StepFormModalProps) {
     formState: {errors},
   } = useForm<FormFields>(
     {defaultValues: {
-      description: ""
+      description: props.defaultValue
     },
     resolver: zodResolver(schema)}
   )
+
+  console.log(props.defaultValue)
 
   const onSubmit: SubmitHandler<FormFields> = (data) => {
     addStep(data.description)
