@@ -52,6 +52,7 @@ export default function RecipeDetails() {
     isStepModalOn,
     toggleStepModal,
     editedStep,
+    editedIndex,
     setStepToEdit,
     isIngredientModalOn,
     toggleIngredientModal,
@@ -67,7 +68,7 @@ export default function RecipeDetails() {
     steps: [],
     ingredients: []
   });
-  const [steps, setSteps] = useState<CookingStep[]>([]);
+  const [steps, setSteps] = useState<CookingStep[] | undefined>([]);
   const [isRecipeEdited, setisRecipeEdited] = useState<boolean>(false)
   const [refreshPage, setRefreshPage] = useState<boolean>(true);
 
@@ -80,13 +81,14 @@ export default function RecipeDetails() {
   useEffect(() => {
     if (recipeFetchedData) {
       setRecipeData(recipeFetchedData)
+      setSteps(recipeFetchedData.steps)
     }
   }, [recipeFetchedData])
 
 
   // functions
   const addStep = (stepDescription: string) => {
-    const newArr: CookingStep[] = steps.concat(
+    const newArr: CookingStep[] | undefined = steps?.concat(
       {
         description: stepDescription
       }
@@ -100,6 +102,17 @@ export default function RecipeDetails() {
     })
     toggleStepModal(false)
     setRefreshPage(prevState => !prevState)
+  }
+
+  const editStep = (editedCookingStepIndex: number | undefined, newDescription: string) => {
+    const newArr: CookingStep[] | undefined = steps;
+    if (editedCookingStepIndex != undefined && newArr) {
+      let editedItem: CookingStep | undefined = newArr && newArr[editedCookingStepIndex]
+      editedItem = {...editedItem, description: newDescription}
+      newArr[editedCookingStepIndex] = editedItem;
+      setSteps(newArr)
+      setisRecipeEdited(true);
+    }
   }
 
 
@@ -178,13 +191,14 @@ export default function RecipeDetails() {
   const stepsArr: JSX.Element[] | undefined = recipeData?.steps?.map((item, index) => {
     const maxIndex = recipeData.steps?.length;
     return (
-      <div key={index} onClick={() => toggleStepModal(true, item.description)}>
+      <div key={index}>
         <RecipeStepContainer
           index={index}
           description={item.description}
           maxIndex={maxIndex}
           removeStep={() => removeStep(index)}
           changeStepPosition={changeStepPosition}
+          toggleModal={() => toggleStepModal(true, index, item.description)}
         />
       </div>
     )
@@ -258,10 +272,11 @@ export default function RecipeDetails() {
       }
       {isStepModalOn && <StepFormModal
         classTitle={isStepModalOn ? "sliding-modal--bottom": "sliding-modal--bottom--disabled"}
-        addStep={addStep}
+        editStep={editStep}
         closeModal={() => toggleStepModal(false)}
         isOn={isStepModalOn}
         defaultValue={editedStep}
+        editedIndex={editedIndex}
       />}
     </main>
   )

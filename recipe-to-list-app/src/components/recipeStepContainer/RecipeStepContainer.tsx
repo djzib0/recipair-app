@@ -4,6 +4,8 @@ import './RecipeStepContainer.css'
 import { PiTrashLight } from "react-icons/pi";
 import { MdKeyboardArrowUp } from "react-icons/md";
 import { MdKeyboardArrowDown } from "react-icons/md";
+import { CiEdit } from "react-icons/ci";
+
 
 type RecipeStepContainerProps = {
     index: number;
@@ -11,11 +13,12 @@ type RecipeStepContainerProps = {
     maxIndex: number | undefined;
     removeStep: (index: number) => void;
     changeStepPosition: (index: number, changeUp: boolean) => void;
+    toggleModal?: () => void;
 }
 
 export default function RecipeStepContainer(props: RecipeStepContainerProps) {
 
-  const { index, description, maxIndex, removeStep, changeStepPosition} = props;
+  const { index, description, maxIndex, removeStep, changeStepPosition, toggleModal} = props;
 
   return (
     <div className="recipe-step__container">
@@ -46,6 +49,13 @@ export default function RecipeStepContainer(props: RecipeStepContainerProps) {
             </button>
           }
         </div>
+        <button 
+            className='cta__btn-small' 
+            type="button"
+            onClick={toggleModal}
+          >
+            <CiEdit />
+          </button>
         <div className='step-cta--delete'>
           <button 
             className='cta__btn-small' 
