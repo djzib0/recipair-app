@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Ingredient } from '../types/types';
 
 export default function useModal() {
 
@@ -7,6 +8,7 @@ export default function useModal() {
   const [isStepModalOn, setIsStepModalOn] = useState(false);
   const [editedStep, setEditedStep] = useState<string | undefined>("");
   const [editedIndex, setEditedIndex] = useState<number | undefined>();
+  const [editedIngredient, setEditedIngredient] = useState<Ingredient | undefined>();
   const [isIngredientModalOn, setIsIngredientModalOn] = useState(false);
   const [isImgUrlModalOn, setIsImgUrlModalOn] = useState(false);
 
@@ -29,8 +31,10 @@ export default function useModal() {
     setEditedStep(str);
   }
 
-  const toggleIngredientModal = (isOn: boolean) => {
+  const toggleIngredientModal = (isOn: boolean, index?: number, ingredient?: Ingredient) => {
     setIsIngredientModalOn(isOn)
+    setEditedIngredient(ingredient);
+    setEditedIndex(index);
   }
 
   const toggleImgUrlModalOn = (isOn: boolean) => {
@@ -46,6 +50,7 @@ export default function useModal() {
     toggleStepModal,
     editedStep,
     setStepToEdit,
+    editedIngredient,
     isIngredientModalOn,
     toggleIngredientModal,
     isImgUrlModalOn,

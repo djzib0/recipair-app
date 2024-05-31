@@ -20,6 +20,7 @@ import { addPeriodSuffix } from "../utils/firstLetterToUpperCase";
 // images import
 import editIcon from '../../images/icons/edit.png';
 import StepFormModal from "../components/stepFormModal/StepFormModal";
+import IngredientFormModal from "../components/ingredientFormModal/IngredientFormModal";
 
 
 // array with object for topnavbar
@@ -53,6 +54,7 @@ export default function RecipeDetails() {
     toggleStepModal,
     editedStep,
     editedIndex,
+    editedIngredient,
     setStepToEdit,
     isIngredientModalOn,
     toggleIngredientModal,
@@ -214,6 +216,7 @@ export default function RecipeDetails() {
           quantity={item.quantity}
           unit={item.unit}
           removeIngredient={removeIngredient}
+          toggleModal={() => toggleIngredientModal(true, index, item)}
         />
       </div>
     )
@@ -254,7 +257,7 @@ export default function RecipeDetails() {
             {ingredientsArr}
           </div>
           {isRecipeEdited && <button onClick={redoChanges}>Redo</button>}
-          {isRecipeEdited && <button onClick={() => editRecipe(recipeData, id)}>Save changes</button>}
+          {isRecipeEdited && <button onClick={() => (editRecipe(recipeData, id), setisRecipeEdited(false))}>Save changes</button>}
           <button onClick={() => toggleStepModal(true)}>open step modal</button>
         </div>
       </div>
@@ -276,6 +279,13 @@ export default function RecipeDetails() {
         closeModal={() => toggleStepModal(false)}
         isOn={isStepModalOn}
         defaultValue={editedStep}
+        editedIndex={editedIndex}
+      />}
+      {isIngredientModalOn && <IngredientFormModal 
+        classTitle={isIngredientModalOn ? "sliding-modal--bottom": "sliding-modal--bottom--disabled"}
+        isOn={isIngredientModalOn}
+        defaultValue={editedIngredient}
+        closeModal={() => toggleIngredientModal(false)}
         editedIndex={editedIndex}
       />}
     </main>

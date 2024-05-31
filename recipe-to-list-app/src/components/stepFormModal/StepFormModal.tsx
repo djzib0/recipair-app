@@ -39,8 +39,6 @@ export default function StepFormModal(props: StepFormModalProps) {
     resolver: zodResolver(schema)}
   )
 
-  console.log(props.defaultValue)
-
   const onSubmit: SubmitHandler<FormFields> = (data) => {
     // when addStep function is passed as a prop
     // create new step and add it to the array with cooking

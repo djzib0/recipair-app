@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 // styles import
 // import './IngredientFormModal.css'
 import '../../App.css'
@@ -7,15 +8,18 @@ import { IoMdCloseCircleOutline } from "react-icons/io";
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+// types import
+import { Ingredient } from '../../types/types';
 // enum import
 import { Unit, IngredientType } from '../../enums/enums';
 
 type IngredientFormModalProps = {
   classTitle: string;
-  addIngredient: (name: string, quantity: number, unit: Unit, ingredientType: IngredientType ) => void;
+  addIngredient?: (name: string, quantity: number, unit: Unit, ingredientType: IngredientType ) => void;
   closeModal: () => void;
   isOn: boolean;
-  defaultValue?: string;
+  defaultValue?: Ingredient | undefined;
+  editedIndex?: number | undefined;
 }
 
 const schema = z.object({
@@ -37,13 +41,26 @@ export default function IngredientFormModal(props: IngredientFormModalProps) {
     formState: {errors},
   } = useForm<FormFields>(
     {defaultValues: {
-      description: props.defaultValue ? props.defaultValue : ""
+      description: props.defaultValue?.name ? props.defaultValue.name : "",
+      quantity: props.defaultValue?.quantity ? props.defaultValue?.quantity : 0,
     },
     resolver: zodResolver(schema)}
   )
 
    // destructuring props
-   const { classTitle, addIngredient, closeModal, isOn } = props;
+   const { classTitle, addIngredient, closeModal, isOn, defaultValue } = props;
+
+   // state variables
+   const [defaultUnitValue, setDefaultUnitValue] = useState<string>(Unit['Gram']) 
+
+   useEffect(() => {
+    for (let key of Object.keys(Unit)) {
+      console.log(Unit[`${key as keyof typeof Unit}`] === defaultValue?.unit, "key default pair");
+      if (defaultValue?.unit === Unit[`${key as keyof typeof Unit}`]) {
+        setDefaultUnitValue(Unit[`${key as keyof typeof Unit}`])
+      }
+    }
+   }, [defaultUnitValue])
 
 
   const onSubmit: SubmitHandler<FormFields> = (data) => {
@@ -51,12 +68,14 @@ export default function IngredientFormModal(props: IngredientFormModalProps) {
     let unit: Unit = Unit[data.unit as keyof typeof Unit]
     let ingredientType: IngredientType = IngredientType[data.ingredientType as keyof typeof IngredientType]
 
-    addIngredient(
-      data.description,
-      data.quantity,
-      unit,
-      ingredientType
-    )
+    if (addIngredient) {
+      addIngredient(
+        data.description,
+        data.quantity,
+        unit,
+        ingredientType
+      )
+    }
     closeIngredientForm();
   }
 
@@ -71,7 +90,9 @@ export default function IngredientFormModal(props: IngredientFormModalProps) {
   // create option list from Unit enum
   const unitsArr = Object.keys(Unit).map((unit, index) => {
     return (
-      <option key={index} value={unit}>
+      <option 
+        key={index} value={unit}
+      >
         {Unit[`${unit as keyof typeof Unit}`]}
       </option>
     )
@@ -80,11 +101,16 @@ export default function IngredientFormModal(props: IngredientFormModalProps) {
   // create an option list from IngredientType enum
   const ingredientTypesArr = Object.keys(IngredientType).map((ingredientType, index) => {
     return (
-      <option key={index} value={ingredientType}>
+      <option 
+        key={index} 
+        value={ingredientType}
+      >
         {IngredientType[`${ingredientType as keyof typeof IngredientType}`]}
       </option>
     )
   })
+
+  console.log(typeof(Unit['Gram']))
 
   return (
     <div className={classTitle}>
@@ -139,6 +165,7 @@ export default function IngredientFormModal(props: IngredientFormModalProps) {
         <select
           {...register("ingredientType")}
           id='ingredientType'
+          defaultValue={defaultUnitValue}
         >
           {ingredientTypesArr}
         </select>

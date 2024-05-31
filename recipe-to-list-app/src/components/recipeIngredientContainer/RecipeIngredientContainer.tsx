@@ -4,6 +4,7 @@ import { Unit } from '../../enums/enums';
 import './RecipeIngredientContainer.css'
 // icons import
 import { PiTrashLight } from 'react-icons/pi';
+import { CiEdit } from 'react-icons/ci';
 // utils import
 import { firstLetterToUpperCase } from '../../utils/firstLetterToUpperCase';
 
@@ -14,12 +15,14 @@ type RecipeIngredientContainerProps = {
   quantity: number;
   unit: Unit;
   removeIngredient: (index: number) => void;
+  toggleModal?: () => void;
 }
 
 export default function RecipeIngredientContainer(props: RecipeIngredientContainerProps) {
 
   // destructuring props
-  const { index, name, quantity, unit, removeIngredient} = props;
+  const { index, name, quantity, unit, removeIngredient,
+    toggleModal } = props;
 
   return (
     <div className='recipe-ingredient__container'>
@@ -38,12 +41,19 @@ export default function RecipeIngredientContainer(props: RecipeIngredientContain
       <div className='ingredient-cta__container'>
         <div className='ingredient-cta--delete'>
         <button 
-            className='cta__btn-small' 
-            type="button"
-            onClick={() => removeIngredient(index)}
-          >
-            <PiTrashLight />
-          </button>
+          className='cta__btn-small' 
+          type="button"
+          onClick={toggleModal}
+        >
+          <CiEdit />
+        </button>
+        <button 
+          className='cta__btn-small' 
+          type="button"
+          onClick={() => removeIngredient(index)}
+        >
+          <PiTrashLight />
+        </button>
         </div>
       </div>
     </div>
