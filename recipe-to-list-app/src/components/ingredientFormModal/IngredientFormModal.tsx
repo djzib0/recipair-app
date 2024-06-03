@@ -33,6 +33,8 @@ type FormFields = z.infer<typeof schema>
 
 export default function IngredientFormModal(props: IngredientFormModalProps) {
 
+
+  console.log(props.defaultValue?.unit)
   // destructuring useForm
   const {
     register,
@@ -43,6 +45,8 @@ export default function IngredientFormModal(props: IngredientFormModalProps) {
     {defaultValues: {
       description: props.defaultValue?.name ? props.defaultValue.name : "",
       quantity: props.defaultValue?.quantity ? props.defaultValue?.quantity : 0,
+      unit: props.defaultValue?.unit ? props.defaultValue?.unit : Unit["Piece"],
+      ingredientType: props.defaultValue?.ingredientType ? props.defaultValue?.ingredientType : IngredientType["MilkProducts"]
     },
     resolver: zodResolver(schema)}
   )
@@ -55,8 +59,7 @@ export default function IngredientFormModal(props: IngredientFormModalProps) {
 
    useEffect(() => {
     for (let key of Object.keys(Unit)) {
-      console.log(Unit[`${key as keyof typeof Unit}`] === defaultValue?.unit, "key default pair");
-      if (defaultValue?.unit === Unit[`${key as keyof typeof Unit}`]) {
+          if (defaultValue?.unit === Unit[`${key as keyof typeof Unit}`]) {
         setDefaultUnitValue(Unit[`${key as keyof typeof Unit}`])
       }
     }
@@ -64,7 +67,6 @@ export default function IngredientFormModal(props: IngredientFormModalProps) {
 
 
   const onSubmit: SubmitHandler<FormFields> = (data) => {
-
     let unit: Unit = Unit[data.unit as keyof typeof Unit]
     let ingredientType: IngredientType = IngredientType[data.ingredientType as keyof typeof IngredientType]
 
@@ -91,7 +93,8 @@ export default function IngredientFormModal(props: IngredientFormModalProps) {
   const unitsArr = Object.keys(Unit).map((unit, index) => {
     return (
       <option 
-        key={index} value={unit}
+        key={index}
+        value={Unit[`${unit as keyof typeof Unit}`]}
       >
         {Unit[`${unit as keyof typeof Unit}`]}
       </option>
@@ -103,14 +106,12 @@ export default function IngredientFormModal(props: IngredientFormModalProps) {
     return (
       <option 
         key={index} 
-        value={ingredientType}
+        value={IngredientType[`${ingredientType as keyof typeof IngredientType}`]}
       >
         {IngredientType[`${ingredientType as keyof typeof IngredientType}`]}
       </option>
     )
   })
-
-  console.log(typeof(Unit['Gram']))
 
   return (
     <div className={classTitle}>
@@ -165,7 +166,6 @@ export default function IngredientFormModal(props: IngredientFormModalProps) {
         <select
           {...register("ingredientType")}
           id='ingredientType'
-          defaultValue={defaultUnitValue}
         >
           {ingredientTypesArr}
         </select>
