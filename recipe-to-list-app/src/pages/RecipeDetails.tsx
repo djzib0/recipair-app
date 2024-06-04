@@ -21,6 +21,7 @@ import { addPeriodSuffix } from "../utils/firstLetterToUpperCase";
 import editIcon from '../../images/icons/edit.png';
 import StepFormModal from "../components/stepFormModal/StepFormModal";
 import IngredientFormModal from "../components/ingredientFormModal/IngredientFormModal";
+import { Unit } from "../enums/enums";
 
 
 // array with object for topnavbar
@@ -71,6 +72,7 @@ export default function RecipeDetails() {
     ingredients: []
   });
   const [steps, setSteps] = useState<CookingStep[] | undefined>([]);
+  const [ingredients, setIngredients] = useState<Ingredient[] | undefined>([]);
   const [isRecipeEdited, setisRecipeEdited] = useState<boolean>(false)
   const [refreshPage, setRefreshPage] = useState<boolean>(true);
 
@@ -84,30 +86,15 @@ export default function RecipeDetails() {
     if (recipeFetchedData) {
       setRecipeData(recipeFetchedData)
       setSteps(recipeFetchedData.steps)
+      setIngredients(recipeFetchedData.ingredients)
     }
   }, [recipeFetchedData])
 
 
   // functions
-  const addStep = (stepDescription: string) => {
-    const newArr: CookingStep[] | undefined = steps?.concat(
-      {
-        description: stepDescription
-      }
-    )
-    setSteps(newArr)
-    setRecipeData(prevState => {
-      return {
-        ...prevState,
-        steps: newArr
-      }
-    })
-    toggleStepModal(false)
-    setRefreshPage(prevState => !prevState)
-  }
-
   const editStep = (editedCookingStepIndex: number | undefined, newDescription: string) => {
     const newArr: CookingStep[] | undefined = steps;
+    console.log(newArr, " steps")
     if (editedCookingStepIndex != undefined && newArr) {
       let editedItem: CookingStep | undefined = newArr && newArr[editedCookingStepIndex]
       editedItem = {...editedItem, description: newDescription}
@@ -116,7 +103,6 @@ export default function RecipeDetails() {
       setisRecipeEdited(true);
     }
   }
-
 
   const removeStep = (index: number): void => {
     // define new array for cooking steps 
@@ -146,6 +132,25 @@ export default function RecipeDetails() {
     })
     setisRecipeEdited(true);
     setRefreshPage(prevState => !prevState);
+  }
+
+  const editIngredient = (editedIngredientIndex: number | undefined, newIngredient : Ingredient) => {
+    const newArr: Ingredient[] | undefined = ingredients;
+
+    if (editedIngredientIndex != undefined && newArr) {
+      let editedItem: Ingredient | undefined = newArr && newArr[editedIngredientIndex]
+      editedItem = {...editedItem, 
+        name: newIngredient.name,
+        quantity: newIngredient.quantity,
+        unit: newIngredient.unit,
+        ingredientType: newIngredient.ingredientType
+      }
+      newArr[editedIngredientIndex] = editedItem;
+      console.log(newArr, " before change")
+      setIngredients(newArr)
+      console.log(ingredients, " after change")
+      setisRecipeEdited(true);
+    } 
   }
 
   const changeStepPosition = (index: number, changeUp: boolean) => {
@@ -284,6 +289,7 @@ export default function RecipeDetails() {
       {isIngredientModalOn && <IngredientFormModal 
         classTitle={isIngredientModalOn ? "sliding-modal--bottom": "sliding-modal--bottom--disabled"}
         isOn={isIngredientModalOn}
+        editIngredient={editIngredient}
         defaultValue={editedIngredient}
         closeModal={() => toggleIngredientModal(false)}
         editedIndex={editedIndex}

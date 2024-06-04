@@ -114,15 +114,9 @@ export default function AddRecipeForm() {
     setRefreshPage(prevState => !prevState)
   }
 
-  const addIngredient = (name: string, quantity: number, unit: Unit, ingredientType: IngredientType) => {
-    const newArr: Ingredient[] = ingredients.concat(
-      {
-        name: name,
-        quantity: quantity,
-        unit: unit,
-        ingredientType: ingredientType
-      }
-    )
+  const addIngredient = (newIngredient: Ingredient) => {
+    console.log(console.log(newIngredient, " new ingredient"))
+    const newArr: Ingredient[] = ingredients.concat(newIngredient)
     setIngredients(newArr);
     setNewRecipe(prevState => {
       return {

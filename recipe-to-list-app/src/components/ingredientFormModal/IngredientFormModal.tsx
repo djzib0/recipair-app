@@ -15,7 +15,8 @@ import { Unit, IngredientType } from '../../enums/enums';
 
 type IngredientFormModalProps = {
   classTitle: string;
-  addIngredient?: (name: string, quantity: number, unit: Unit, ingredientType: IngredientType ) => void;
+  addIngredient?: (ingredient: Ingredient ) => void;
+  editIngredient?: (index: number | undefined, newIngredient : Ingredient) => void;
   closeModal: () => void;
   isOn: boolean;
   defaultValue?: Ingredient | undefined;
@@ -34,7 +35,6 @@ type FormFields = z.infer<typeof schema>
 export default function IngredientFormModal(props: IngredientFormModalProps) {
 
 
-  console.log(props.defaultValue?.unit)
   // destructuring useForm
   const {
     register,
@@ -52,7 +52,8 @@ export default function IngredientFormModal(props: IngredientFormModalProps) {
   )
 
    // destructuring props
-   const { classTitle, addIngredient, closeModal, isOn, defaultValue } = props;
+   const { classTitle, addIngredient, closeModal, isOn,
+    editIngredient, editedIndex, defaultValue } = props;
 
    // state variables
    const [defaultUnitValue, setDefaultUnitValue] = useState<string>(Unit['Gram']) 
@@ -69,14 +70,37 @@ export default function IngredientFormModal(props: IngredientFormModalProps) {
   const onSubmit: SubmitHandler<FormFields> = (data) => {
     let unit: Unit = Unit[data.unit as keyof typeof Unit]
     let ingredientType: IngredientType = IngredientType[data.ingredientType as keyof typeof IngredientType]
+    const newUnit= Object.keys(Unit).find((k) => {
+      return Unit[`${k as keyof typeof Unit}`] === data.unit
+    })
+
+    const newIngredientType = Object.keys(IngredientType).find((k) => {
+      return IngredientType[`${k as keyof typeof IngredientType}`] === data.ingredientType
+    })
+
+    console.log(newIngredientType, " new ingredient")
 
     if (addIngredient) {
-      addIngredient(
-        data.description,
-        data.quantity,
-        unit,
-        ingredientType
-      )
+      const newIngredient = {
+        name: data.description,
+        quantity: data.quantity,
+        unit: Unit[`${newUnit as keyof typeof Unit}`],
+        ingredientType: IngredientType[`${newIngredientType as keyof typeof IngredientType}`]
+      }
+      addIngredient(newIngredient)
+    }
+
+    // when edit ingredient function is passed as a prop
+    // edit the existing ingredient, if the values are the same
+    // it meanse there are no changes, so do nothing
+    if (editIngredient) {
+      const newIngredient = {
+        name: data.description,
+        quantity: data.quantity,
+        unit: Unit[`${newUnit as keyof typeof Unit}`],
+        ingredientType: IngredientType[`${newIngredientType as keyof typeof IngredientType}`]
+      }
+      editIngredient(editedIndex, newIngredient)
     }
     closeIngredientForm();
   }
@@ -173,7 +197,8 @@ export default function IngredientFormModal(props: IngredientFormModalProps) {
         <button 
           className='confirm__btn--small'
           >
-          Add
+          {addIngredient && "Add"}
+          {editIngredient && "Save"}
         </button>
       </form>}
     </div>
