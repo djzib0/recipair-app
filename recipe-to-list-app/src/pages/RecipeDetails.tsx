@@ -3,6 +3,9 @@ import TopNavbar from "../components/topNavbar/TopNavbar";
 import RecipeIngredientContainer from "../components/recipeIngredientContainer/RecipeIngredientContainer";
 import RecipeStepContainer from "../components/recipeStepContainer/RecipeStepContainer";
 import RecipeTitleFormModal from "../components/recipeTitleFormModal/RecipeTitleFormModal";
+import StepFormModal from "../components/stepFormModal/StepFormModal";
+import IngredientFormModal from "../components/ingredientFormModal/IngredientFormModal";
+import ImgUrlFormModal from "../components/imgUrlFormModal/ImgUrlFormModal";
 // icons import
 import { BiArrowBack } from "react-icons/bi"
 // react router imports
@@ -19,9 +22,6 @@ import './RecipeDetails.css';
 import { addPeriodSuffix } from "../utils/firstLetterToUpperCase";
 // images import
 import editIcon from '../../images/icons/edit.png';
-import StepFormModal from "../components/stepFormModal/StepFormModal";
-import IngredientFormModal from "../components/ingredientFormModal/IngredientFormModal";
-import { Unit } from "../enums/enums";
 
 
 // array with object for topnavbar
@@ -51,12 +51,13 @@ export default function RecipeDetails() {
   const { 
     isTitleModalOn,
     toggleTitleModal,
-    isStepModalOn,
-    toggleStepModal,
+    isEditStepModalOn,
+    toggleAddStepModal,
+    isAddStepModalOn,
+    toggleEditStepModal,
     editedStep,
     editedIndex,
     editedIngredient,
-    setStepToEdit,
     isIngredientModalOn,
     toggleIngredientModal,
     isImgUrlModalOn,
@@ -85,13 +86,35 @@ export default function RecipeDetails() {
   useEffect(() => {
     if (recipeFetchedData) {
       setRecipeData(recipeFetchedData)
-      setSteps(recipeFetchedData.steps)
+      setSteps(recipeFetchedData.steps ? recipeFetchedData.steps : [])
       setIngredients(recipeFetchedData.ingredients)
     }
   }, [recipeFetchedData])
 
 
   // functions
+  const addStep = (stepDescription: string) => {
+    let newArr : CookingStep[] | undefined = steps ? steps :[] ;
+    console.log(newArr, " new Arr")
+    newArr = steps && steps.concat(
+      {
+        description: stepDescription
+      }
+    )
+    setSteps(newArr)
+    setRecipeData(prevState => {
+      return {
+        ...prevState,
+        steps: newArr
+      }
+    })
+    toggleAddStepModal(false);
+    setisRecipeEdited(true);
+    setRefreshPage(prevState => !prevState);
+  }
+
+  console.log(steps)
+
   const editStep = (editedCookingStepIndex: number | undefined, newDescription: string) => {
     const newArr: CookingStep[] | undefined = steps;
     console.log(newArr, " steps")
@@ -146,9 +169,7 @@ export default function RecipeDetails() {
         ingredientType: newIngredient.ingredientType
       }
       newArr[editedIngredientIndex] = editedItem;
-      console.log(newArr, " before change")
       setIngredients(newArr)
-      console.log(ingredients, " after change")
       setisRecipeEdited(true);
     } 
   }
@@ -194,6 +215,15 @@ export default function RecipeDetails() {
     })
   }
 
+  const addImageUrl = (imgUrl: string) => {
+    setRecipeData(prevState => {
+      return {
+        ...prevState,
+        imgUrl: imgUrl
+      }
+    })
+  }
+
   // create steps array
   const stepsArr: JSX.Element[] | undefined = recipeData?.steps?.map((item, index) => {
     const maxIndex = recipeData.steps?.length;
@@ -205,7 +235,7 @@ export default function RecipeDetails() {
           maxIndex={maxIndex}
           removeStep={() => removeStep(index)}
           changeStepPosition={changeStepPosition}
-          toggleModal={() => toggleStepModal(true, index, item.description)}
+          toggleModal={() => toggleEditStepModal(true, index, item.description)}
         />
       </div>
     )
@@ -243,10 +273,21 @@ export default function RecipeDetails() {
               <img src={editIcon} />
             </button>
           </div>
+          <div className="recipe-details-image__container">
+            <img 
+              src={recipeData?.imgUrl}
+              className="recipe__img"
+              />
+            <button 
+              className="edit-image__icon"
+              onClick={() => toggleImgUrlModalOn(true)}
+            >
+              <img 
+                src={editIcon}
+              />
+            </button>
+          </div>
 
-          <img src={recipeData?.imgUrl}
-            className="recipe-details-image__container"
-          />
 
           <section className="recipe-details-description__container">
             {addPeriodSuffix(recipeData?.description)}
@@ -263,7 +304,7 @@ export default function RecipeDetails() {
           </div>
           {isRecipeEdited && <button onClick={redoChanges}>Redo</button>}
           {isRecipeEdited && <button onClick={() => (editRecipe(recipeData, id), setisRecipeEdited(false))}>Save changes</button>}
-          <button onClick={() => toggleStepModal(true)}>open step modal</button>
+          <button onClick={() => toggleAddStepModal(true)}>open step modal</button>
         </div>
       </div>
 
@@ -278,14 +319,36 @@ export default function RecipeDetails() {
           defaultValue={recipeData.title}
         />
       }
-      {isStepModalOn && <StepFormModal
-        classTitle={isStepModalOn ? "sliding-modal--bottom": "sliding-modal--bottom--disabled"}
-        editStep={editStep}
-        closeModal={() => toggleStepModal(false)}
-        isOn={isStepModalOn}
-        defaultValue={editedStep}
-        editedIndex={editedIndex}
-      />}
+      {isImgUrlModalOn && 
+        <ImgUrlFormModal 
+          classTitle={isImgUrlModalOn ? "sliding-modal--bottom": "sliding-modal--bottom--disabled"}
+          editImgUrl={addImageUrl}
+          closeModal={() => toggleImgUrlModalOn(false)}
+          isOn={isImgUrlModalOn}
+          defaultValue={recipeData.imgUrl}
+          toggleIsChanged={(bool) => toggleChange(bool)}
+          refreshPage={() => setRefreshPage}
+        />
+      }
+      {isEditStepModalOn && 
+        <StepFormModal
+          classTitle={isEditStepModalOn ? "sliding-modal--bottom": "sliding-modal--bottom--disabled"}
+          editStep={editStep}
+          closeModal={() => toggleEditStepModal(false)}
+          isOn={isEditStepModalOn}
+          defaultValue={editedStep}
+          editedIndex={editedIndex}
+        />
+      }
+      {isAddStepModalOn && 
+        <StepFormModal
+          classTitle={isAddStepModalOn ? "sliding-modal--bottom": "sliding-modal--bottom--disabled"}
+          addStep={addStep}
+          closeModal={() => toggleAddStepModal(false)}
+          isOn={isAddStepModalOn}
+          editedIndex={editedIndex}
+        />
+      }
       {isIngredientModalOn && <IngredientFormModal 
         classTitle={isIngredientModalOn ? "sliding-modal--bottom": "sliding-modal--bottom--disabled"}
         isOn={isIngredientModalOn}

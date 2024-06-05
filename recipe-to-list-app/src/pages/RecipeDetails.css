@@ -32,6 +32,31 @@
     padding: 0;
     margin-top: 1em;
     border-radius: .3em;
+    position: relative;
+}
+
+.edit-image__icon {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: .2em;
+    margin: 0;
+    top: 10px;
+    right: 6px;
+    display: flex;
+    justify-content: center;
+    height: 20px;
+    background-color: transparent;
+    border: none;
+    background-color: rgb(255, 255, 255);
+    border-radius: .2em;
+    height: fit-content;
+}
+
+.edit-image__icon > img {
+    width: 1.4em;
+    height: 1.4em;
 }
 
 .recipe-details-description__container {

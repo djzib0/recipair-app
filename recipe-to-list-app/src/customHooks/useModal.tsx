@@ -5,7 +5,8 @@ export default function useModal() {
 
   const [isModalMenuOn, setIsModalMenuOn] = useState(false);
   const [isTitleModalOn, setIsTitleModalOn] = useState(false);
-  const [isStepModalOn, setIsStepModalOn] = useState(false);
+  const [isAddStepModalOn, setIsAddStepModalOn] = useState(false);
+  const [isEditStepModalOn, setIsStepModalOn] = useState(false);
   const [editedStep, setEditedStep] = useState<string | undefined>("");
   const [editedIndex, setEditedIndex] = useState<number | undefined>();
   const [editedIngredient, setEditedIngredient] = useState<Ingredient | undefined>();
@@ -21,7 +22,11 @@ export default function useModal() {
     setIsTitleModalOn(isOn)
   }
 
-  const toggleStepModal = (isOn: boolean, index?: number, description?: string | undefined) => {
+  const toggleAddStepModal = (isOn: boolean) => {
+    setIsAddStepModalOn(isOn);
+  }
+
+  const toggleEditStepModal = (isOn: boolean, index?: number, description?: string | undefined) => {
     setIsStepModalOn(isOn);
     setEditedStep(description);
     setEditedIndex(index);
@@ -46,8 +51,10 @@ export default function useModal() {
     toggleModalMenu,
     isTitleModalOn,
     toggleTitleModal,
-    isStepModalOn,
-    toggleStepModal,
+    isEditStepModalOn,
+    toggleAddStepModal,
+    isAddStepModalOn,
+    toggleEditStepModal,
     editedStep,
     setStepToEdit,
     editedIngredient,

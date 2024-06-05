@@ -10,9 +10,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 type ImgUrlFormModalProps = {
     classTitle: string;
-    addImgUrl: (imgUrl: string) => void;
+    addImgUrl?: (imgUrl: string) => void;
+    editImgUrl?: (imgUrl: string) => void;
     closeModal: () => void;
     isOn: boolean;
+    defaultValue?: string;
+    toggleIsChanged?: (bool: boolean) => void;
+    refreshPage?: () => void;
 }
 
 const schema = z.object({
@@ -31,19 +35,27 @@ export default function ImgUrlFormModal(props: ImgUrlFormModalProps) {
     formState: {errors}
   } = useForm<FormFields>(
     {defaultValues: {
-      imgUrl: ""
+      imgUrl: props.defaultValue? props.defaultValue : ""
     },
     resolver: zodResolver(schema)}
   )
 
    //destructuring props
-   const { classTitle, addImgUrl, closeModal, isOn } = props;
+  const { classTitle, addImgUrl, closeModal, editImgUrl,
+     isOn, toggleIsChanged, defaultValue, refreshPage 
+  } = props;
 
   const onSubmit: SubmitHandler<FormFields> = (data) => {
-    addImgUrl(data.imgUrl);
+    if (data.imgUrl != defaultValue) {
+      toggleIsChanged && toggleIsChanged(true)
+      refreshPage && refreshPage()
+    }
+    addImgUrl && addImgUrl(data.imgUrl)
+    editImgUrl && editImgUrl(data.imgUrl)
     resetField("imgUrl")
     closeModal();
   }
+
 
   return (
     <div className={classTitle}>
@@ -66,7 +78,8 @@ export default function ImgUrlFormModal(props: ImgUrlFormModalProps) {
         <button 
           className='confirm__btn--small'
           >
-          Add
+          {addImgUrl && "Add"}
+          {editImgUrl && "Save"}
         </button>
       </form>}
     </div>
