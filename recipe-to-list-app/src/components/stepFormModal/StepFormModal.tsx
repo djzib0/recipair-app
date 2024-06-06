@@ -60,7 +60,6 @@ export default function StepFormModal(props: StepFormModalProps) {
 
   // destructuring props
   const { classTitle, addStep, editStep, closeModal, isOn, editedIndex } = props;
-
   return (
     <div className={classTitle}>
       <button className='close-modal__btn'>

@@ -4,22 +4,28 @@ import { Ingredient } from '../types/types';
 export default function useModal() {
 
   const [isModalMenuOn, setIsModalMenuOn] = useState(false);
-  const [isTitleModalOn, setIsTitleModalOn] = useState(false);
+  const [isAddTitleModalOn, setIsAddTitleModalOn] = useState(false);
+  const [isEditTitleModalOn, setIsEditTitleModalOn] = useState(false);
   const [isAddStepModalOn, setIsAddStepModalOn] = useState(false);
   const [isEditStepModalOn, setIsStepModalOn] = useState(false);
   const [editedStep, setEditedStep] = useState<string | undefined>("");
   const [editedIndex, setEditedIndex] = useState<number | undefined>();
   const [editedIngredient, setEditedIngredient] = useState<Ingredient | undefined>();
-  const [isIngredientModalOn, setIsIngredientModalOn] = useState(false);
+  const [isAddIngredientModalOn, setIsAddIngredientModalOn] = useState(false);
+  const [isEditIngredientModalOn, setIsEditIngredientModalOn] = useState(false);
   const [isImgUrlModalOn, setIsImgUrlModalOn] = useState(false);
 
   
-  const toggleModalMenu = () => {
-    setIsModalMenuOn(prevState => !prevState);
+  const toggleModalMenu = (isOn: boolean) => {
+    setIsModalMenuOn(isOn)
   }
 
-  const toggleTitleModal = (isOn: boolean) => {
-    setIsTitleModalOn(isOn)
+  const toggleAddTitleModal = (isOn: boolean) => {
+    setIsAddTitleModalOn(isOn)
+  }
+
+  const toggleEditTitleModal = (isOn: boolean) => {
+    setIsEditTitleModalOn(isOn);
   }
 
   const toggleAddStepModal = (isOn: boolean) => {
@@ -36,8 +42,12 @@ export default function useModal() {
     setEditedStep(str);
   }
 
-  const toggleIngredientModal = (isOn: boolean, index?: number, ingredient?: Ingredient) => {
-    setIsIngredientModalOn(isOn)
+  const toggleAddIngredientModal = (isOn: boolean) => {
+    setIsAddIngredientModalOn(isOn);
+  }
+
+  const toggleEditIngredientModal = (isOn: boolean, index?: number, ingredient?: Ingredient) => {
+    setIsEditIngredientModalOn(isOn)
     setEditedIngredient(ingredient);
     setEditedIndex(index);
   }
@@ -49,17 +59,21 @@ export default function useModal() {
   return {
     isModalMenuOn,
     toggleModalMenu,
-    isTitleModalOn,
-    toggleTitleModal,
-    isEditStepModalOn,
-    toggleAddStepModal,
+    isAddTitleModalOn,
+    toggleAddTitleModal,
+    isEditTitleModalOn,
+    toggleEditTitleModal,
     isAddStepModalOn,
+    toggleAddStepModal,
+    isEditStepModalOn,
     toggleEditStepModal,
     editedStep,
     setStepToEdit,
     editedIngredient,
-    isIngredientModalOn,
-    toggleIngredientModal,
+    toggleAddIngredientModal,
+    isAddIngredientModalOn,
+    toggleEditIngredientModal,
+    isEditIngredientModalOn,
     isImgUrlModalOn,
     toggleImgUrlModalOn,
     editedIndex

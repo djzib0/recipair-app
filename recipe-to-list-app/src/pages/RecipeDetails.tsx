@@ -7,7 +7,9 @@ import StepFormModal from "../components/stepFormModal/StepFormModal";
 import IngredientFormModal from "../components/ingredientFormModal/IngredientFormModal";
 import ImgUrlFormModal from "../components/imgUrlFormModal/ImgUrlFormModal";
 // icons import
-import { BiArrowBack } from "react-icons/bi"
+import { BiArrowBack } from "react-icons/bi";
+import { AiOutlineRedo } from "react-icons/ai";
+import { FiSave } from "react-icons/fi";
 // react router imports
 import { useParams } from "react-router-dom"
 // custom hooks import
@@ -49,19 +51,23 @@ export default function RecipeDetails() {
 
   // utilize useModal custom hook
   const { 
-    isTitleModalOn,
-    toggleTitleModal,
+    toggleEditTitleModal,
+    isEditTitleModalOn,
     isEditStepModalOn,
     toggleAddStepModal,
     isAddStepModalOn,
     toggleEditStepModal,
+    isAddIngredientModalOn,
+    toggleAddIngredientModal,
     editedStep,
-    editedIndex,
     editedIngredient,
-    isIngredientModalOn,
-    toggleIngredientModal,
+    toggleEditIngredientModal,
+    isEditIngredientModalOn,
     isImgUrlModalOn,
-    toggleImgUrlModalOn
+    toggleImgUrlModalOn,
+    editedIndex,
+    isModalMenuOn,
+    toggleModalMenu,
   } = useModal();
 
   // state variables
@@ -95,7 +101,6 @@ export default function RecipeDetails() {
   // functions
   const addStep = (stepDescription: string) => {
     let newArr : CookingStep[] | undefined = steps ? steps :[] ;
-    console.log(newArr, " new Arr")
     newArr = steps && steps.concat(
       {
         description: stepDescription
@@ -109,15 +114,13 @@ export default function RecipeDetails() {
       }
     })
     toggleAddStepModal(false);
+    toggleModalMenu(false);
     setisRecipeEdited(true);
     setRefreshPage(prevState => !prevState);
   }
 
-  console.log(steps)
-
   const editStep = (editedCookingStepIndex: number | undefined, newDescription: string) => {
     const newArr: CookingStep[] | undefined = steps;
-    console.log(newArr, " steps")
     if (editedCookingStepIndex != undefined && newArr) {
       let editedItem: CookingStep | undefined = newArr && newArr[editedCookingStepIndex]
       editedItem = {...editedItem, description: newDescription}
@@ -125,6 +128,22 @@ export default function RecipeDetails() {
       setSteps(newArr)
       setisRecipeEdited(true);
     }
+  }
+
+  const addIngredient = (newIngredient: Ingredient) => {
+    let newArr: Ingredient[] | undefined = ingredients ? ingredients : [];
+    newArr = ingredients && ingredients.concat(newIngredient)
+    setIngredients(newArr);
+    setRecipeData(prevState => {
+      return {
+        ...prevState,
+        ingredients: newArr
+      }
+    })
+    toggleAddIngredientModal(false);
+    toggleModalMenu(false);
+    setisRecipeEdited(true);
+    setRefreshPage(prevState => !prevState)
   }
 
   const removeStep = (index: number): void => {
@@ -139,6 +158,8 @@ export default function RecipeDetails() {
         steps: newArr
       }
     })
+    setisRecipeEdited(true);
+    setRefreshPage(prevState => !prevState)
   }
 
   const removeIngredient = (index: number): void => {
@@ -198,7 +219,6 @@ export default function RecipeDetails() {
   // 
   const redoChanges = () => {
     setisRecipeEdited(false);
-    console.log("redoing...")
     setRefreshPage(prevState => !prevState)
   }
 
@@ -206,7 +226,7 @@ export default function RecipeDetails() {
     setisRecipeEdited(bool)
   }
 
-  const addNewTitle = (newTitle: string) => {
+  const editTitle = (newTitle: string) => {
     setRecipeData(prevState => {
       return {
         ...prevState,
@@ -215,7 +235,7 @@ export default function RecipeDetails() {
     })
   }
 
-  const addImageUrl = (imgUrl: string) => {
+  const editImgUrl = (imgUrl: string) => {
     setRecipeData(prevState => {
       return {
         ...prevState,
@@ -251,7 +271,7 @@ export default function RecipeDetails() {
           quantity={item.quantity}
           unit={item.unit}
           removeIngredient={removeIngredient}
-          toggleModal={() => toggleIngredientModal(true, index, item)}
+          toggleModal={() => toggleEditIngredientModal(true, index, item)}
         />
       </div>
     )
@@ -267,7 +287,7 @@ export default function RecipeDetails() {
               {recipeData?.title}
             </header>
             <button 
-              onClick={() => toggleTitleModal(true)}
+              onClick={() => toggleEditTitleModal(true)}
               className='recipe-list-item__btn'
               >
               <img src={editIcon} />
@@ -294,35 +314,73 @@ export default function RecipeDetails() {
           </section>
 
           <div className="recipe-details-steps__container">
-            <h4>Steps</h4>
+            {steps && steps?.length > 0 && <h4>Steps</h4>}
               {stepsArr}
           </div>
 
           <div className="recipe-details-ingredients__container">
-            <h4>Ingredients</h4>
+            {ingredients && ingredients?.length > 0 && <h4>Ingredients</h4>}
             {ingredientsArr}
           </div>
-          {isRecipeEdited && <button onClick={redoChanges}>Redo</button>}
-          {isRecipeEdited && <button onClick={() => (editRecipe(recipeData, id), setisRecipeEdited(false))}>Save changes</button>}
-          <button onClick={() => toggleAddStepModal(true)}>open step modal</button>
         </div>
       </div>
 
-      {isTitleModalOn && 
+      <div 
+        className={isRecipeEdited ? "cta-btn__container--spaced-around": "cta-btn__container"}
+      >
+        {isRecipeEdited && 
+        <button 
+          className="toggle-modal-menu__btn"
+          onClick={() => redoChanges()}
+          >
+          <AiOutlineRedo />
+        </button>}
+        {isRecipeEdited &&  
+        <button 
+          className="toggle-modal-menu__btn"
+          onClick={() => (editRecipe(recipeData, id), setisRecipeEdited(false))}
+          >
+          <FiSave />
+        </button>}
+        {<button 
+          className="toggle-modal-menu__btn"
+          onClick={() => toggleModalMenu(isModalMenuOn === true ? false : true)}
+          >
+          +
+        </button>}
+      </div>
+
+      {isModalMenuOn && 
+      <div className="modal-menu__container">
+        <button 
+          onClick={() => toggleAddStepModal(true)}
+          className="modal-cta__btn"
+        >
+          + step
+        </button>
+        <button 
+          onClick={() => toggleAddIngredientModal(true)}
+          className="modal-cta__btn"
+        >
+          + ingredient
+        </button>
+      </div>}
+
+      {isEditTitleModalOn && 
         <RecipeTitleFormModal
-          classTitle={isTitleModalOn ? "sliding-modal--bottom": "sliding-modal--bottom--disabled"}
-          addTitle={addNewTitle}
-          closeModal={() => toggleTitleModal(false)}
+          classTitle={isEditTitleModalOn ? "sliding-modal--bottom": "sliding-modal--bottom--disabled"}
+          editTitle={editTitle}
+          closeModal={() => toggleEditTitleModal(false)}
           toggleIsChanged={(bool) => toggleChange(bool)}
           refreshPage={() => setRefreshPage}
-          isOn={isTitleModalOn}
+          isOn={isEditTitleModalOn}
           defaultValue={recipeData.title}
         />
       }
       {isImgUrlModalOn && 
         <ImgUrlFormModal 
           classTitle={isImgUrlModalOn ? "sliding-modal--bottom": "sliding-modal--bottom--disabled"}
-          editImgUrl={addImageUrl}
+          editImgUrl={editImgUrl}
           closeModal={() => toggleImgUrlModalOn(false)}
           isOn={isImgUrlModalOn}
           defaultValue={recipeData.imgUrl}
@@ -349,12 +407,19 @@ export default function RecipeDetails() {
           editedIndex={editedIndex}
         />
       }
-      {isIngredientModalOn && <IngredientFormModal 
-        classTitle={isIngredientModalOn ? "sliding-modal--bottom": "sliding-modal--bottom--disabled"}
-        isOn={isIngredientModalOn}
+      {isEditIngredientModalOn && <IngredientFormModal 
+        classTitle={isEditIngredientModalOn ? "sliding-modal--bottom": "sliding-modal--bottom--disabled"}
+        isOn={isEditIngredientModalOn}
         editIngredient={editIngredient}
         defaultValue={editedIngredient}
-        closeModal={() => toggleIngredientModal(false)}
+        closeModal={() => toggleEditIngredientModal(false)}
+        editedIndex={editedIndex}
+      />}
+      {isAddIngredientModalOn && <IngredientFormModal 
+        classTitle={isAddIngredientModalOn ? "sliding-modal--bottom": "sliding-modal--bottom--disabled"}
+        isOn={isAddIngredientModalOn}
+        addIngredient={addIngredient}
+        closeModal={() => toggleEditIngredientModal(false)}
         editedIndex={editedIndex}
       />}
     </main>

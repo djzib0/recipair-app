@@ -49,9 +49,11 @@ export default function AddRecipeForm() {
     toggleModalMenu,
     isEditStepModalOn,
     toggleAddStepModal,
-    toggleEditStepModal,
-    isIngredientModalOn,
-    toggleIngredientModal,
+    isAddStepModalOn,
+    toggleAddIngredientModal,
+    isAddIngredientModalOn,
+    toggleEditIngredientModal,
+    isEditIngredientModalOn,
     isImgUrlModalOn,
     toggleImgUrlModalOn
   } = useModal();
@@ -125,7 +127,7 @@ export default function AddRecipeForm() {
         ingredients: newArr
       }
     })
-    toggleIngredientModal(false)
+    toggleEditIngredientModal(false)
     setRefreshPage(prevState => !prevState)
   }
 
@@ -263,7 +265,7 @@ export default function AddRecipeForm() {
           />
         
           <button 
-            disabled={isEditStepModalOn || isIngredientModalOn} 
+            disabled={isEditStepModalOn || isEditIngredientModalOn} 
             type="submit"
             className="confirm__btn"
           >
@@ -284,13 +286,15 @@ export default function AddRecipeForm() {
         </h4>}
         {ingredientsArr}
       </div>
-
-      <button 
-        className="toggle-modal-menu__btn"
-        onClick={toggleModalMenu}
-      >
-        +
-      </button>
+      
+      <div className="cta-btn__container">
+        <button 
+          className="toggle-modal-menu__btn"
+          onClick={() => toggleModalMenu(isModalMenuOn === true ? false : true)}
+          >
+          +
+        </button>
+      </div>
 
       {isModalMenuOn && 
       <div className="modal-menu__container">
@@ -301,7 +305,7 @@ export default function AddRecipeForm() {
           + step
         </button>
         <button 
-          onClick={() => toggleIngredientModal(true)}
+          onClick={() => toggleAddIngredientModal(true)}
           className="modal-cta__btn"
         >
           + ingredient
@@ -309,16 +313,16 @@ export default function AddRecipeForm() {
       </div>}
 
       <StepFormModal 
-        classTitle={isEditStepModalOn ? "sliding-modal--bottom": "sliding-modal--bottom--disabled"}
+        classTitle={isAddStepModalOn ? "sliding-modal--bottom": "sliding-modal--bottom--disabled"}
         addStep={addStep}
         closeModal={() => toggleAddStepModal(false)}
-        isOn={isEditStepModalOn}
+        isOn={isAddStepModalOn}
       />
       <IngredientFormModal
-        classTitle={isIngredientModalOn ? "sliding-modal--bottom": "sliding-modal--bottom--disabled"}
+        classTitle={isAddIngredientModalOn ? "sliding-modal--bottom": "sliding-modal--bottom--disabled"}
         addIngredient={addIngredient}
-        closeModal={() => toggleIngredientModal(false)}
-        isOn={isIngredientModalOn}
+        closeModal={() => toggleAddIngredientModal(false)}
+        isOn={isAddIngredientModalOn}
       /> 
       <ImgUrlFormModal 
         classTitle={isImgUrlModalOn ? "sliding-modal--bottom": "sliding-modal--bottom--disabled"}

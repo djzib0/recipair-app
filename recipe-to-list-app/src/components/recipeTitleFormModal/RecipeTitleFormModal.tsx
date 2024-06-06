@@ -10,7 +10,8 @@ import './RecipeTitleFormModal.css'
 
 type RecipeTitleFormModalProps = {
     classTitle: string;
-    addTitle: (title: string) => void;
+    addTitle?: (title: string) => void;
+    editTitle?: (title: string) => void;
     closeModal: () => void;
     toggleIsChanged: (bool: boolean) => void;
     refreshPage: () => void;
@@ -29,7 +30,8 @@ export default function RecipeTitleFormModal(props: RecipeTitleFormModalProps) {
   // destructuring props 
   const {
     classTitle,
-    addTitle, 
+    addTitle,
+    editTitle,
     closeModal, 
     isOn, 
     defaultValue, 
@@ -56,7 +58,8 @@ export default function RecipeTitleFormModal(props: RecipeTitleFormModalProps) {
       toggleIsChanged(true);
       refreshPage();
     }
-    addTitle(data.title);
+    addTitle && addTitle(data.title);
+    editTitle && editTitle(data.title)
     closeRecipeTitleForm();
     refreshPage();
   }
@@ -87,7 +90,8 @@ export default function RecipeTitleFormModal(props: RecipeTitleFormModalProps) {
         <button 
           className='confirm__btn--small'
           >
-          Add
+          {addTitle && "Add"}
+          {editTitle && "Save"}
         </button>
       </form>}
     </div>

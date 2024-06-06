@@ -20,10 +20,28 @@
     border: 1px solid rgb(216, 216, 216);
 }
 
-.toggle-modal-menu__btn {
-    background-color: rgb(0, 162, 255);
+.cta-btn__container,
+.cta-btn__container--spaced-around {
     position: fixed;
     bottom: 70px;
+    display: flex;
+    width: 100%;
+    max-width: 480px;
+    margin-right: 1em;
+    padding-right: 1em;
+    padding-left: 1em;
+}
+
+.cta-btn__container {
+    justify-content: flex-end;
+}
+
+.cta-btn__container--spaced-around {
+    justify-content: space-around;
+}
+
+.toggle-modal-menu__btn {
+    background-color: rgb(0, 162, 255);
     right: .5em;
     display: flex;
     justify-content: center;
@@ -45,6 +63,7 @@
     justify-content: space-between;
     position: fixed;
     width: 100%;
+    max-width: 480px;
     bottom: 132px;
     right: 0;
 }
