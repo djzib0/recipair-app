@@ -10,7 +10,6 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 // types and enums import
 import { CookingStep, Recipe, Ingredient } from "../types/types";
-import { Unit, IngredientType } from "../enums/enums";
 // icons import
 import { BiArrowBack } from "react-icons/bi";
 import StepFormModal from "../components/stepFormModal/StepFormModal";
@@ -235,7 +234,6 @@ export default function AddRecipeForm() {
           <img src={newRecipe.imgUrl} 
             className="recipe__img" 
             onError={onImageError} />
-
           }
           
         </button>

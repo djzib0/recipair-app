@@ -24,6 +24,7 @@ import './RecipeDetails.css';
 import { addPeriodSuffix } from "../utils/firstLetterToUpperCase";
 // images import
 import editIcon from '../../images/icons/edit.png';
+import noPhotoImg from '../../images/nophoto.jpg'
 
 
 // array with object for topnavbar
@@ -244,6 +245,11 @@ export default function RecipeDetails() {
     })
   }
 
+  const onImageError = (e: any) => {
+    e.target.onError = null;
+    e.target.src = "../../images/placeholderImg.jpg"
+  }
+
   // create steps array
   const stepsArr: JSX.Element[] | undefined = recipeData?.steps?.map((item, index) => {
     const maxIndex = recipeData.steps?.length;
@@ -294,10 +300,12 @@ export default function RecipeDetails() {
             </button>
           </div>
           <div className="recipe-details-image__container">
-            <img 
-              src={recipeData?.imgUrl}
-              className="recipe__img"
-              />
+            {recipeData.imgUrl.length === 0 ?
+            <img src={noPhotoImg} className="recipe__img"/> :
+            <img src={recipeData.imgUrl} 
+              className="recipe__img" 
+              onError={onImageError} />
+            }
             <button 
               className="edit-image__icon"
               onClick={() => toggleImgUrlModalOn(true)}

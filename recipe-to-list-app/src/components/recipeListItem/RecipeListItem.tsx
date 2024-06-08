@@ -5,6 +5,7 @@ import stepsIconCol from '../../../images/icons/stepscolicon.png';
 import ingredientIconCol from '../../../images/icons/ingredientsiconcol.png';
 import editIcon from '../../../images/icons/edit.png';
 import binIcon from '../../../images/icons/bin.png';
+import noPhotoImg from '../../../images/nophoto.jpg'
  
 
 
@@ -20,6 +21,12 @@ export default function RecipeListItem(props: RecipeListItemProps) {
   // destructuring props
   const {imgUrl, title, stepsNumber } = props;
 
+  // functions
+  const onImageError = (e: any) => {
+    e.target.onError = null;
+    e.target.src = "../../../images/placeholderImg.jpg"
+  }
+
   // click handling functions
   const handleEdit = () => {
     console.log("edit button was clicked")
@@ -27,11 +34,18 @@ export default function RecipeListItem(props: RecipeListItemProps) {
 
   return (
     <div className='recipe-list-item__container'>
-      <img 
+      {/* <img 
         src={imgUrl} 
         alt={`${title} photo`}
         className="recipe-list__img"
-      />
+      /> */}
+      {imgUrl.length === 0 ?
+      <img src={noPhotoImg} className="recipe__img"/> :
+      <img src={imgUrl} 
+        className="recipe-list__img" 
+        onError={onImageError} />
+      }
+      
       <div className='recipe-list-item__details'>
         <div className='recipe-list-item__title'>
           <h5 >{title}</h5>
