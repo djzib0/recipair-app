@@ -61,10 +61,27 @@
 
 .recipe-details-description__container {
     margin-top: 1em;
-    /* font-weight: 300; */
+}
+
+.recipe-details-description__container > header {
+    align-self: flex-start;
 }
 
 .recipe-details-steps__container,
+.recipe-details-description__container,
 .recipe-details-ingredients__container {
     width: 100%;
+}
+
+.recipe__description {
+    display: flex;
+    justify-content: space-around;
+    font-size: 1.1em;
+    font-weight: bolder;
+    width: 100%;
+}
+
+.recipe__description > header {
+    justify-content: flex-start;
+    width: 90%;
 }

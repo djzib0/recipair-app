@@ -4,8 +4,8 @@ import { Ingredient } from '../types/types';
 export default function useModal() {
 
   const [isModalMenuOn, setIsModalMenuOn] = useState(false);
-  const [isAddTitleModalOn, setIsAddTitleModalOn] = useState(false);
   const [isEditTitleModalOn, setIsEditTitleModalOn] = useState(false);
+  const [isEditDescriptionModalOn, setIsEditDescriptionModalOn] = useState(false);
   const [isAddStepModalOn, setIsAddStepModalOn] = useState(false);
   const [isEditStepModalOn, setIsStepModalOn] = useState(false);
   const [editedStep, setEditedStep] = useState<string | undefined>("");
@@ -20,12 +20,12 @@ export default function useModal() {
     setIsModalMenuOn(isOn)
   }
 
-  const toggleAddTitleModal = (isOn: boolean) => {
-    setIsAddTitleModalOn(isOn)
-  }
-
   const toggleEditTitleModal = (isOn: boolean) => {
     setIsEditTitleModalOn(isOn);
+  }
+
+  const toggleEditDescriptionModal = (isOn: boolean) => {
+    setIsEditDescriptionModalOn(isOn)
   }
 
   const toggleAddStepModal = (isOn: boolean) => {
@@ -59,10 +59,10 @@ export default function useModal() {
   return {
     isModalMenuOn,
     toggleModalMenu,
-    isAddTitleModalOn,
-    toggleAddTitleModal,
     isEditTitleModalOn,
     toggleEditTitleModal,
+    isEditDescriptionModalOn,
+    toggleEditDescriptionModal,
     isAddStepModalOn,
     toggleAddStepModal,
     isEditStepModalOn,

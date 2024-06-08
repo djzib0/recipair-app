@@ -3,6 +3,7 @@ import TopNavbar from "../components/topNavbar/TopNavbar";
 import RecipeIngredientContainer from "../components/recipeIngredientContainer/RecipeIngredientContainer";
 import RecipeStepContainer from "../components/recipeStepContainer/RecipeStepContainer";
 import RecipeTitleFormModal from "../components/recipeTitleFormModal/RecipeTitleFormModal";
+import RecipeDescriptionFormModal from "../components/recipeDescriptionFormModal/RecipeDescriptionFormModal";
 import StepFormModal from "../components/stepFormModal/StepFormModal";
 import IngredientFormModal from "../components/ingredientFormModal/IngredientFormModal";
 import ImgUrlFormModal from "../components/imgUrlFormModal/ImgUrlFormModal";
@@ -52,12 +53,14 @@ export default function RecipeDetails() {
 
   // utilize useModal custom hook
   const { 
-    toggleEditTitleModal,
     isEditTitleModalOn,
+    toggleEditTitleModal,
+    isEditDescriptionModalOn,
+    toggleEditDescriptionModal,
     isEditStepModalOn,
-    toggleAddStepModal,
-    isAddStepModalOn,
     toggleEditStepModal,
+    isAddStepModalOn,
+    toggleAddStepModal,
     isAddIngredientModalOn,
     toggleAddIngredientModal,
     editedStep,
@@ -245,6 +248,16 @@ export default function RecipeDetails() {
     })
   }
 
+  const editDescription = (newDescription: string) => {
+    console.log("description has been edited")
+    setRecipeData(prevState => {
+      return {
+        ...prevState,
+        description: newDescription
+      }
+    })
+  }
+
   const onImageError = (e: any) => {
     e.target.onError = null;
     e.target.src = "../../images/placeholderImg.jpg"
@@ -299,6 +312,7 @@ export default function RecipeDetails() {
               <img src={editIcon} />
             </button>
           </div>
+
           <div className="recipe-details-image__container">
             {recipeData.imgUrl.length === 0 ?
             <img src={noPhotoImg} className="recipe__img"/> :
@@ -318,7 +332,17 @@ export default function RecipeDetails() {
 
 
           <section className="recipe-details-description__container">
-            {addPeriodSuffix(recipeData?.description)}
+            <div className="recipe__description">
+              <header>
+                {addPeriodSuffix(recipeData?.description)}
+              </header>
+              <button 
+                onClick={() => toggleEditDescriptionModal(true)}
+                className='recipe-list-item__btn'
+                >
+                <img src={editIcon} />
+              </button>
+            </div>
           </section>
 
           <div className="recipe-details-steps__container">
@@ -394,6 +418,17 @@ export default function RecipeDetails() {
           defaultValue={recipeData.imgUrl}
           toggleIsChanged={(bool) => toggleChange(bool)}
           refreshPage={() => setRefreshPage}
+        />
+      }
+      {isEditDescriptionModalOn &&
+        <RecipeDescriptionFormModal 
+          classTitle={isEditDescriptionModalOn ? "sliding-modal--bottom": "sliding-modal--bottom--disabled"}
+          editDescription={editDescription}
+          closeModal={() => toggleEditDescriptionModal(false)}
+          toggleIsChanged={(bool) => toggleChange(bool)}
+          refreshPage={() => setRefreshPage}
+          isOn={isEditDescriptionModalOn}
+          defaultValue={recipeData.description}
         />
       }
       {isEditStepModalOn && 
