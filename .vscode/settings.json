@@ -29,6 +29,10 @@
         {
             "folderPath": "react-with-ts\\recipe-to-list-app\\src\\utils\\",
             "color": "foldercolorizer.DodgerBlue"
+        },
+        {
+            "folderPath": "react-with-ts\\recipe-to-list-app\\src\\customHooks\\",
+            "color": "foldercolorizer.PureGold"
         }
     ]
 }

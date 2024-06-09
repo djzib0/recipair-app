@@ -1,5 +1,5 @@
 // react router imports
-import { useParams, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 // components import
 import TopNavbar from "../components/topNavbar/TopNavbar";
 import RecipeListItem from "../components/recipeListItem/RecipeListItem";

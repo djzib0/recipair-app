@@ -23,7 +23,7 @@
 }
 
 .recipe__title > button {
-    align-self: flex-end;
+    align-self: top;
     width: 10%;
 }
 
@@ -84,4 +84,10 @@
 .recipe__description > header {
     justify-content: flex-start;
     width: 90%;
+}
+
+.recipe__description > button {
+    align-self: top;
+    display: flex;
+    width: 10%;
 }

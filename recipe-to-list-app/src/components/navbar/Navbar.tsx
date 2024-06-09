@@ -16,6 +16,7 @@ export default function Navbar() {
       <NavLink 
         className={({isActive}) => isActive ? 'navbar-element__container--active' : 'navbar-element__container'}
         to="."
+        end
       >
         <NavbarElement 
           title={'recipes'} 
@@ -23,8 +24,8 @@ export default function Navbar() {
       </NavLink>
 
       <NavLink 
-        className={({isActive}) => isActive ? 'navbar__link--active' : 'navbar-element__container'}
-        to="/shoplist"
+        className={({isActive}) => isActive ? 'navbar-element__container--active' : 'navbar-element__container'}
+        to="shoplist"
       >
         <NavbarElement 
           title={'shop list'}
@@ -34,7 +35,7 @@ export default function Navbar() {
 
       <NavLink 
         className={({isActive}) => isActive ? 'navbar-element__container--active' : 'navbar-element__container'}
-        to="/settings"
+        to="settings"
       >
         <NavbarElement 
           title={'settings'} 
