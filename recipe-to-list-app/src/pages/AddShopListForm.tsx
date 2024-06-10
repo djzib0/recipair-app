@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 // components import
 import TopNavbar from "../components/topNavbar/TopNavbar";
 import ShopListRecipeItem from "../components/shopListRecipeItem/ShopListRecipeItem";
+import ShopListItemModal from "../components/shopListItemModal/ShopListItemModal";
 // custom hooks import
 import useDatabase from "../customHooks/useDatabase";
+import useModal from "../customHooks/useModal";
 // react hook and zod imports
 import { SubmitHandler, useForm} from "react-hook-form";
 import { z } from "zod";
@@ -11,7 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 // icons import
 import { BiArrowBack } from "react-icons/bi"
 // type imports
-import { Recipe } from "../types/types";
+import { Recipe, ShopListItem, ShopList} from "../types/types";
 
   // array with object for topnavbar
   const topNavbarItems = [
@@ -30,8 +32,16 @@ export default function AddShopListForm() {
     fetchedData
   } = useDatabase();
 
+  // utilize useModal custom hook
+  const {
+    isAddToShopListModalOn,
+    toggleAddToShopListModal,
+    editedShopListItem,
+  } = useModal();
 
+  // state variables
   const [recipesData, setRecipesData] = useState<Recipe[]>([]);
+  const [shopList, setShopList] = useState<ShopListItem[]>();
 
   useEffect(() => {
     // fetching recipes data from DB
@@ -40,20 +50,47 @@ export default function AddShopListForm() {
 
   // set recipes data with the fetched data
   useEffect(() => {
-    setRecipesData(fetchedData)
+    // create an array of recipes
+    const recipes: Recipe[] = [];
+    // create an array from object (firebase fetched data is an object)
+    for (let [id, recipe] of Object.entries(fetchedData)) {
+      let recipeObj = recipe;
+      Object.assign(recipeObj, {id: id})
+      recipes.push(recipeObj)
+    }
+
+    // set recipes as a state variable
+    setRecipesData(recipes)
+
+    // map items to shopListItem    
+    const shopListItemsArr = recipes && recipes.map((item) => {
+      return {
+        recipeId: item.id,
+        quantity: 0
+      }
+    })
+
+    // set mapped shopListItems as a state variable
+    setShopList(shopListItemsArr)
   }, [fetchedData])
 
-  // create an array of recipes
-  const recipes: Recipe[] = [];
-  // create an array from object (firebase fetched data is an object)
-  for (let [id, recipe] of Object.entries(recipesData)) {
-    let recipeObj = recipe;
-    Object.assign(recipeObj, {id: id})
-    recipes.push(recipeObj)
+  // functions
+  const addToList = (itemId: string, quantity: number) => {
+    console.log("Adding to list ", itemId, ", ", quantity)
+    // setShopList([{recipeId: itemId, quantity: quantity}])
   }
-  const recipesArr = recipes && recipes.map((item, index) => {
+
+  // create an array of shopListRecipeItem
+  const shopListrecipeItemsArr = recipesData && recipesData.map((item, index) => {
+    const shopListItem: ShopListItem | undefined = shopList?.find(i => i.recipeId === item.id)
     return (
-      <div>item</div>
+      <div onClick={() => toggleAddToShopListModal(true, shopListItem ? shopListItem : {recipeId: "", quantity: 0})}>
+        <ShopListRecipeItem 
+          recipeTitle={item.title}
+          portion={shopListItem ? shopListItem.quantity : 0}
+          isSelected={shopListItem ? true : false}
+        />
+      </div>
     )
   })
 
@@ -64,7 +101,13 @@ export default function AddShopListForm() {
         menuItems={topNavbarItems}
       />
       Here will be form for a new shop list
-      {recipesArr}
+      {shopListrecipeItemsArr}
+      {isAddToShopListModalOn && <ShopListItemModal
+        itemId={editedShopListItem.recipeId ? editedShopListItem.recipeId : ""}
+        quantity={editedShopListItem.quantity}
+        addToList={addToList}
+      />
+      }
     </div>
   )
 }

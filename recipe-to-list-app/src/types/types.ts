@@ -33,3 +33,12 @@ export type Recipe = {
     steps?: CookingStep[];
     ingredients?: Ingredient[];
 }
+
+export type ShopListItem = {
+    recipeId: string | undefined;
+    quantity: number;
+}
+
+export type ShopList = {
+    items: ShopListItem[];
+}

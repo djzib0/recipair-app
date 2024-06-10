@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { Ingredient } from '../types/types';
+// types import
+import { Ingredient, ShopListItem } from '../types/types';
 
 export default function useModal() {
 
@@ -14,6 +15,8 @@ export default function useModal() {
   const [isAddIngredientModalOn, setIsAddIngredientModalOn] = useState(false);
   const [isEditIngredientModalOn, setIsEditIngredientModalOn] = useState(false);
   const [isImgUrlModalOn, setIsImgUrlModalOn] = useState(false);
+  const [editedShopListItem, setEditedShopListItem] = useState<ShopListItem>({recipeId: "", quantity: 0})
+  const [isAddToShopListModalOn, setIsAddToShopListModalOn] = useState(false);
 
   
   const toggleModalMenu = (isOn: boolean) => {
@@ -53,8 +56,14 @@ export default function useModal() {
   }
 
   const toggleImgUrlModalOn = (isOn: boolean) => {
-    setIsImgUrlModalOn(isOn)
+    setIsImgUrlModalOn(isOn);
   }
+
+  const toggleAddToShopListModal = (isOn: boolean, editedItem: ShopListItem) => {
+    setIsAddToShopListModalOn(isOn);
+    setEditedShopListItem(editedItem);
+  }
+
 
   return {
     isModalMenuOn,
@@ -76,6 +85,9 @@ export default function useModal() {
     isEditIngredientModalOn,
     isImgUrlModalOn,
     toggleImgUrlModalOn,
+    isAddToShopListModalOn,
+    toggleAddToShopListModal,
+    editedShopListItem,
     editedIndex
   }
 }

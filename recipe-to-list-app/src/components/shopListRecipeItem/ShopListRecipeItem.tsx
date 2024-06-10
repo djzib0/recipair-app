@@ -3,14 +3,17 @@ import React from 'react'
 type ShopListRecipeItemProps = {
   recipeTitle: string;
   portion: number;
-  addtoList: (recipeId: string) => void;
-  
+  isSelected: boolean;
 }
 
 export default function ShopListRecipeItem(props: ShopListRecipeItemProps) {
+
+  // destructuring props
+  const { recipeTitle, portion, isSelected} = props
+
   return (
-    <div>
-      Recipe item
+    <div className={isSelected ? "shop-list-item__container--selected" : "shop-list-item__container"}>
+      <p>{recipeTitle}</p>
     </div>
   )
 }
