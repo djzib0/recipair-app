@@ -42,6 +42,8 @@ export default function AddShopListForm() {
   // state variables
   const [recipesData, setRecipesData] = useState<Recipe[]>([]);
   const [shopList, setShopList] = useState<ShopListItem[]>();
+  const [selectedRecipes, setSelectedRecipes] = useState<ShopListItem[]>([]);
+  const [refreshedPage, setRefreshedPage] = useState(false);
 
   useEffect(() => {
     // fetching recipes data from DB
@@ -64,6 +66,17 @@ export default function AddShopListForm() {
 
     // map items to shopListItem    
     const shopListItemsArr = recipes && recipes.map((item) => {
+      // if the item id is present in selectedRecipes, 
+      // set the quantity to saved value, if not set default value
+      // to 0.
+      for (let selectedRecipe of selectedRecipes) {
+        if (selectedRecipe.recipeId === item.id) {
+          return {
+            recipeId: item.id,
+            quantity: selectedRecipe.quantity
+          }
+        }
+      }
       return {
         recipeId: item.id,
         quantity: 0
@@ -72,23 +85,41 @@ export default function AddShopListForm() {
 
     // set mapped shopListItems as a state variable
     setShopList(shopListItemsArr)
-  }, [fetchedData])
+  }, [fetchedData, selectedRecipes, refreshedPage])
 
   // functions
+  const refreshPage = () => {
+    setRefreshedPage(prevState => !prevState);
+  }
+
   const addToList = (itemId: string, quantity: number) => {
     console.log("Adding to list ", itemId, ", ", quantity)
     // setShopList([{recipeId: itemId, quantity: quantity}])
+    setSelectedRecipes(prevState => [...prevState, {recipeId: itemId, quantity: quantity}]);
+    refreshPage()
+  }
+
+  const removeFromList = (itemId: string) => {
+    let newSelectedRecipes: ShopListItem[] = selectedRecipes;
+    for (let recipe of newSelectedRecipes) {
+      if (recipe.recipeId === itemId) {
+        newSelectedRecipes.splice(newSelectedRecipes.indexOf(recipe), 1);
+      }
+    }
+    setSelectedRecipes(newSelectedRecipes);
+    setRefreshedPage(prevState => !prevState);
   }
 
   // create an array of shopListRecipeItem
   const shopListrecipeItemsArr = recipesData && recipesData.map((item, index) => {
     const shopListItem: ShopListItem | undefined = shopList?.find(i => i.recipeId === item.id)
+    const selectedRecipe: ShopListItem | undefined = selectedRecipes?.find(i => i.recipeId === item.id)
     return (
-      <div onClick={() => toggleAddToShopListModal(true, shopListItem ? shopListItem : {recipeId: "", quantity: 0})}>
+      <div key={index} onClick={() => toggleAddToShopListModal(true, shopListItem ? shopListItem : {recipeId: "", quantity: 0})}>
         <ShopListRecipeItem 
           recipeTitle={item.title}
           portion={shopListItem ? shopListItem.quantity : 0}
-          isSelected={shopListItem ? true : false}
+          isSelected={selectedRecipe ? true : false}
         />
       </div>
     )
@@ -104,8 +135,10 @@ export default function AddShopListForm() {
       {shopListrecipeItemsArr}
       {isAddToShopListModalOn && <ShopListItemModal
         itemId={editedShopListItem.recipeId ? editedShopListItem.recipeId : ""}
-        quantity={editedShopListItem.quantity}
         addToList={addToList}
+        removeFromList={removeFromList}
+        closeModal={toggleAddToShopListModal}
+        isSelected={selectedRecipes && selectedRecipes.find(recipe => recipe.recipeId === editedShopListItem.recipeId)}
       />
       }
     </div>

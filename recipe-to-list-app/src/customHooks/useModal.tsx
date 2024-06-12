@@ -59,11 +59,12 @@ export default function useModal() {
     setIsImgUrlModalOn(isOn);
   }
 
-  const toggleAddToShopListModal = (isOn: boolean, editedItem: ShopListItem) => {
+  const toggleAddToShopListModal = (isOn: boolean, editedItem?: ShopListItem) => {
     setIsAddToShopListModalOn(isOn);
-    setEditedShopListItem(editedItem);
+    if (editedItem) {
+      setEditedShopListItem(editedItem);
+    }
   }
-
 
   return {
     isModalMenuOn,

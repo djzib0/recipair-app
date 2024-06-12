@@ -1,4 +1,5 @@
-import React from 'react'
+// styles import
+import './ShopListRecipeItem.css'
 
 type ShopListRecipeItemProps = {
   recipeTitle: string;
@@ -13,7 +14,7 @@ export default function ShopListRecipeItem(props: ShopListRecipeItemProps) {
 
   return (
     <div className={isSelected ? "shop-list-item__container--selected" : "shop-list-item__container"}>
-      <p>{recipeTitle}</p>
+      <p>{recipeTitle} - {portion}</p>
     </div>
   )
 }
