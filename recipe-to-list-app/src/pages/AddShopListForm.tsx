@@ -138,7 +138,9 @@ export default function AddShopListForm() {
         addToList={addToList}
         removeFromList={removeFromList}
         closeModal={toggleAddToShopListModal}
-        isSelected={selectedRecipes && selectedRecipes.find(recipe => recipe.recipeId === editedShopListItem.recipeId)}
+        selectedItem={selectedRecipes && selectedRecipes.find(recipe => recipe.recipeId === editedShopListItem.recipeId)}
+        classTitle={isAddToShopListModalOn ? "sliding-shoplist-modal--bottom": "sliding-shoplist-modal--bottom--disabled"}
+        selectedRecipeData={recipesData && selectedRecipes && recipesData.find(recipe => recipe.id === editedShopListItem.recipeId)}
       />
       }
     </div>

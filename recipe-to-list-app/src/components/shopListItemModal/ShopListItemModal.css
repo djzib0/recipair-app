@@ -1,0 +1,59 @@
+.sliding-shoplist-modal--bottom,
+.sliding-shoplist-modal--bottom--disabled {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    width: 100%;
+    max-width: 480px;
+    z-index: 100;
+    height: 100px;
+    overflow: visible;
+    padding: 1em;
+    background-color: rgb(105, 200, 255);
+}
+
+.sliding-shoplist-modal--bottom {
+    bottom: 50px;
+}
+
+.sliding-shoplist-modal--bottom--disabled {
+    top: -100%;
+}
+
+.sliding-shoplist-modal--bottom {
+    animation-name: bottom-appear;
+    animation-duration: .2s;
+}
+
+.sliding-shoplist-modal--bottom--disabled {
+    animation-name: bottom-disappear;
+    animation-duration: .2s;
+}
+
+.shoplist-item-modal__close-btn {
+    display: flex;
+    width: 30px;
+    font-size: 2em;
+    color: rgb(255, 255, 255);
+    background-color: transparent;
+    border: 0;
+}
+
+@keyframes bottom-appear {
+    0% {bottom: 30px}
+    80% {bottom: 40px}
+    100% {bottom: 50px}
+}
+
+@keyframes bottom-disappear {
+    0% {bottom: 50px}
+    20% {bottom: 40px}
+    100% {bottom: 0px}
+    100% {visibility: hidden}
+}
+
+.shoplist-item-modal__title {
+    font-size: .8em;
+}
+

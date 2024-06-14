@@ -22,7 +22,7 @@ import { Recipe, CookingStep, Ingredient} from "../types/types";
 // styles import
 import './RecipeDetails.css';
 // utils import
-import { addPeriodSuffix } from "../utils/firstLetterToUpperCase";
+import { addPeriodSuffix } from "../utils/utils";
 // images import
 import editIcon from '../../images/icons/edit.png';
 import noPhotoImg from '../../images/nophoto.jpg'

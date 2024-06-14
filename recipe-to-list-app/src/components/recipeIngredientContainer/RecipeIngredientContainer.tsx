@@ -6,7 +6,7 @@ import './RecipeIngredientContainer.css'
 import { PiTrashLight } from 'react-icons/pi';
 import { CiEdit } from 'react-icons/ci';
 // utils import
-import { firstLetterToUpperCase } from '../../utils/firstLetterToUpperCase';
+import { firstLetterToUpperCase } from '../../utils/utils';
 
 
 type RecipeIngredientContainerProps = {

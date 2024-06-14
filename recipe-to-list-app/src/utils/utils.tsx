@@ -8,3 +8,11 @@ export const addPeriodSuffix = (str: string | undefined) : string | undefined =>
     }
     return str;
 } 
+
+export const trimText = (str: string | undefined, length: number) : string => {
+    if (str && str.length > length) {
+        return `${str.slice(0, length)}...`
+    } else {
+        return `${str?.slice(0, length)}`
+    }
+}
