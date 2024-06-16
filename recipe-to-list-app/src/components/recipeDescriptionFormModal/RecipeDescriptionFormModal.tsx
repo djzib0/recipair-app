@@ -1,4 +1,4 @@
-// react-hook and zod imports
+// react form hook and zod imports
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';

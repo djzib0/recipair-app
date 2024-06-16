@@ -6,14 +6,10 @@ import ShopListItemModal from "../components/shopListItemModal/ShopListItemModal
 // custom hooks import
 import useDatabase from "../customHooks/useDatabase";
 import useModal from "../customHooks/useModal";
-// react hook and zod imports
-import { SubmitHandler, useForm} from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 // icons import
 import { BiArrowBack } from "react-icons/bi"
 // type imports
-import { Recipe, ShopListItem, ShopList} from "../types/types";
+import { Recipe, ShopListItem} from "../types/types";
 
   // array with object for topnavbar
   const topNavbarItems = [
@@ -113,6 +109,7 @@ export default function AddShopListForm() {
   // create an array of shopListRecipeItem
   const shopListrecipeItemsArr = recipesData && recipesData.map((item, index) => {
     const shopListItem: ShopListItem | undefined = shopList?.find(i => i.recipeId === item.id)
+    console.log(shopListItem, " shopList item in array")
     const selectedRecipe: ShopListItem | undefined = selectedRecipes?.find(i => i.recipeId === item.id)
     return (
       <div key={index} onClick={() => toggleAddToShopListModal(true, shopListItem ? shopListItem : {recipeId: "", quantity: 0})}>
@@ -125,22 +122,24 @@ export default function AddShopListForm() {
     )
   })
 
+  console.log(selectedRecipes && selectedRecipes.find(recipe => recipe.recipeId === editedShopListItem.recipeId))
+
   return (
     <div>
       <TopNavbar 
         title="Add shop list"
         menuItems={topNavbarItems}
       />
-      Here will be form for a new shop list
       {shopListrecipeItemsArr}
       {isAddToShopListModalOn && <ShopListItemModal
         itemId={editedShopListItem.recipeId ? editedShopListItem.recipeId : ""}
         addToList={addToList}
         removeFromList={removeFromList}
-        closeModal={toggleAddToShopListModal}
+        closeModal={() => toggleAddToShopListModal(false)}
         selectedItem={selectedRecipes && selectedRecipes.find(recipe => recipe.recipeId === editedShopListItem.recipeId)}
         classTitle={isAddToShopListModalOn ? "sliding-shoplist-modal--bottom": "sliding-shoplist-modal--bottom--disabled"}
         selectedRecipeData={recipesData && selectedRecipes && recipesData.find(recipe => recipe.id === editedShopListItem.recipeId)}
+        quantity={editedShopListItem.quantity}
       />
       }
     </div>

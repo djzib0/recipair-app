@@ -31,7 +31,7 @@ export default function RecipeIngredientContainer(props: RecipeIngredientContain
       </div>
       <div className='ingredient-description__container'>
         <div className='ingredient-description'>
-          {`${name}`}
+          {`${firstLetterToUpperCase(name)}`}
         </div>
         <div className='qty-unit__container'>
           <div>{quantity}</div>
