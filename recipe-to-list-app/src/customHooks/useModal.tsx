@@ -60,10 +60,16 @@ export default function useModal() {
   }
 
   const toggleAddToShopListModal = (isOn: boolean, editedItem?: ShopListItem) => {
-    setIsAddToShopListModalOn(isOn);
-    if (editedItem) {
-      console.log(editedItem, " editedItem in usemodal")
-      setEditedShopListItem(editedItem);
+    if (!isOn) {
+      setIsAddToShopListModalOn(isOn);
+      console.log("closing modal...")
+    }
+    if (isOn) {
+      console.log("opening modal...")
+      setIsAddToShopListModalOn(isOn);
+      if (editedItem) {
+        setEditedShopListItem(editedItem);
+      }
     }
   }
 

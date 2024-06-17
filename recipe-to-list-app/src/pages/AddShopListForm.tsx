@@ -106,13 +106,18 @@ export default function AddShopListForm() {
     setRefreshedPage(prevState => !prevState);
   }
 
+  // const testFunc = ((a, b) => {
+  //   toggleAddToShopListModal(false);
+  //   toggleAddToShopListModal(a, b);
+  // })
+
   // create an array of shopListRecipeItem
   const shopListrecipeItemsArr = recipesData && recipesData.map((item, index) => {
     const shopListItem: ShopListItem | undefined = shopList?.find(i => i.recipeId === item.id)
-    console.log(shopListItem, " shopList item in array")
     const selectedRecipe: ShopListItem | undefined = selectedRecipes?.find(i => i.recipeId === item.id)
     return (
-      <div key={index} onClick={() => toggleAddToShopListModal(true, shopListItem ? shopListItem : {recipeId: "", quantity: 0})}>
+      // <div key={index} onClick={() => testFunc(true, shopListItem ? shopListItem : {recipeId: "", quantity: 0})}>
+      <div key={index} onClick={() => (toggleAddToShopListModal(false), toggleAddToShopListModal(true, shopListItem ? shopListItem : {recipeId: "", quantity: 0}))}>
         <ShopListRecipeItem 
           recipeTitle={item.title}
           portion={shopListItem ? shopListItem.quantity : 0}
@@ -122,14 +127,13 @@ export default function AddShopListForm() {
     )
   })
 
-  console.log(selectedRecipes && selectedRecipes.find(recipe => recipe.recipeId === editedShopListItem.recipeId))
-
   return (
     <div>
       <TopNavbar 
         title="Add shop list"
         menuItems={topNavbarItems}
       />
+      <button onClick={() => toggleAddToShopListModal(false)}>close modal</button>
       {shopListrecipeItemsArr}
       {isAddToShopListModalOn && <ShopListItemModal
         itemId={editedShopListItem.recipeId ? editedShopListItem.recipeId : ""}

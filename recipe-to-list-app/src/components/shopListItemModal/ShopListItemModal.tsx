@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { SyntheticEvent, useEffect, useState } from 'react';
+// custom hooks import
+import useModal from '../../customHooks/useModal';
 // types import
 import { Recipe, ShopListItem } from '../../types/types';
 // styles import
@@ -40,12 +42,22 @@ export default function ShopListItemModal(props: ShopListItemModalProps) {
     closeModal, classTitle, selectedRecipeData, quantity
   } = props;
 
+  // state variables 
+  const [initialQuantity, setInitialQuantity] = useState(quantity);
+  const [isChanged, setIsChanged] = useState(false);
+
+ 
+  useEffect(() => {
+    setValue("quantity", quantity)
+  }, [quantity])
+
   // destructuring useForm
   const {
     register,
     handleSubmit,
     resetField,
     watch,
+    setValue,
   } = useForm<FormFields>(
     {defaultValues: {
       quantity: Number(quantity)
@@ -53,8 +65,6 @@ export default function ShopListItemModal(props: ShopListItemModalProps) {
     resolver: zodResolver(schema)}
   )
 
-  // state variables
-  const [isQuantityChanged, setIsQuantityChanged] = useState(false);
 
 
   // handling functions
@@ -68,9 +78,17 @@ export default function ShopListItemModal(props: ShopListItemModalProps) {
   // TODO - use this watch function to check if the value in input
   // is changed.
   const test = watch("quantity")
-  console.log(test, " test")
-
-
+  
+  const test1 = register("quantity")
+ 
+  const handleChange = (e: any) => {
+    if (e.target.value != initialQuantity) {
+      setIsChanged(true)
+    } else {
+      setIsChanged(false);
+    }
+  }
+  
   return (
     <div className={classTitle}>
       <p className='shoplist-item-modal__title'>
@@ -84,11 +102,11 @@ export default function ShopListItemModal(props: ShopListItemModalProps) {
           htmlFor='quantity'
         >
         </label>
-        <input {...register("quantity", {valueAsNumber: true} )} 
+        <input {...register("quantity", {valueAsNumber: true, onChange: handleChange} )} 
           type='number'
           id='quantity'
         />
-      {!selectedItem && 
+      {(!selectedItem || isChanged) && 
       <button 
         type='submit'
         className='shoplist-item-modal__btn'
