@@ -6,19 +6,31 @@ import ShopListItemModal from "../components/shopListItemModal/ShopListItemModal
 // custom hooks import
 import useDatabase from "../customHooks/useDatabase";
 import useModal from "../customHooks/useModal";
+// react form hook and zod imports
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 // icons import
 import { BiArrowBack } from "react-icons/bi"
 // type imports
 import { Recipe, ShopListItem} from "../types/types";
+import { EventType } from "firebase/database";
 
-  // array with object for topnavbar
-  const topNavbarItems = [
-    {
-      id: 1,
-      icon: <BiArrowBack />,
-      linkTo: '/shoplist'
-    }
-  ]
+// array with object for topnavbar
+const topNavbarItems = [
+  {
+    id: 1,
+    icon: <BiArrowBack />,
+    linkTo: '/shoplist'
+  }
+]
+
+const schema = z.object({
+  shopListTitle: z.string().min(1)
+});
+
+type FormFields = z.infer<typeof schema>
+
 
 export default function AddShopListForm() {
 
@@ -35,9 +47,23 @@ export default function AddShopListForm() {
     editedShopListItem,
   } = useModal();
 
+    // destructuring useForm
+    const {
+      register,
+      handleSubmit,
+      resetField,
+      setValue,
+    } = useForm<FormFields>(
+      {defaultValues: {
+        shopListTitle: ""
+      },
+      resolver: zodResolver(schema)}
+    )
+
   // state variables
   const [recipesData, setRecipesData] = useState<Recipe[]>([]);
   const [shopList, setShopList] = useState<ShopListItem[]>();
+  const [shopListTitle, setShopListTitle] = useState<string>("");
   const [selectedRecipes, setSelectedRecipes] = useState<ShopListItem[]>([]);
   const [isShopListEmpty, setIsShopListEmpty] = useState(true);
   const [refreshedPage, setRefreshedPage] = useState(false);
@@ -127,6 +153,14 @@ export default function AddShopListForm() {
     setRefreshedPage(prevState => !prevState);
   }
 
+  const saveShoplist = () => {
+    console.log("saving new shoplist with title", shopListTitle)
+  }
+
+  const handleTitleChange = (e: React.FormEvent<HTMLInputElement>) => {
+    setShopListTitle(e.currentTarget.value)
+  }
+
   // create an array of shopListRecipeItem
   const shopListrecipeItemsArr = recipesData && recipesData.map((item, index) => {
     const shopListItem: ShopListItem | undefined = shopList?.find(i => i.recipeId === item.id)
@@ -150,8 +184,19 @@ export default function AddShopListForm() {
         menuItems={topNavbarItems}
       />
       {!isShopListEmpty && 
-      <button>Ha ha</button>
+      <button
+        onClick={saveShoplist}
+      >Save</button>
       }
+      <form>
+        <label htmlFor="shopListTitle">
+          Title:
+        </label>
+        <input {...register("shopListTitle", {onChange: handleTitleChange})}
+          type="text"
+          id="shopListTitle"
+          />
+      </form>
       {shopListrecipeItemsArr}
       {isAddToShopListModalOn && <ShopListItemModal
         itemId={editedShopListItem.recipeId ? editedShopListItem.recipeId : ""}

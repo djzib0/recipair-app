@@ -29,10 +29,9 @@ type ShopListItemModalProps = {
 
 const schema = z.object({
   quantity: z.number().min(1)
-})
+});
 
 type FormFields = z.infer<typeof schema>
-
 
 
 export default function ShopListItemModal(props: ShopListItemModalProps) {

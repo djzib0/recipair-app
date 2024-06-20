@@ -39,6 +39,9 @@ export type ShopListItem = {
     quantity: number;
 }
 
+export type ShopListIngredient = Ingredient & ShopListItem;
+
 export type ShopList = {
-    items: ShopListItem[];
+    title: string;
+    items: ShopListIngredient[];
 }
