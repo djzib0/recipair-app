@@ -28,7 +28,7 @@ type ShopListItemModalProps = {
 }
 
 const schema = z.object({
-  quantity: z.number()
+  quantity: z.number().min(1)
 })
 
 type FormFields = z.infer<typeof schema>
@@ -56,7 +56,6 @@ export default function ShopListItemModal(props: ShopListItemModalProps) {
     register,
     handleSubmit,
     resetField,
-    watch,
     setValue,
   } = useForm<FormFields>(
     {defaultValues: {
@@ -73,13 +72,6 @@ export default function ShopListItemModal(props: ShopListItemModalProps) {
     resetField("quantity")
     closeModal();
   }
-
-
-  // TODO - use this watch function to check if the value in input
-  // is changed.
-  const test = watch("quantity")
-  
-  const test1 = register("quantity")
  
   const handleChange = (e: any) => {
     if (e.target.value != initialQuantity) {
