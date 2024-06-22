@@ -15,7 +15,7 @@ export default function useModal() {
   const [isAddIngredientModalOn, setIsAddIngredientModalOn] = useState(false);
   const [isEditIngredientModalOn, setIsEditIngredientModalOn] = useState(false);
   const [isImgUrlModalOn, setIsImgUrlModalOn] = useState(false);
-  const [editedShopListItem, setEditedShopListItem] = useState<ShopListItem>({recipeId: "", quantity: 0})
+  const [editedShopListItem, setEditedShopListItem] = useState<ShopListItem>({recipeId: "", portionQuantity: 0, isPurchased: false})
   const [isAddToShopListModalOn, setIsAddToShopListModalOn] = useState(false);
 
   
@@ -62,10 +62,8 @@ export default function useModal() {
   const toggleAddToShopListModal = (isOn: boolean, editedItem?: ShopListItem) => {
     if (!isOn) {
       setIsAddToShopListModalOn(isOn);
-      console.log("closing modal...")
     }
     if (isOn) {
-      console.log("opening modal...")
       setIsAddToShopListModalOn(isOn);
       if (editedItem) {
         setEditedShopListItem(editedItem);

@@ -1,6 +1,6 @@
 import { useState} from "react";
 // types import
-import { Recipe } from "../types/types";
+import { Recipe, ShopList } from "../types/types";
 // Firebase imports
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, onValue, push, get, update} from 'firebase/database'
@@ -22,6 +22,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 const recipesInDB = ref(database, 'recipes')
+const shopListsInDB = ref(database, 'shoplists')
 
 export default function useDatabase() {
     const [fetchedData, setFechtedData] = useState([]);
@@ -49,6 +50,17 @@ export default function useDatabase() {
         update(ref(database, exactItem), obj)
     }
 
+    async function getShopListsData() {
+        onValue(shopListsInDB, (snapshot) => {
+            const data = snapshot.val();
+            setFechtedData(data)
+        })
+    }
+
+    async function addShopList(obj: ShopList) {
+        push(shopListsInDB, obj)
+    }
+
     return {
         fetchedData,
         recipeFetchedData,
@@ -56,6 +68,8 @@ export default function useDatabase() {
         addRecipe,
         getRecipeData,
         editRecipe,
+        getShopListsData,
+        addShopList,
     }
 }
 

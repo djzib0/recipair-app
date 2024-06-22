@@ -13,8 +13,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 // icons import
 import { BiArrowBack } from "react-icons/bi"
 // type imports
-import { Recipe, ShopListItem} from "../types/types";
-import { EventType } from "firebase/database";
+import { Recipe, ShopList, ShopListIngredient, ShopListItem} from "../types/types";
+// react router imports
+import { useNavigate } from "react-router-dom";
 
 // array with object for topnavbar
 const topNavbarItems = [
@@ -26,7 +27,8 @@ const topNavbarItems = [
 ]
 
 const schema = z.object({
-  shopListTitle: z.string().min(1)
+  shopListTitle: z.string().min(1),
+  filterSearch: z.string()
 });
 
 type FormFields = z.infer<typeof schema>
@@ -34,10 +36,14 @@ type FormFields = z.infer<typeof schema>
 
 export default function AddShopListForm() {
 
+  // utilize react router
+  const navigate = useNavigate();
+
   // utilize useDatabase custom hook
   const {
     getRecipesData,
-    fetchedData
+    fetchedData,
+    addShopList,
   } = useDatabase();
 
   // utilize useModal custom hook
@@ -55,7 +61,8 @@ export default function AddShopListForm() {
       setValue,
     } = useForm<FormFields>(
       {defaultValues: {
-        shopListTitle: ""
+        shopListTitle: "",
+        filterSearch: "",
       },
       resolver: zodResolver(schema)}
     )
@@ -64,7 +71,9 @@ export default function AddShopListForm() {
   const [recipesData, setRecipesData] = useState<Recipe[]>([]);
   const [shopList, setShopList] = useState<ShopListItem[]>();
   const [shopListTitle, setShopListTitle] = useState<string>("");
+  const [ShopListIngredients, setShopListIngredients] = useState<ShopListIngredient[]>([]);
   const [selectedRecipes, setSelectedRecipes] = useState<ShopListItem[]>([]);
+  const [filterSearch, setFilterSearch] = useState<string>("")
   const [isShopListEmpty, setIsShopListEmpty] = useState(true);
   const [refreshedPage, setRefreshedPage] = useState(false);
 
@@ -96,13 +105,15 @@ export default function AddShopListForm() {
         if (selectedRecipe.recipeId === item.id) {
           return {
             recipeId: item.id,
-            quantity: selectedRecipe.quantity
+            portionQuantity: selectedRecipe.portionQuantity,
+            isPurchased: selectedRecipe.isPurchased
           }
         }
       }
       return {
         recipeId: item.id,
-        quantity: 0
+        portionQuantity: 0,
+        isPurchased: false
       }
     })
 
@@ -116,7 +127,7 @@ export default function AddShopListForm() {
     } else {
       setIsShopListEmpty(true)
     }
-  }, [fetchedData, selectedRecipes, refreshedPage])
+  }, [fetchedData, selectedRecipes, refreshedPage, filterSearch])
 
   // functions
   const refreshPage = () => {
@@ -133,11 +144,11 @@ export default function AddShopListForm() {
     // if elem exists in the array with selected recipes
     if (elem) {
       // change it's value
-      elem.quantity = quantity
+      elem.portionQuantity = quantity
       setSelectedRecipes(newSelectedRecipesArr)
       refreshPage();
     } else if (elem === undefined) {
-      setSelectedRecipes(prevState => [...prevState, {recipeId: itemId, quantity: quantity}]);
+      setSelectedRecipes(prevState => [...prevState, {recipeId: itemId, portionQuantity: quantity, isPurchased: false}]);
       refreshPage()
     }
   }
@@ -154,23 +165,63 @@ export default function AddShopListForm() {
   }
 
   const saveShoplist = () => {
-    console.log("saving new shoplist with title", shopListTitle)
+    let shopListIngredientsArr: ShopListIngredient[] = [];
+    // 1. Iterate through selected items
+    for (let selectedRecipe of selectedRecipes) {
+      for (let recipe of recipesData) {
+        // 2. Find selected recipe by recipeId
+        if (selectedRecipe.recipeId === recipe.id) {
+          if (recipe.ingredients) {
+            // 3. Get all ingredient from the recipe
+            for (let ingredient of recipe.ingredients) {
+              // 4. Multiply it by the quantity
+              let newShopListIngredient: ShopListIngredient = {
+                ...ingredient,
+                quantity: ingredient.quantity * selectedRecipe.portionQuantity,
+                recipeId: selectedRecipe.recipeId,
+                portionQuantity: selectedRecipe.portionQuantity,
+                isPurchased: selectedRecipe.isPurchased
+              }
+              // 5. Add it to array which will hold ShopListIngredients
+              shopListIngredientsArr.push(newShopListIngredient)
+            }
+          }
+        }
+      }
+    }
+    // setShopListIngredients(shopListIngredientsArr)
+    let newShopList: ShopList = {
+      title: shopListTitle,
+      ingredients: shopListIngredientsArr
+    }
+    addShopList(newShopList)
+    navigate("/shoplist")
   }
 
   const handleTitleChange = (e: React.FormEvent<HTMLInputElement>) => {
     setShopListTitle(e.currentTarget.value)
   }
 
+  const handleFilterChange = (e: React.FormEvent<HTMLInputElement>) => {
+    setFilterSearch(e.currentTarget.value)
+  }
+
+
+  // filter data based on the input
+  const filteredShopListrecipeItemsArr = recipesData && recipesData.filter((item) => {
+    return item.title.toLowerCase().includes(filterSearch.toLowerCase())
+  })
+
   // create an array of shopListRecipeItem
-  const shopListrecipeItemsArr = recipesData && recipesData.map((item, index) => {
+  const shopListrecipeItemsArr = filteredShopListrecipeItemsArr && filteredShopListrecipeItemsArr.map((item, index) => {
     const shopListItem: ShopListItem | undefined = shopList?.find(i => i.recipeId === item.id)
     const selectedRecipe: ShopListItem | undefined = selectedRecipes?.find(i => i.recipeId === item.id)
     return (
       // <div key={index} onClick={() => testFunc(true, shopListItem ? shopListItem : {recipeId: "", quantity: 0})}>
-      <div key={index} onClick={() => (toggleAddToShopListModal(false), toggleAddToShopListModal(true, shopListItem ? shopListItem : {recipeId: "", quantity: 0}))}>
+      <div key={index} onClick={() => (toggleAddToShopListModal(false), toggleAddToShopListModal(true, shopListItem ? shopListItem : {recipeId: "", portionQuantity: 0, isPurchased: false}))}>
         <ShopListRecipeItem 
           recipeTitle={item.title}
-          portion={shopListItem ? shopListItem.quantity : 0}
+          portion={shopListItem ? shopListItem.portionQuantity : 0}
           isSelected={selectedRecipe ? true : false}
         />
       </div>
@@ -197,6 +248,15 @@ export default function AddShopListForm() {
           id="shopListTitle"
           />
       </form>
+      <form>
+        <label htmlFor="shopListTitle">
+          Filter:
+        </label>
+        <input {...register("filterSearch", {onChange: handleFilterChange})}
+          type="text"
+          id="shopListTitle"
+          />
+      </form>
       {shopListrecipeItemsArr}
       {isAddToShopListModalOn && <ShopListItemModal
         itemId={editedShopListItem.recipeId ? editedShopListItem.recipeId : ""}
@@ -206,7 +266,7 @@ export default function AddShopListForm() {
         selectedItem={selectedRecipes && selectedRecipes.find(recipe => recipe.recipeId === editedShopListItem.recipeId)}
         classTitle={isAddToShopListModalOn ? "sliding-shoplist-modal--bottom": "sliding-shoplist-modal--bottom--disabled"}
         selectedRecipeData={recipesData && selectedRecipes && recipesData.find(recipe => recipe.id === editedShopListItem.recipeId)}
-        quantity={editedShopListItem.quantity}
+        quantity={editedShopListItem.portionQuantity}
       />
       }
     </div>

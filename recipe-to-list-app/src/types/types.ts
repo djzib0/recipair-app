@@ -36,12 +36,13 @@ export type Recipe = {
 
 export type ShopListItem = {
     recipeId: string | undefined;
-    quantity: number;
+    portionQuantity: number;
+    isPurchased: boolean;
 }
 
 export type ShopListIngredient = Ingredient & ShopListItem;
 
 export type ShopList = {
     title: string;
-    items: ShopListIngredient[];
+    ingredients: ShopListIngredient[];
 }
