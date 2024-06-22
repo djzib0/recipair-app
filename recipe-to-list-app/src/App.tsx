@@ -2,7 +2,8 @@
 import NavbarLayout from './layouts/NavbarLayout';
 import Recipes from './pages/Recipes';
 import RecipeDetails from './pages/RecipeDetails';
-import ShopList from './pages/ShopList';
+import ShopLists from './pages/ShopLists';
+import ShopListDetails from './pages/ShopListDetails';
 import AddShopListForm from './pages/AddShopListForm';
 import Settings from './pages/Settings';
 // router imports
@@ -21,7 +22,8 @@ function App() {
           <Route path='/' element={<Recipes />} />
           <Route path='/recipe/:id' element={<RecipeDetails />} />
           <Route path='/recipes/add' element={<AddRecipeForm />} />
-          <Route path='/shoplist' element={<ShopList />} />
+          <Route path='/shoplist' element={<ShopLists />} />
+          <Route path='/shoplist/:id' element={<ShopListDetails />} />
           <Route path="/shoplist/add" element={<AddShopListForm />} />
           <Route path='/settings' element={<Settings />} />
         </Route>

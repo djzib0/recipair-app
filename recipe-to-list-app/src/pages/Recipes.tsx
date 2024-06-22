@@ -15,6 +15,7 @@ export default function Recipes() {
   // utilize custom hook
   const {fetchedData, getRecipesData} = useDatabase();
 
+  // state variables
   const [recipesData, setRecipesData] = useState([]);
 
   useEffect(() => {

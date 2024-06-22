@@ -5,6 +5,8 @@ import './RecipeIngredientContainer.css'
 // icons import
 import { PiTrashLight } from 'react-icons/pi';
 import { CiEdit } from 'react-icons/ci';
+import { FaRegCircle } from "react-icons/fa";
+import { FaRegCircleCheck } from "react-icons/fa6";
 // utils import
 import { firstLetterToUpperCase } from '../../utils/utils';
 
@@ -14,15 +16,17 @@ type RecipeIngredientContainerProps = {
   name: string;
   quantity: number;
   unit: Unit;
-  removeIngredient: (index: number) => void;
+  removeIngredient?: (index: number) => void;
   toggleModal?: () => void;
+  toggleIsPurchased? : () => void;
+  isPurchased?: boolean;
 }
 
 export default function RecipeIngredientContainer(props: RecipeIngredientContainerProps) {
 
   // destructuring props
   const { index, name, quantity, unit, removeIngredient,
-    toggleModal } = props;
+    toggleModal, toggleIsPurchased, isPurchased } = props;
 
   return (
     <div className='recipe-ingredient__container'>
@@ -40,20 +44,27 @@ export default function RecipeIngredientContainer(props: RecipeIngredientContain
       </div>
       <div className='ingredient-cta__container'>
         <div className='ingredient-cta--delete'>
-        <button 
+        {toggleModal && <button 
           className='cta__btn-small' 
           type="button"
           onClick={toggleModal}
         >
           <CiEdit />
-        </button>
-        <button 
+        </button>}
+        {removeIngredient && <button 
           className='cta__btn-small' 
           type="button"
           onClick={() => removeIngredient(index)}
         >
           <PiTrashLight />
-        </button>
+        </button>}
+        {toggleIsPurchased && <button 
+          className='cta__btn-small' 
+          type="button"
+          onClick={toggleIsPurchased}
+        >
+          {isPurchased ? <FaRegCircleCheck/> : <FaRegCircle />}
+        </button>}
         </div>
       </div>
     </div>

@@ -1,6 +1,6 @@
 import { useState} from "react";
 // types import
-import { Recipe, ShopList } from "../types/types";
+import { Recipe, ShopList, ShopListIngredient } from "../types/types";
 // Firebase imports
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, onValue, push, get, update} from 'firebase/database'
@@ -27,6 +27,7 @@ const shopListsInDB = ref(database, 'shoplists')
 export default function useDatabase() {
     const [fetchedData, setFechtedData] = useState([]);
     const [recipeFetchedData, setRecipeFetchedData] = useState<Recipe>();
+    const [shopListFetchedData, setShopListFetchedData] = useState<ShopList>();
 
     async function getRecipesData() {
         onValue(recipesInDB, (snapshot) => {
@@ -57,19 +58,40 @@ export default function useDatabase() {
         })
     }
 
+    async function getShopListData(id: string | undefined) {
+        const snapshot = await get(ref(database, `shoplists/${id}`))
+        const data = await snapshot.val();
+        setShopListFetchedData(data);
+    }
+
     async function addShopList(obj: ShopList) {
         push(shopListsInDB, obj)
+    }
+
+    async function toggleShopListIngredientIsPurchased(shopListIndex: string | undefined, ingredientIndex: number | undefined, newObj: ShopListIngredient) {
+        let newIsPurchased: boolean;
+        if (newObj.isPurchased) {
+            newIsPurchased = false;
+        } else {
+            newIsPurchased = true;
+        }
+        const exactItem = `shoplists/${shopListIndex}/ingredients/${ingredientIndex}`
+        update(ref(database, exactItem), {...newObj, isPurchased: newIsPurchased})
+        getShopListData(shopListIndex)
     }
 
     return {
         fetchedData,
         recipeFetchedData,
+        shopListFetchedData,
         getRecipesData,
         addRecipe,
         getRecipeData,
         editRecipe,
         getShopListsData,
         addShopList,
+        getShopListData,
+        toggleShopListIngredientIsPurchased
     }
 }
 

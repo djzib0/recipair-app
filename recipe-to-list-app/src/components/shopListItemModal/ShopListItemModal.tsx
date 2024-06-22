@@ -1,6 +1,5 @@
 import { SyntheticEvent, useEffect, useState } from 'react';
-// custom hooks import
-import useModal from '../../customHooks/useModal';
+
 // types import
 import { Recipe, ShopListItem } from '../../types/types';
 // styles import

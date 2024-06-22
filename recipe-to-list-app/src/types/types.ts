@@ -43,6 +43,7 @@ export type ShopListItem = {
 export type ShopListIngredient = Ingredient & ShopListItem;
 
 export type ShopList = {
+    id?: string;
     title: string;
     ingredients: ShopListIngredient[];
 }
