@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 // components import
 import TopNavbar from "../components/topNavbar/TopNavbar";
 import RecipeIngredientContainer from '../components/recipeIngredientContainer/RecipeIngredientContainer';

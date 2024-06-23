@@ -7,7 +7,7 @@ import ShopListItemModal from "../components/shopListItemModal/ShopListItemModal
 import useDatabase from "../customHooks/useDatabase";
 import useModal from "../customHooks/useModal";
 // react form hook and zod imports
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 // icons import
@@ -56,9 +56,6 @@ export default function AddShopListForm() {
     // destructuring useForm
     const {
       register,
-      handleSubmit,
-      resetField,
-      setValue,
     } = useForm<FormFields>(
       {defaultValues: {
         shopListTitle: "",
@@ -71,7 +68,7 @@ export default function AddShopListForm() {
   const [recipesData, setRecipesData] = useState<Recipe[]>([]);
   const [shopList, setShopList] = useState<ShopListItem[]>();
   const [shopListTitle, setShopListTitle] = useState<string>("");
-  const [ShopListIngredients, setShopListIngredients] = useState<ShopListIngredient[]>([]);
+  const [shopListIngredients, setShopListIngredients] = useState<ShopListIngredient[]>([]);
   const [selectedRecipes, setSelectedRecipes] = useState<ShopListItem[]>([]);
   const [filterSearch, setFilterSearch] = useState<string>("")
   const [isShopListEmpty, setIsShopListEmpty] = useState(true);
@@ -189,10 +186,29 @@ export default function AddShopListForm() {
         }
       }
     }
-    // setShopListIngredients(shopListIngredientsArr)
+    // 6. Aggregate ingredients if they occur in different
+    //    recipes (this solution is from ChatGPT, my first idea was
+    //    to use for loop)
+    const summedIngredients = shopListIngredientsArr.reduce((acc: any, ingredient) => {
+      
+      // Create a unique key for each ingredient based on its name and unit
+      const key: string = `${ingredient.name}-${ingredient.unit}`;
+      // If the key doesn't exist in the accumulator object, add it
+      if (!acc[key]) {
+        acc[key] = { ...ingredient }; // Copy the ingredient object
+      } else {
+        // If the key exists, sum the quantities
+        acc[key].quantity += ingredient.quantity;
+      }
+      // Return the accumulator for the next iteration
+      return acc;
+    }, {});
+    const result: ShopListIngredient[] = Object.values(summedIngredients);
+
+    setShopListIngredients(shopListIngredientsArr)
     let newShopList: ShopList = {
       title: shopListTitle,
-      ingredients: shopListIngredientsArr
+      ingredients: result
     }
     addShopList(newShopList)
     navigate("/shoplist")
