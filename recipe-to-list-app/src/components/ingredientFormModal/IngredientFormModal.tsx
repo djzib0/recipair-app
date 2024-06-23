@@ -68,8 +68,8 @@ export default function IngredientFormModal(props: IngredientFormModalProps) {
 
 
   const onSubmit: SubmitHandler<FormFields> = (data) => {
-    let unit: Unit = Unit[data.unit as keyof typeof Unit]
-    let ingredientType: IngredientType = IngredientType[data.ingredientType as keyof typeof IngredientType]
+    // let unit: Unit = Unit[data.unit as keyof typeof Unit]
+    // let ingredientType: IngredientType = IngredientType[data.ingredientType as keyof typeof IngredientType]
     const newUnit= Object.keys(Unit).find((k) => {
       return Unit[`${k as keyof typeof Unit}`] === data.unit
     })

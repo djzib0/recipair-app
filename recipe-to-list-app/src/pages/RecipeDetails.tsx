@@ -450,21 +450,25 @@ export default function RecipeDetails() {
           editedIndex={editedIndex}
         />
       }
-      {isEditIngredientModalOn && <IngredientFormModal 
-        classTitle={isEditIngredientModalOn ? "sliding-modal--bottom": "sliding-modal--bottom--disabled"}
-        isOn={isEditIngredientModalOn}
-        editIngredient={editIngredient}
-        defaultValue={editedIngredient}
-        closeModal={() => toggleEditIngredientModal(false)}
-        editedIndex={editedIndex}
-      />}
-      {isAddIngredientModalOn && <IngredientFormModal 
-        classTitle={isAddIngredientModalOn ? "sliding-modal--bottom": "sliding-modal--bottom--disabled"}
-        isOn={isAddIngredientModalOn}
-        addIngredient={addIngredient}
-        closeModal={() => toggleEditIngredientModal(false)}
-        editedIndex={editedIndex}
-      />}
+      {isEditIngredientModalOn && 
+        <IngredientFormModal 
+          classTitle={isEditIngredientModalOn ? "sliding-modal--bottom": "sliding-modal--bottom--disabled"}
+          isOn={isEditIngredientModalOn}
+          editIngredient={editIngredient}
+          defaultValue={editedIngredient}
+          closeModal={() => toggleEditIngredientModal(false)}
+          editedIndex={editedIndex}
+        />
+      }
+      {isAddIngredientModalOn && 
+        <IngredientFormModal 
+          classTitle={isAddIngredientModalOn ? "sliding-modal--bottom": "sliding-modal--bottom--disabled"}
+          isOn={isAddIngredientModalOn}
+          addIngredient={addIngredient}
+          closeModal={() => toggleAddIngredientModal(false)}
+          editedIndex={editedIndex}
+        />
+      }
     </main>
   )
 }

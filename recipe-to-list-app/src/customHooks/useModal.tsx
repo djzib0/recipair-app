@@ -32,6 +32,7 @@ export default function useModal() {
   }
 
   const toggleAddStepModal = (isOn: boolean) => {
+    console.log("passing =>", isOn)
     setIsAddStepModalOn(isOn);
   }
 
