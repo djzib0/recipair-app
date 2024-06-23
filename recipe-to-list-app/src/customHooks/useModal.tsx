@@ -18,7 +18,6 @@ export default function useModal() {
   const [editedShopListItem, setEditedShopListItem] = useState<ShopListItem>({recipeId: "", portionQuantity: 0, isPurchased: false})
   const [isAddToShopListModalOn, setIsAddToShopListModalOn] = useState(false);
 
-  
   const toggleModalMenu = (isOn: boolean) => {
     setIsModalMenuOn(isOn)
   }
@@ -72,6 +71,11 @@ export default function useModal() {
     }
   }
 
+  // const toggleShowIngredientRecipes = (recipeIds?: (string | undefined)[] | undefined) => {
+  //   setIsShowIngredientRecipesModalOn(prevState => !prevState);
+  //   console.log(recipeIds, " recipe Ids are:")
+  // }
+
   return {
     isModalMenuOn,
     toggleModalMenu,
@@ -95,6 +99,6 @@ export default function useModal() {
     isAddToShopListModalOn,
     toggleAddToShopListModal,
     editedShopListItem,
-    editedIndex
+    editedIndex,
   }
 }

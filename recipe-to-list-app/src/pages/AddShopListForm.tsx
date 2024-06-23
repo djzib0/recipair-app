@@ -68,7 +68,6 @@ export default function AddShopListForm() {
   const [recipesData, setRecipesData] = useState<Recipe[]>([]);
   const [shopList, setShopList] = useState<ShopListItem[]>();
   const [shopListTitle, setShopListTitle] = useState<string>("");
-  const [shopListIngredients, setShopListIngredients] = useState<ShopListIngredient[]>([]);
   const [selectedRecipes, setSelectedRecipes] = useState<ShopListItem[]>([]);
   const [filterSearch, setFilterSearch] = useState<string>("")
   const [isShopListEmpty, setIsShopListEmpty] = useState(true);
@@ -176,6 +175,7 @@ export default function AddShopListForm() {
                 ...ingredient,
                 quantity: ingredient.quantity * selectedRecipe.portionQuantity,
                 recipeId: selectedRecipe.recipeId,
+                recipeIds: [selectedRecipe.recipeId],
                 portionQuantity: selectedRecipe.portionQuantity,
                 isPurchased: selectedRecipe.isPurchased
               }
@@ -199,13 +199,17 @@ export default function AddShopListForm() {
       } else {
         // If the key exists, sum the quantities
         acc[key].quantity += ingredient.quantity;
+        let newArr: (string | undefined)[] = acc[key].recipeIds
+        newArr.push(ingredient.recipeId)
+        acc[key].recipeIds = newArr
       }
       // Return the accumulator for the next iteration
       return acc;
     }, {});
     const result: ShopListIngredient[] = Object.values(summedIngredients);
+    console.log(result)
 
-    setShopListIngredients(shopListIngredientsArr)
+    // setShopListIngredients(shopListIngredientsArr)
     let newShopList: ShopList = {
       title: shopListTitle,
       ingredients: result

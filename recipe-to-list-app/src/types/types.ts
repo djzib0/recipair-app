@@ -22,7 +22,6 @@ export type Ingredient = {
     quantity: number;
     unit: Unit;
     ingredientType: IngredientType;
-
 }
 
 export type Recipe = {
@@ -35,13 +34,27 @@ export type Recipe = {
 }
 
 export type ShopListItem = {
-    recipeId: string | undefined;
+    recipeId?: string | undefined;
     portionQuantity: number;
     isPurchased: boolean;
 }
 
-export type ShopListIngredient = Ingredient & ShopListItem;
+export type ShopListRecipeIds = {
+    recipeIds?: (string | undefined)[];
+}
 
+export type ShopListIngredient = {
+    // recipeId => it's required before aggregation, never use it 
+    // later, beacuse there is a list of ids in this type as well
+    recipeId?: string; 
+    name: string;
+    quantity: number;
+    unit: Unit;
+    ingredientType: IngredientType;
+    recipeIds?: (string | undefined)[];
+    portionQuantity: number;
+    isPurchased: boolean;
+}
 export type ShopList = {
     id?: string;
     title: string;

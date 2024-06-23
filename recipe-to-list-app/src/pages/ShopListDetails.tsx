@@ -8,6 +8,7 @@ import { useParams } from "react-router-dom"
 import { BiArrowBack } from "react-icons/bi";
 // custom hooks import
 import useDatabase from '../customHooks/useDatabase';
+import useModal from '../customHooks/useModal';
 // types import
 import { ShopList, ShopListIngredient } from '../types/types';
 
@@ -33,6 +34,12 @@ export default function ShopListDetails() {
     toggleShopListIngredientIsPurchased
   } = useDatabase();
 
+  // utilize useModal custom hook
+  const {
+    // isShowIngredientRecipesModalOn,
+    // toggleShowIngredientRecipes,
+  } = useModal();
+
   // state variables
   const [shopListData, setShopListData] = useState<ShopList>();
 
@@ -49,17 +56,37 @@ export default function ShopListDetails() {
     toggleShopListIngredientIsPurchased(shopListId, ingredientIndex, editedObj )
   }
 
-  // create an array of the ingredients
-  const shopListIngredientsArr = shopListData?.ingredients.map((item, index) => {
-    return (
-      <div key={index}>
+  // create an array of the ingredients that are not purchased yet
+  const notPurchasedShopListIngredientsArr = shopListData?.ingredients.filter(item => item.isPurchased === false)
+  .map((item, index) => {
+      return (
+        <div key={index}>
         <RecipeIngredientContainer
-          index={index}
+          index={shopListData.ingredients.indexOf(item)}
           name={item.name}
           quantity={item.quantity}
           unit={item.unit}
-          toggleIsPurchased={() => toggleIsPurchased(id, index, item)}
+          toggleIsPurchased={() => toggleIsPurchased(id, shopListData.ingredients.indexOf(item), item)}
           isPurchased={item.isPurchased}
+          recipeIds={item.recipeIds}
+          />
+      </div>
+    )
+  }) 
+
+  const purchasedShopListIngredientsArr = shopListData?.ingredients.filter(item => item.isPurchased === true)
+  .map((item, index) => {
+    return (
+      <div key={index}>
+        <RecipeIngredientContainer
+          index={shopListData.ingredients.indexOf(item)}
+          name={item.name}
+          quantity={item.quantity}
+          unit={item.unit}
+
+          toggleIsPurchased={() => toggleIsPurchased(id, shopListData.ingredients.indexOf(item), item)}
+          isPurchased={item.isPurchased}
+          recipeIds={item.recipeIds}
         />
       </div>
     )
@@ -69,7 +96,9 @@ export default function ShopListDetails() {
     <main>
         <TopNavbar title='details' menuItems={topNavbarItems}/>
       <div className='content__container'>
-        {shopListIngredientsArr}
+        {notPurchasedShopListIngredientsArr}
+        {purchasedShopListIngredientsArr && purchasedShopListIngredientsArr?.length > 0 && <p>Purchased</p>}
+        {purchasedShopListIngredientsArr}
       </div>
     </main>
   )

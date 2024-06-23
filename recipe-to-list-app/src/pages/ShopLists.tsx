@@ -47,11 +47,13 @@ export default function ShopLists() {
   }
   
   // create an array of shop list titles
-  const shopListsArr = fetchedShopLists && fetchedShopLists.map((item) => {
+  const shopListsArr = fetchedShopLists && fetchedShopLists.map((item, index) => {
     return (
-      <Link to={`./${item.id}`}>
-        <p>{item.title}</p>
-      </Link>
+      <div key={index}>
+        <Link to={`./${item.id}`}>
+          <p>{item.title}</p>
+        </Link>
+      </div>
     )
   })
 
