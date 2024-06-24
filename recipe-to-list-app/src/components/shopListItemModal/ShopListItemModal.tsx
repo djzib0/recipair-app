@@ -1,4 +1,4 @@
-import { SyntheticEvent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // types import
 import { Recipe, ShopListItem } from '../../types/types';
@@ -41,9 +41,12 @@ export default function ShopListItemModal(props: ShopListItemModalProps) {
   } = props;
 
   // state variables 
-  const [initialQuantity, setInitialQuantity] = useState(quantity);
+  const [initialQuantity, setInitialQuantity] = useState<number>();
   const [isChanged, setIsChanged] = useState(false);
 
+  useEffect(() => {
+    setInitialQuantity(quantity)
+  }, [])
  
   useEffect(() => {
     setValue("quantity", quantity)
