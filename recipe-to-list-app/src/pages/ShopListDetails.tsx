@@ -83,7 +83,6 @@ export default function ShopListDetails() {
           name={item.name}
           quantity={item.quantity}
           unit={item.unit}
-
           toggleIsPurchased={() => toggleIsPurchased(id, shopListData.ingredients.indexOf(item), item)}
           isPurchased={item.isPurchased}
           recipeIds={item.recipeIds}

@@ -41,7 +41,7 @@ export default function useDatabase() {
         const data = await snapshot.val();
         setRecipeFetchedData(data)
     }
-
+    
     async function addRecipe(obj: Recipe) {
         push(recipesInDB, obj)
     }

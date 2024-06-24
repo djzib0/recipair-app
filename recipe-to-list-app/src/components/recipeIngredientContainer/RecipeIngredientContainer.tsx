@@ -1,6 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+// custom hooks import
+import useDatabase from '../../customHooks/useDatabase';
 // enums import
 import { Unit } from '../../enums/enums';
+// types import
+import { Recipe } from '../../types/types';
 // styles import
 import './RecipeIngredientContainer.css'
 // icons import
@@ -28,20 +32,50 @@ type RecipeIngredientContainerProps = {
 
 export default function RecipeIngredientContainer(props: RecipeIngredientContainerProps) {
 
+  // utilizing use database custom hook
+  const {
+    fetchedData,
+    getRecipesData
+  } = useDatabase();
+
   // destructuring props
   const { index, name, quantity, unit, removeIngredient,
     toggleModal, toggleIsPurchased, recipeIds,
     isPurchased } = props;
 
   // state variables
-  const [showIngredientRecipes, setIsShowIngredientRecipes] = useState(false)
+  const [showIngredientRecipes, setIsShowIngredientRecipes] = useState(false);
+  const [recipesData, setRecipesData] = useState<Recipe[]>([])
+
+  useEffect(() => {
+    if (showIngredientRecipes) {
+      getRecipesData()
+    }
+  }, [showIngredientRecipes])
+
+  useEffect(() => {
+    // create an array of recipes
+    const recipes: Recipe[] = [];
+    // create an array from object (firebase fetched data is an object)
+    for (let [id, recipe] of Object.entries(fetchedData)) {
+      let recipeObj = recipe;
+      Object.assign(recipeObj, {id: id})
+      recipes.push(recipeObj)
+    }
+
+    // set recipes as a state variable
+    setRecipesData(recipes)
+  }, [fetchedData])
 
   const toggleShowIngredientRecipesTest = () => {
     setIsShowIngredientRecipes(prevState => !prevState)
   }
 
   const recipeIdsArr = recipeIds && recipeIds?.map(item => {
-    return <p>{item}</p>
+    let recipe = recipesData?.find(recipe => recipe.id === item )
+    console.log(item, " item")
+    console.log(recipesData, " recipesData")
+    return <p>{recipe?.title}</p>
   })
 
   return (
