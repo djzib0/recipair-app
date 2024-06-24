@@ -17,7 +17,7 @@ const topNavbarItems = [
   {
     id: 1,
     icon: <BiArrowBack />,
-    linkTo: '/'
+    linkTo: '/shoplist'
   }
 ]
 

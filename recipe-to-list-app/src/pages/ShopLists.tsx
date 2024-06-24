@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 // components import
 import TopNavbar from "../components/topNavbar/TopNavbar";
+import ShopListItem from "../components/shopListItem/ShopListItem";
 // custom hooks import
 import useDatabase from "../customHooks/useDatabase";
 // react router imports
@@ -51,12 +52,14 @@ export default function ShopLists() {
     return (
       <div key={index}>
         <Link to={`./${item.id}`}>
-          <p>{item.title}</p>
+          <ShopListItem
+            title={item.title}
+            ingredientsQuantity={item.ingredients.length}
+          />
         </Link>
       </div>
     )
   })
-
 
   return (
     <div>
@@ -64,8 +67,9 @@ export default function ShopLists() {
         title="shop lists"
         menuItems={topNavbarItems}
       />
-
-      {shopListsArr}
+      <div className="content__container">
+        {shopListsArr}
+      </div>
 
       <div className="cta-btn__container">
         <Link

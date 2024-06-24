@@ -12,7 +12,9 @@ import { PiTrashLight } from 'react-icons/pi';
 import { CiEdit } from 'react-icons/ci';
 import { FaRegCircle } from "react-icons/fa";
 import { FaRegCircleCheck } from "react-icons/fa6";
-import { FaRegCircleQuestion } from "react-icons/fa6";
+// import { FaRegCircleQuestion } from "react-icons/fa6";
+import { ImInfo } from "react-icons/im";
+
 // utils import
 import { firstLetterToUpperCase } from '../../utils/utils';
 
@@ -67,7 +69,7 @@ export default function RecipeIngredientContainer(props: RecipeIngredientContain
     setRecipesData(recipes)
   }, [fetchedData])
 
-  const toggleShowIngredientRecipesTest = () => {
+  const toggleShowIngredientRecipes = () => {
     setIsShowIngredientRecipes(prevState => !prevState)
   }
 
@@ -96,32 +98,33 @@ export default function RecipeIngredientContainer(props: RecipeIngredientContain
         <div className='ingredient-cta__container'>
           <div className='ingredient-cta--delete'>
           {toggleModal && <button 
-            className='cta__btn-small' 
+            className='cta__btn--small' 
             type="button"
             onClick={toggleModal}
           >
             <CiEdit />
           </button>}
           {removeIngredient && <button 
-            className='cta__btn-small' 
+            className='cta__btn--small' 
             type="button"
             onClick={() => removeIngredient(index)}
           >
             <PiTrashLight />
           </button>}
           {recipeIds && <button 
-            className='cta__btn-small' 
+            className='cta__btn--small' 
             type="button"
-            onClick={() => toggleShowIngredientRecipesTest()}
+            onClick={() => toggleShowIngredientRecipes()}
           >
-            <FaRegCircleQuestion />
+            {/* <FaRegCircleQuestion className='icon--light--blue' /> */}
+            <ImInfo className='icon--light--blue' />
           </button>}
           {toggleIsPurchased && <button 
-            className='cta__btn-small' 
+            className='cta__btn--small' 
             type="button"
             onClick={toggleIsPurchased}
           >
-            {isPurchased ? <FaRegCircleCheck/> : <FaRegCircle />}
+            {isPurchased ? <FaRegCircleCheck className='icon--green'/> : <FaRegCircle />}
           </button>}
           </div>
         </div>

@@ -23,14 +23,15 @@
     justify-content: flex-end;
 }
 
-.cta__btn-small {
+.cta__btn--small {
     background-color: transparent;
     border: none;
     width: 15px;
     height: 15px;
-    font-size: 1em;
-    padding: 0;
-    margin: 0;
+    font-size: 1.3em;
+    padding: .2em;
+    margin-right: .2em;
+    margin-left: 1em;
     margin-top: 3px;
 }
 

@@ -1,5 +1,6 @@
 .recipe-ingredient__container {
     display: flex;
+    align-items: center;
     margin-bottom: .5em;
     border-radius: .2em;
     font-size: .8em;
@@ -31,20 +32,40 @@
     width: 30%;
     display: flex;
     justify-content: flex-end;
+    align-items: center;
 }
 
-.cta__btn-small {
+.cta__btn--small,
+.cta__btn--medium {
     background-color: transparent;
     border: none;
-    width: 15px;
-    height: 15px;
     font-size: 1em;
     padding: 0;
     margin: 0;
+}
+
+.cta__btn--small {
+    width: 15px;
+    height: 15px;
     margin-top: 3px;
 }
 
-.btn-icon--small {
+.cta__btn--medium {
+    width: 25px;
+    height: 25px;
+}
+
+.btn-icon--medium {
     width: 10px;
     height: 10px;
+}
+
+
+
+.icon--green {
+    color: rgb(17, 137, 17);
+}
+
+.icon--light--blue {
+    color:rgb(0, 162, 255);
 }
