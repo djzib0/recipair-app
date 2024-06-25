@@ -14,7 +14,8 @@ export default function ShopListRecipeItem(props: ShopListRecipeItemProps) {
 
   return (
     <div className={isSelected ? "shop-list-item__container--selected" : "shop-list-item__container"}>
-      <p>{recipeTitle} - {portion}</p>
+      <p>{recipeTitle}</p>
+      <p>{portion}</p>
     </div>
   )
 }

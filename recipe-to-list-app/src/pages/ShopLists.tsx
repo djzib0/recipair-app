@@ -51,12 +51,11 @@ export default function ShopLists() {
   const shopListsArr = fetchedShopLists && fetchedShopLists.map((item, index) => {
     return (
       <div key={index}>
-        <Link to={`./${item.id}`}>
-          <ShopListItem
-            title={item.title}
-            ingredientsQuantity={item.ingredients.length}
-          />
-        </Link>
+        <ShopListItem
+          linkTo={`./${item.id}`}
+          title={item.title}
+          ingredientsQuantity={item.ingredients.length}
+        />
       </div>
     )
   })

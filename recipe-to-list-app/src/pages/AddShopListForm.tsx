@@ -249,46 +249,55 @@ export default function AddShopListForm() {
   })
 
   return (
-    <div>
+    <main>
       <TopNavbar 
         title="Add shop list"
         menuItems={topNavbarItems}
-      />
+        />
       {!isShopListEmpty && 
       <button
+        className=""
         onClick={saveShoplist}
       >Save</button>
-      }
-      <form>
-        <label htmlFor="shopListTitle">
-          Title:
-        </label>
-        <input {...register("shopListTitle", {onChange: handleTitleChange})}
-          type="text"
-          id="shopListTitle"
-          />
-      </form>
-      <form>
-        <label htmlFor="shopListTitle">
-          Filter:
-        </label>
-        <input {...register("filterSearch", {onChange: handleFilterChange})}
-          type="text"
-          id="shopListTitle"
-          />
-      </form>
-      {shopListrecipeItemsArr}
+    }
+      <div className="content__container">
+        <form>
+          <label htmlFor="shopListTitle">
+            Title:
+          </label>
+          <input {...register("shopListTitle", {onChange: handleTitleChange})}
+            type="text"
+            id="shopListTitle"
+            />
+        </form>
+        <form>
+          <label htmlFor="shopListTitle">
+            Filter:
+          </label>
+          <input {...register("filterSearch", {onChange: handleFilterChange})}
+            type="text"
+            id="shopListTitle"
+            />
+        </form>
+        <div className="shop-list-item__container">
+          <h4>Recipe name</h4>
+          <h4>Portions</h4>
+
+        </div>
+        {shopListrecipeItemsArr}
+        
+      </div>
       {isAddToShopListModalOn && <ShopListItemModal
-        itemId={editedShopListItem.recipeId ? editedShopListItem.recipeId : ""}
-        addToList={addToList}
-        removeFromList={removeFromList}
-        closeModal={() => toggleAddToShopListModal(false)}
-        selectedItem={selectedRecipes && selectedRecipes.find(recipe => recipe.recipeId === editedShopListItem.recipeId)}
-        classTitle={isAddToShopListModalOn ? "sliding-shoplist-modal--bottom": "sliding-shoplist-modal--bottom--disabled"}
-        selectedRecipeData={recipesData && selectedRecipes && recipesData.find(recipe => recipe.id === editedShopListItem.recipeId)}
-        quantity={editedShopListItem.portionQuantity}
-      />
-      }
-    </div>
+          itemId={editedShopListItem.recipeId ? editedShopListItem.recipeId : ""}
+          addToList={addToList}
+          removeFromList={removeFromList}
+          closeModal={() => toggleAddToShopListModal(false)}
+          selectedItem={selectedRecipes && selectedRecipes.find(recipe => recipe.recipeId === editedShopListItem.recipeId)}
+          classTitle={isAddToShopListModalOn ? "sliding-shoplist-modal--bottom": "sliding-shoplist-modal--bottom--disabled"}
+          selectedRecipeData={recipesData && selectedRecipes && recipesData.find(recipe => recipe.id === editedShopListItem.recipeId)}
+          quantity={editedShopListItem.portionQuantity}
+          />
+        }
+    </main>
   )
 }

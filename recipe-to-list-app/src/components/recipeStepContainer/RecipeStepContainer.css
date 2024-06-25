@@ -18,12 +18,12 @@
 }
 
 .step-cta__container {
-    width: 30%;
+    width: 35%;
     display: flex;
     justify-content: flex-end;
 }
 
-.cta__btn--small {
+.cta__step-btn--small {
     background-color: transparent;
     border: none;
     width: 15px;
@@ -31,14 +31,8 @@
     font-size: 1.3em;
     padding: .2em;
     margin-right: .2em;
-    margin-left: 1em;
+    margin-left: .7em;
     margin-top: 3px;
-}
-
-.step-cta--up,
-.step-cta--down,
-.step-cta--delete {
-    margin-left: 1.5em;
 }
 
 .btn-icon--small {

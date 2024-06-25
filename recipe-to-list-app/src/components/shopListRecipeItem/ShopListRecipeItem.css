@@ -1,3 +1,24 @@
+.shop-list-item__container,
 .shop-list-item__container--selected {
-    background-color: red;
+    display: flex;
+    justify-content: space-between;
+    padding: .2em .4em;
+    margin-bottom: .2em;
+}
+
+.shop-list-item__container--selected {
+    background-color: #5fcf80;
+    border-radius: .3em;
+}
+
+.shop-list-item__container > h4,
+.shop-list-item__container--selected > h4 {
+    font-size: .8em;
+}
+
+.shop-list-item__container > p,
+.shop-list-item__container--selected > p {
+    display: inline;
+    padding:0;
+    margin: 0;
 }

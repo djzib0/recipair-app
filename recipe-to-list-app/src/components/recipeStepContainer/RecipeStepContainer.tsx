@@ -32,7 +32,7 @@ export default function RecipeStepContainer(props: RecipeStepContainerProps) {
         <div className='step-cta--up'>
           {index > 0 && 
             <button 
-              className='cta_btn--small' 
+              className='cta__step-btn--small' 
               onClick={() => changeStepPosition(index, true)}
             >
             {<MdKeyboardArrowUp />}
@@ -42,7 +42,7 @@ export default function RecipeStepContainer(props: RecipeStepContainerProps) {
         <div className='step-cta--down'>
           {index + 1 != maxIndex  &&
             <button
-              className='cta_btn--small' 
+              className='cta__step-btn--small' 
               onClick={() => changeStepPosition(index, false)}
             >
               <MdKeyboardArrowDown />
@@ -50,7 +50,7 @@ export default function RecipeStepContainer(props: RecipeStepContainerProps) {
           }
         </div>
         <button 
-            className='cta_btn--small' 
+            className='cta__step-btn--small' 
             type="button"
             onClick={toggleModal}
           >
@@ -58,7 +58,7 @@ export default function RecipeStepContainer(props: RecipeStepContainerProps) {
           </button>
         <div className='step-cta--delete'>
           <button 
-            className='cta_btn--small' 
+            className='cta__step-btn--small' 
             type="button"
             onClick={() => removeStep(index)}
           >
