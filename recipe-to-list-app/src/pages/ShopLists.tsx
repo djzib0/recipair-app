@@ -54,7 +54,7 @@ export default function ShopLists() {
         <ShopListItem
           linkTo={`./${item.id}`}
           title={item.title}
-          ingredientsQuantity={item.ingredients.length}
+          ingredientsQuantity={item.ingredients ? item.ingredients.length : 0}
         />
       </div>
     )

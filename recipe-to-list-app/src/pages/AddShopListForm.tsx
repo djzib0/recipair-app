@@ -7,7 +7,7 @@ import ShopListItemModal from "../components/shopListItemModal/ShopListItemModal
 import useDatabase from "../customHooks/useDatabase";
 import useModal from "../customHooks/useModal";
 // react form hook and zod imports
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 // icons import
@@ -56,6 +56,7 @@ export default function AddShopListForm() {
     // destructuring useForm
     const {
       register,
+      handleSubmit,
     } = useForm<FormFields>(
       {defaultValues: {
         shopListTitle: "",
@@ -156,6 +157,7 @@ export default function AddShopListForm() {
         newSelectedRecipes.splice(newSelectedRecipes.indexOf(recipe), 1);
       }
     }
+    toggleAddToShopListModal(false);
     setSelectedRecipes(newSelectedRecipes);
     setRefreshedPage(prevState => !prevState);
   }
@@ -248,20 +250,19 @@ export default function AddShopListForm() {
     )
   })
 
+  const onSubmit: SubmitHandler<FormFields> = () => {
+    saveShoplist();
+  }
+
   return (
     <main>
       <TopNavbar 
         title="Add shop list"
         menuItems={topNavbarItems}
         />
-      {!isShopListEmpty && 
-      <button
-        className=""
-        onClick={saveShoplist}
-      >Save</button>
-    }
+      
       <div className="content__container">
-        <form>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <label htmlFor="shopListTitle">
             Title:
           </label>
@@ -269,6 +270,13 @@ export default function AddShopListForm() {
             type="text"
             id="shopListTitle"
             />
+          <div className='confirm-btn__container'>
+            {!isShopListEmpty && shopListTitle.length > 0 && 
+                <button
+                  className='confirm__btn--medium btn--narrow'
+                >Save</button>
+              }
+          </div>
         </form>
         <form>
           <label htmlFor="shopListTitle">

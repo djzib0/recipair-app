@@ -48,7 +48,7 @@ export default function ShopListDetails() {
   }, [])
 
   useEffect(() => {
-    setShopListData(shopListFetchedData)
+    setShopListData(shopListFetchedData?.ingredients && shopListFetchedData)
   }, [shopListFetchedData])
 
   // functions
@@ -56,8 +56,10 @@ export default function ShopListDetails() {
     toggleShopListIngredientIsPurchased(shopListId, ingredientIndex, editedObj )
   }
 
+  console.log(shopListData, " shoplist data")
+
   // create an array of the ingredients that are not purchased yet
-  const notPurchasedShopListIngredientsArr = shopListData?.ingredients.filter(item => item.isPurchased === false)
+  const notPurchasedShopListIngredientsArr = shopListData && shopListData?.ingredients.filter(item => item.isPurchased === false)
   .map((item, index) => {
       return (
         <div key={index}>
@@ -72,7 +74,7 @@ export default function ShopListDetails() {
           />
       </div>
     )
-  }) 
+  }); 
 
   const purchasedShopListIngredientsArr = shopListData?.ingredients.filter(item => item.isPurchased === true)
   .map((item, index) => {
@@ -95,6 +97,7 @@ export default function ShopListDetails() {
     <main>
         <TopNavbar title='details' menuItems={topNavbarItems}/>
       <div className='content__container'>
+        {!shopListFetchedData?.ingredients && <p>No ingredients</p>}
         {notPurchasedShopListIngredientsArr}
         {purchasedShopListIngredientsArr && purchasedShopListIngredientsArr?.length > 0 && <p>Purchased</p>}
         {purchasedShopListIngredientsArr}

@@ -123,8 +123,18 @@ select {
   border-radius: 2px;
 }
 
+.confirm-btn__container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
 .confirm__btn,
-.confirm__btn--small {
+.confirm__btn--small,
+.confirm__btn--medium {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 19px 39px 18px 39px;
   color: #FFF;
   background-color: #4bc970;
@@ -140,9 +150,19 @@ select {
   cursor: pointer;
 }
 
+.confirm__btn--medium {
+  margin-top: 10px;
+  width: 60%;
+}
+
 .confirm__btn--small {
   width: 40%;
   padding: 10px 39px 10px 39px;
+}
+
+.btn--narrow {
+  height: 40px;
+  text-transform: uppercase;
 }
 
 fieldset {

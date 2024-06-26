@@ -85,11 +85,11 @@ export default function ShopListItemModal(props: ShopListItemModalProps) {
   return (
     <div className={classTitle}>
       <p className='shoplist-item-modal__title'>
-        {trimText(selectedRecipeData?.title, 20)}
+        {trimText(selectedRecipeData?.title, 24)}
       </p>
       <form 
         onSubmit={handleSubmit(onSubmit)}
-        className='shoplist-item-modal__input-field'
+        className='shoplist-item-modal__form'
       >
         <label
           htmlFor='quantity'

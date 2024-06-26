@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+// react router imports
+import { useNavigate } from "react-router-dom";
 // components import
 import TopNavbar from "../components/topNavbar/TopNavbar";
 // custom hooks import
@@ -30,6 +32,10 @@ const schema = z.object({
 type FormFields = z.infer<typeof schema>
 
 export default function AddRecipeForm() {
+
+  // utilize react router
+  const navigate = useNavigate();
+
 
   // destructuring useForm
   const { 
@@ -92,6 +98,7 @@ export default function AddRecipeForm() {
       steps: newRecipe.steps,
       ingredients: newRecipe.ingredients
     })
+    navigate('../')
   }
 
   const onImageError = (e: any) => {

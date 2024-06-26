@@ -39,12 +39,14 @@ export default function RecipeListItem(props: RecipeListItemProps) {
         alt={`${title} photo`}
         className="recipe-list__img"
       /> */}
-      {imgUrl.length === 0 ?
-      <img src={noPhotoImg} className="recipe__img"/> :
-      <img src={imgUrl} 
-        className="recipe-list__img" 
-        onError={onImageError} />
-      }
+      <div className='recipe-list-img__container'>
+        {imgUrl.length === 0 ?
+        <img src={noPhotoImg} className="recipe-list__img"/> :
+        <img src={imgUrl} 
+          className="recipe-list__img" 
+          onError={onImageError} />
+        }
+      </div>
       
       <div className='recipe-list-item__details'>
         <div className='recipe-list-item__title'>

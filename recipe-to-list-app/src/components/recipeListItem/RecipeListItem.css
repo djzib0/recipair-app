@@ -11,6 +11,7 @@
 .recipe-list-item__container,
 .recipe-list__img {
     height: 80px;
+    width: 100%;
     border-top-left-radius: .5em;
     border-bottom-left-radius: .5em;
 }
