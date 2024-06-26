@@ -14,9 +14,9 @@ import { FaRegCircle } from "react-icons/fa";
 import { FaRegCircleCheck } from "react-icons/fa6";
 // import { FaRegCircleQuestion } from "react-icons/fa6";
 import { ImInfo } from "react-icons/im";
-
 // utils import
 import { firstLetterToUpperCase } from '../../utils/utils';
+import ShopListDetailsRecipeTitle from '../shopListDetailsRecipeTitle/ShopListDetailsRecipeTitle';
 
 
 type RecipeIngredientContainerProps = {
@@ -75,9 +75,12 @@ export default function RecipeIngredientContainer(props: RecipeIngredientContain
 
   const recipeIdsArr = recipeIds && recipeIds?.map(item => {
     let recipe = recipesData?.find(recipe => recipe.id === item )
-    console.log(item, " item")
-    console.log(recipesData, " recipesData")
-    return <p>{recipe?.title}</p>
+    return (
+    <ShopListDetailsRecipeTitle 
+      title={recipe?.title}
+      linkTo={`../recipe/${recipe?.id}`}
+      />
+  )
   })
 
   return (

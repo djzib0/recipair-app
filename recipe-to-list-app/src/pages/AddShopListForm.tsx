@@ -53,17 +53,17 @@ export default function AddShopListForm() {
     editedShopListItem,
   } = useModal();
 
-    // destructuring useForm
-    const {
-      register,
-      handleSubmit,
-    } = useForm<FormFields>(
-      {defaultValues: {
-        shopListTitle: "",
-        filterSearch: "",
-      },
-      resolver: zodResolver(schema)}
-    )
+  // destructuring useForm
+  const {
+    register,
+    handleSubmit,
+  } = useForm<FormFields>(
+    {defaultValues: {
+      shopListTitle: "",
+      filterSearch: "",
+    },
+    resolver: zodResolver(schema)}
+  )
 
   // state variables
   const [recipesData, setRecipesData] = useState<Recipe[]>([]);
@@ -231,7 +231,7 @@ export default function AddShopListForm() {
 
   // filter data based on the input
   const filteredShopListrecipeItemsArr = recipesData && recipesData.filter((item) => {
-    return item.title.toLowerCase().includes(filterSearch.toLowerCase())
+    return item.title.toLowerCase().includes(filterSearch.toLowerCase());
   })
 
   // create an array of shopListRecipeItem

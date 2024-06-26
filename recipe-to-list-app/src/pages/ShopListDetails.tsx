@@ -56,8 +56,6 @@ export default function ShopListDetails() {
     toggleShopListIngredientIsPurchased(shopListId, ingredientIndex, editedObj )
   }
 
-  console.log(shopListData, " shoplist data")
-
   // create an array of the ingredients that are not purchased yet
   const notPurchasedShopListIngredientsArr = shopListData && shopListData?.ingredients.filter(item => item.isPurchased === false)
   .map((item, index) => {
