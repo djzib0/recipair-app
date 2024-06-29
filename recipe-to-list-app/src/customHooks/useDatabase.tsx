@@ -80,6 +80,10 @@ export default function useDatabase() {
         getShopListData(shopListIndex)
     }
 
+    const deleteShopList = (id: string | undefined) => {
+        console.log("deleting - ", id)
+    }
+
     return {
         fetchedData,
         recipeFetchedData,
@@ -91,7 +95,8 @@ export default function useDatabase() {
         getShopListsData,
         addShopList,
         getShopListData,
-        toggleShopListIngredientIsPurchased
+        toggleShopListIngredientIsPurchased,
+        deleteShopList
     }
 }
 
