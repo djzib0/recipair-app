@@ -239,7 +239,6 @@ export default function AddShopListForm() {
     const shopListItem: ShopListItem | undefined = shopList?.find(i => i.recipeId === item.id)
     const selectedRecipe: ShopListItem | undefined = selectedRecipes?.find(i => i.recipeId === item.id)
     return (
-      // <div key={index} onClick={() => testFunc(true, shopListItem ? shopListItem : {recipeId: "", quantity: 0})}>
       <div key={index} onClick={() => (toggleAddToShopListModal(false), toggleAddToShopListModal(true, shopListItem ? shopListItem : {recipeId: "", portionQuantity: 0, isPurchased: false}))}>
         <ShopListRecipeItem 
           recipeTitle={item.title}

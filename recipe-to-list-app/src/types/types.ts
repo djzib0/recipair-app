@@ -1,4 +1,4 @@
-import { Unit, IngredientType } from "../enums/enums";
+import { Unit, IngredientType, ModalType } from "../enums/enums";
 
 export type PostProps = {
     key: number;
@@ -59,4 +59,16 @@ export type ShopList = {
     id?: string;
     title: string;
     ingredients: ShopListIngredient[];
+}
+
+export type Modal = {
+    isActive: boolean;
+    modalType: ModalType;
+    messageTitle: string;
+    messageText: string;
+    errorText: string;
+    handleFunction?: () => void;
+    refreshFunction?: () => void;
+    closeFunction?: () => void;
+    obj?: any;
 }

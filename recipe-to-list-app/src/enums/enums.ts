@@ -20,6 +20,12 @@ export enum IngredientType {
     Other = "other",
 }
 
+export enum ModalType {
+    Warning,
+    Info,
+    Error
+}
+
 // export const UNITS_WITH_ABBREVIATION = [
 //     {
 //         name: 'kilogram',

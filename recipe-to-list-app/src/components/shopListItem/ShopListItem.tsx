@@ -11,21 +11,30 @@ import './ShopListItem.css'
 import ingredientIconCol from '../../../images/icons/ingredientsiconcol.png';
 // icons import
 import { PiTrashLight } from 'react-icons/pi';
+// types import
+import { ShopList } from '../../types/types';
 
 type ShopListItemProps = {
     linkTo: string;
     title: string;
     ingredientsQuantity: number;
     shopListId: string | undefined;
+    openModal?: () => void;
+    closeModal?: () => void;
+    obj: ShopList;
+
 }
 
 export default function ShopListItem(props: ShopListItemProps) {
 
   // utilize useModal hook
-  const {isYesNoModalOn, toggleYesNoModalOn} = useModal();
+  const {} = useModal();
 
   // utilize useDatabase hook
   const { deleteShopList } = useDatabase();
+
+  // destructuring props
+  const {openModal} = props
 
   console.log(props.shopListId, " id")
 
@@ -47,22 +56,13 @@ export default function ShopListItem(props: ShopListItemProps) {
         <button
           className='shoplist-item__delete'
           type='button'
-          onClick={() => {toggleYesNoModalOn(false), toggleYesNoModalOn(true)}}
+          // onClick={() => toggleYesNoModalOn(true, `Do you want to delete shop list "${props.title}"?`)}
+          onClick={() => openModal && openModal()}
           >
           <PiTrashLight />
         </button>
         
       </div>   
-      {isYesNoModalOn && 
-        <YesNoModal 
-          classTitle={isYesNoModalOn ? 'sliding-yesno-modal--bottom': 'sliding-yesno-modal--bottom--disabled' }
-          message={`Do you want to delete shop list "${props.title}"?`}
-          handleFunction={() => deleteShopList(props.shopListId)}
-          isWarning={true}
-          closeModal={() => toggleYesNoModalOn(false)}
-          itemId={props.shopListId}
-        />
-        }    
     </main>
   )
 }

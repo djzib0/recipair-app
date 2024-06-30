@@ -1,8 +1,21 @@
 import { useState } from 'react'
 // types import
-import { Ingredient, ShopListItem } from '../types/types';
+import { Ingredient, ShopListItem, ShopList, Modal} from '../types/types';
+// enums import
+import { ModalType } from '../enums/enums';
 
 export default function useModal() {
+
+  const initialModalObj: Modal = {
+    isActive: false,
+    modalType: ModalType.Info,
+    messageTitle: "",
+    messageText: "",
+    errorText: "",
+    handleFunction: () => {},
+    refreshFunction: () => {},
+    closeFunction: () => {}
+  }
 
   const [isModalMenuOn, setIsModalMenuOn] = useState(false);
   const [isEditTitleModalOn, setIsEditTitleModalOn] = useState(false);
@@ -18,6 +31,9 @@ export default function useModal() {
   const [editedShopListItem, setEditedShopListItem] = useState<ShopListItem>({recipeId: "", portionQuantity: 0, isPurchased: false})
   const [isAddToShopListModalOn, setIsAddToShopListModalOn] = useState(false);
   const [isYesNoModalOn, setIsYesNoModalOn] = useState<boolean>();
+  const [yesNoModalItem, setYesNoModalItem] = useState<string>();
+  const [editedShopList, setEditedShopList] = useState<ShopList>()
+  const [modalData, setModalData] = useState<Modal>(initialModalObj)
 
   const toggleModalMenu = (isOn: boolean) => {
     setIsModalMenuOn(isOn)
@@ -72,13 +88,8 @@ export default function useModal() {
     }
   }
 
-  const toggleYesNoModalOn = (isOn: boolean) => {
-    if (!isYesNoModalOn) {
-      setIsYesNoModalOn(isOn)
-    } else {
-      setIsYesNoModalOn(false)
-      setIsYesNoModalOn(true)
-    }
+  const toggleYesNoModal = (isOn: boolean) => {
+    setIsYesNoModalOn(isOn)
   }
 
   // const toggleShowIngredientRecipes = (recipeIds?: (string | undefined)[] | undefined) => {
@@ -111,6 +122,8 @@ export default function useModal() {
     editedShopListItem,
     editedIndex,
     isYesNoModalOn,
-    toggleYesNoModalOn
+    toggleYesNoModal,
+    modalData,
+    setModalData,
   }
 }

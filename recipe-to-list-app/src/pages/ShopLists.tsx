@@ -2,8 +2,14 @@ import { useEffect, useState } from "react";
 // components import
 import TopNavbar from "../components/topNavbar/TopNavbar";
 import ShopListItem from "../components/shopListItem/ShopListItem";
+import YesNoModal from "../components/yesNoModal/YesNoModal";
+// types import
+import { Modal } from "../types/types";
+// enums import
+import { ModalType } from "../enums/enums";
 // custom hooks import
 import useDatabase from "../customHooks/useDatabase";
+import useModal from "../customHooks/useModal";
 // react router imports
 import { Link } from "react-router-dom";
 // icons import
@@ -24,7 +30,13 @@ export default function ShopLists() {
   const {
     fetchedData,
     getShopListsData,
+    deleteShopList,
   } = useDatabase();
+
+  // utilize useModal custom hook
+  const {
+    modalData, setModalData, toggleYesNoModal, isYesNoModalOn
+  } = useModal();
 
   // state variables
   const [shopListsData, setShopListData] = useState([]);
@@ -46,6 +58,24 @@ export default function ShopLists() {
       fetchedShopLists.push(shopListObj)
     }
   }
+
+  // functions
+  const setDeleteModal = (item: ShopList) => {
+    setModalData(prevState => {
+      return {
+        ...prevState,
+        isActive: false,
+        modalType: ModalType.Error,
+        messageTitle: ``,
+        messageText: `Do you want to delete "${item.title}" shop list?`,
+        errorText: "",
+        handleFunction: () => deleteShopList(item.id),
+        refreshFunction: () => {},
+        closeFunction: () => toggleYesNoModal(false)
+      }
+    })
+    toggleYesNoModal(true);
+  }
   
   // create an array of shop list titles
   const shopListsArr = fetchedShopLists && fetchedShopLists.map((item, index) => {
@@ -57,6 +87,8 @@ export default function ShopLists() {
           title={item.title}
           ingredientsQuantity={item.ingredients ? item.ingredients.length : 0}
           shopListId={item.id}
+          obj={item}
+          openModal={() => setDeleteModal(item)}
         />
       </div>
     )
@@ -83,6 +115,14 @@ export default function ShopLists() {
           </button>
         </Link>
       </div>
+      {isYesNoModalOn && 
+        <YesNoModal 
+          classTitle={isYesNoModalOn ? 'sliding-yesno-modal--bottom': 'sliding-yesno-modal--bottom--disabled' }
+          editedObj={modalData.obj}
+          message={modalData.messageText}
+          closeModal={modalData.closeFunction}
+        />
+        }    
     </div>
   )
 }

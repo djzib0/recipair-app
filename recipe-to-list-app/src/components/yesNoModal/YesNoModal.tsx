@@ -1,35 +1,34 @@
+// custom hooks import
+import useModal from '../../customHooks/useModal';
+import { ShopList } from '../../types/types';
 // styles import
-import { useEffect } from 'react';
 import './YesNoModal.css'
 
 type YesNoModalProps = {
   classTitle: string;
-  message: string;
-  handleFunction: (id: string) => void;
-  closeModal: () => void;
-  isWarning?: boolean;
-  isInformative?: boolean;
-  isConfirmative?: boolean
-  itemId: string | undefined;
+  editedObj: ShopList | undefined;
+  message: string | undefined;
+  closeModal: (() => void )| undefined;
 }
 
 export default function YesNoModal(props: YesNoModalProps) {
 
-  // destructuring prosp
+  // utilizing useModal custom hook
+  const { } = useModal();
+
+  // destructuring props
   const {
-    classTitle, message, handleFunction, closeModal,
-    isWarning, isInformative, isConfirmative, itemId
+    classTitle, message, editedObj, closeModal
   } = props;
 
   const handleConfirm = () => {
-    itemId && handleFunction(itemId)
-    closeModal();
+    
   }
 
   return (
     <div className={classTitle}>
       <h5>{message}</h5>
-      {isWarning && 
+      {
       <div className='yesno-modal-btn__container'>
         <button
           onClick={() => handleConfirm()}
@@ -37,7 +36,7 @@ export default function YesNoModal(props: YesNoModalProps) {
           Yes
         </button>
         <button
-          onClick={() => closeModal()}
+          onClick={() => closeModal && closeModal()}
         >Cancel</button>
       </div>
       }
