@@ -69,6 +69,7 @@ export default function ShopListDetails() {
           toggleIsPurchased={() => toggleIsPurchased(id, shopListData.ingredients.indexOf(item), item)}
           isPurchased={item.isPurchased}
           recipeIds={item.recipeIds}
+          ingredientType={item.ingredientType}
           />
       </div>
     )
@@ -86,6 +87,7 @@ export default function ShopListDetails() {
           toggleIsPurchased={() => toggleIsPurchased(id, shopListData.ingredients.indexOf(item), item)}
           isPurchased={item.isPurchased}
           recipeIds={item.recipeIds}
+          ingredientType={item.ingredientType}
         />
       </div>
     )

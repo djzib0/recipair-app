@@ -291,6 +291,7 @@ export default function RecipeDetails() {
           unit={item.unit}
           removeIngredient={removeIngredient}
           toggleModal={() => toggleEditIngredientModal(true, index, item)}
+          ingredientType={item.ingredientType}
         />
       </div>
     )

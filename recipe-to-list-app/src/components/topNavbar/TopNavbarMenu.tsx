@@ -1,7 +1,7 @@
 // types import
 import { MenuItem } from "../../types/types";
 // ract router import
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 type TopNavbarProps<T> = {
   menuItems: T[]
@@ -9,16 +9,19 @@ type TopNavbarProps<T> = {
 
 export default function TopNavbarMenu(props: TopNavbarProps<MenuItem>) {
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const iconsArr = props.menuItems.map((item) => {
     return (
+      <Link to={item.linkTo} key={item.id}>
       <button 
         key={item.id} 
         className='navbar__icon'
-        onClick={() => navigate(-1)}>
+        // onClick={() => navigate(-1)}
+        >
           {item.icon}
       </button>
+      </Link>
     )
   })
 

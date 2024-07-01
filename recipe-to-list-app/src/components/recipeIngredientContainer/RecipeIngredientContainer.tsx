@@ -2,11 +2,15 @@ import { useEffect, useState } from 'react';
 // custom hooks import
 import useDatabase from '../../customHooks/useDatabase';
 // enums import
-import { Unit } from '../../enums/enums';
+import { IngredientType, Unit } from '../../enums/enums';
 // types import
 import { Recipe } from '../../types/types';
 // styles import
 import './RecipeIngredientContainer.css'
+// utils import
+import { firstLetterToUpperCase, setTypeIcon } from '../../utils/utils';
+// components import
+import ShopListDetailsRecipeTitle from '../shopListDetailsRecipeTitle/ShopListDetailsRecipeTitle';
 // icons import
 import { PiTrashLight } from 'react-icons/pi';
 import { CiEdit } from 'react-icons/ci';
@@ -14,9 +18,17 @@ import { FaRegCircle } from "react-icons/fa";
 import { FaRegCircleCheck } from "react-icons/fa6";
 // import { FaRegCircleQuestion } from "react-icons/fa6";
 import { ImInfo } from "react-icons/im";
-// utils import
-import { firstLetterToUpperCase } from '../../utils/utils';
-import ShopListDetailsRecipeTitle from '../shopListDetailsRecipeTitle/ShopListDetailsRecipeTitle';
+// images import
+import milkProducts from '../../../images/icons/milk.png'
+import fatsAndOils from '../../../images/icons/fatsandoils.png'
+import fruits from '../../../images/icons/fruits.png'
+import grainNutsAndBakingProducts from '../../../images/icons/grain.png'
+import herbsAndSpices from '../../../images/icons/herbs.png'
+import meat from '../../../images/icons/meat.png'
+import fish from '../../../images/icons/seafood.png'
+import pastaAndRice from '../../../images/icons/pasta.png'
+import vegetables from '../../../images/icons/vegetable.png'
+import other from '../../../images/icons/stepscolicon.png'
 
 
 type RecipeIngredientContainerProps = {
@@ -24,6 +36,7 @@ type RecipeIngredientContainerProps = {
   name: string;
   quantity: number;
   unit: Unit;
+  ingredientType: IngredientType;
   removeIngredient?: (index: number) => void;
   toggleModal?: () => void;
   toggleShowIngredientRecipes?: (arr: (string | undefined)[] | undefined) => void;
@@ -42,7 +55,7 @@ export default function RecipeIngredientContainer(props: RecipeIngredientContain
 
   // destructuring props
   const { index, name, quantity, unit, removeIngredient,
-    toggleModal, toggleIsPurchased, recipeIds,
+    toggleModal, toggleIsPurchased, recipeIds, ingredientType,
     isPurchased } = props;
 
   // state variables
@@ -98,6 +111,10 @@ export default function RecipeIngredientContainer(props: RecipeIngredientContain
             <div>{unit}</div>
           </div>
         </div>
+        <img 
+          src={setTypeIcon(ingredientType)}
+          className='type-icon'
+        />
         <div className='ingredient-cta__container'>
           <div className='ingredient-cta--delete'>
           {toggleModal && <button 

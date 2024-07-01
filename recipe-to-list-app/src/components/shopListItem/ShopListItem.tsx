@@ -1,10 +1,7 @@
 // react router imports
 import { Link } from 'react-router-dom';
-// components import
-import YesNoModal from '../yesNoModal/YesNoModal';
 // custom hooks import
 import useModal from '../../customHooks/useModal';
-import useDatabase from '../../customHooks/useDatabase';
 // styles import
 import './ShopListItem.css'
 // images import
@@ -30,13 +27,8 @@ export default function ShopListItem(props: ShopListItemProps) {
   // utilize useModal hook
   const {} = useModal();
 
-  // utilize useDatabase hook
-  const { deleteShopList } = useDatabase();
-
   // destructuring props
   const {openModal} = props
-
-  console.log(props.shopListId, " id")
 
   return (
     <main>

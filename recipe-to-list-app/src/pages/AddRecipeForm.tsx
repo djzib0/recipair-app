@@ -222,6 +222,7 @@ export default function AddRecipeForm() {
           quantity={item.quantity}
           unit={item.unit}
           removeIngredient={removeIngredient}
+          ingredientType={item.ingredientType}
         />
       </div>
     )

@@ -3,8 +3,6 @@ import { useEffect, useState } from "react";
 import TopNavbar from "../components/topNavbar/TopNavbar";
 import ShopListItem from "../components/shopListItem/ShopListItem";
 import YesNoModal from "../components/yesNoModal/YesNoModal";
-// types import
-import { Modal } from "../types/types";
 // enums import
 import { ModalType } from "../enums/enums";
 // custom hooks import
@@ -84,7 +82,6 @@ export default function ShopLists() {
   
   // create an array of shop list titles
   const shopListsArr = fetchedShopLists && fetchedShopLists.map((item, index) => {
-    console.log(item.id, " shoplist id?")
     return (
       <div key={index}>
         <ShopListItem

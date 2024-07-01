@@ -73,3 +73,10 @@
 .icon--light--blue {
     color:rgb(0, 162, 255);
 }
+
+.type-icon {
+    width: 25px;
+    height: 25px;
+    padding: 0;
+    margin: 0;
+}
