@@ -40,10 +40,11 @@ export default function ShopLists() {
 
   // state variables
   const [shopListsData, setShopListData] = useState([]);
+  const [refreshedPage, setRefreshedPage] = useState(false);
 
   useEffect(() => {
     getShopListsData()
-  }, [])
+  }, [refreshedPage])
 
   useEffect(() => {
     setShopListData(fetchedData)
@@ -60,6 +61,10 @@ export default function ShopLists() {
   }
 
   // functions
+  const refreshPage = () => {
+    setRefreshedPage(prevState => !prevState)
+  }
+
   const setDeleteModal = (item: ShopList) => {
     setModalData(prevState => {
       return {
@@ -70,7 +75,7 @@ export default function ShopLists() {
         messageText: `Do you want to delete "${item.title}" shop list?`,
         errorText: "",
         handleFunction: () => deleteShopList(item.id),
-        refreshFunction: () => {},
+        refreshFunction: () => refreshPage(),
         closeFunction: () => toggleYesNoModal(false)
       }
     })
@@ -121,6 +126,8 @@ export default function ShopLists() {
           editedObj={modalData.obj}
           message={modalData.messageText}
           closeModal={modalData.closeFunction}
+          handleFunction={modalData.handleFunction}
+          refreshPage={modalData.refreshFunction}
         />
         }    
     </div>

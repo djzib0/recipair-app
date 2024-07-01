@@ -3,7 +3,7 @@ import { useState} from "react";
 import { Recipe, ShopList, ShopListIngredient } from "../types/types";
 // Firebase imports
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, onValue, push, get, update} from 'firebase/database'
+import { getDatabase, ref, onValue, push, get, update, remove} from 'firebase/database'
 
 
 // Firebase config
@@ -80,8 +80,9 @@ export default function useDatabase() {
         getShopListData(shopListIndex)
     }
 
-    const deleteShopList = (id: string | undefined) => {
-        console.log("deleting - ", id)
+    const deleteShopList = (shopListId: string | undefined) => {
+        const exactItem = `shoplists/${shopListId}`
+        remove(ref(database, exactItem))
     }
 
     return {

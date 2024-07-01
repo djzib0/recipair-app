@@ -9,6 +9,8 @@ type YesNoModalProps = {
   editedObj: ShopList | undefined;
   message: string | undefined;
   closeModal: (() => void )| undefined;
+  handleFunction: (() => void )| undefined;
+  refreshPage: (() => void )| undefined;
 }
 
 export default function YesNoModal(props: YesNoModalProps) {
@@ -18,12 +20,15 @@ export default function YesNoModal(props: YesNoModalProps) {
 
   // destructuring props
   const {
-    classTitle, message, editedObj, closeModal
+    classTitle, message, refreshPage, closeModal, handleFunction,
   } = props;
 
-  const handleConfirm = () => {
-    
+  const handlingConfirm = () => {
+    handleFunction && handleFunction();
+    closeModal && closeModal();
+    refreshPage && refreshPage();
   }
+
 
   return (
     <div className={classTitle}>
@@ -31,7 +36,7 @@ export default function YesNoModal(props: YesNoModalProps) {
       {
       <div className='yesno-modal-btn__container'>
         <button
-          onClick={() => handleConfirm()}
+          onClick={() => handlingConfirm()}
         >
           Yes
         </button>
