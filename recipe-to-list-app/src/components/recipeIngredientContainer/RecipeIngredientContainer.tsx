@@ -89,10 +89,12 @@ export default function RecipeIngredientContainer(props: RecipeIngredientContain
   const recipeIdsArr = recipeIds && recipeIds?.map(item => {
     let recipe = recipesData?.find(recipe => recipe.id === item )
     return (
-    <ShopListDetailsRecipeTitle 
-      title={recipe?.title}
-      linkTo={`../recipe/${recipe?.id}`}
+    <div key={Math.random()}>
+      <ShopListDetailsRecipeTitle
+        title={recipe?.title}
+        linkTo={`../recipe/${recipe?.id}`}
       />
+    </div>
   )
   })
 

@@ -42,48 +42,53 @@ export default function ShopListDetails() {
   } = useModal();
 
   // state variables
-  const [shopListData, setShopListData] = useState<ShopList>();
-  const [isSortedByType, setIsSortedByType] = useState<boolean>(false);
-  const [shopListIngredients, setShopListIngredients] = useState<Ingredient[]>([]);
+  const [isSortedByType, setIsSortedByType] = useState<boolean>(true);
+  const [isSortedByName, setIsSortedByName] = useState<boolean>(true);
+  const [shopListIngredients, setShopListIngredients] = useState<ShopListIngredient[] | undefined>([]);
 
   useEffect(() => {
     getShopListData(id)
   }, [])
 
   useEffect(() => {
-    setShopListData(shopListFetchedData?.ingredients && shopListFetchedData)
-    shopListData && setShopListIngredients(shopListData?.ingredients)
+    setShopListIngredients(shopListFetchedData?.ingredients)
+    setIsSortedByName(prevState => !prevState)
+    setIsSortedByType(prevState => !prevState);
   }, [shopListFetchedData])
 
-  // useEffect(() => {
-  //   const ingredientTypes = Object.values(IngredientType)
-  //   const sortedList = shopListIngredients.sort((a: any, b: any) => {
-  //     console.log(console.log(a.ingredientType, "a"))
-  //     console.log(console.log(b, "b"))
-  //     return  b.ingredientType > a.ingredientType
-  //   })
-  //   console.log(sortedList, "sorted list")
-  // }, [isSortedByType])
+  useEffect(() => {
+    if (isSortedByType) {
+      setShopListIngredients(prevState => prevState?.sort((a, b) => a.ingredientType.localeCompare(b.ingredientType)))
+    } else if (!isSortedByType) {
+      setShopListIngredients(prevState => prevState?.sort((a, b) => b.ingredientType.localeCompare(a.ingredientType)))
+    }
+  }, [isSortedByType])
+
+  useEffect(() => {
+    if (isSortedByName) {
+      setShopListIngredients(prevState => prevState?.sort((a, b) => a.name.localeCompare(b.name)))
+    } else if (!isSortedByName) {
+      setShopListIngredients(prevState => prevState?.sort((a, b) => b.name.localeCompare(a.name)))
+    }
+  }, [isSortedByName])
 
   // functions
   const toggleIsPurchased = (shopListId: string | undefined, ingredientIndex: number, editedObj: ShopListIngredient) => {
     toggleShopListIngredientIsPurchased(shopListId, ingredientIndex, editedObj )
   }
 
-  // if (shopListData?.ingredients && isSortedByType) {
-  //     setShopListData(shopListData?.ingredients.sort((a: any, b: any) => a.ingredientType - b.ingredientType))
-  // }
+
   // create an array of the ingredients that are not purchased yet
-  const notPurchasedShopListIngredientsArr = shopListData && shopListData?.ingredients.filter(item => item.isPurchased === false)
+  const notPurchasedShopListIngredientsArr = shopListIngredients && shopListIngredients.filter(item => item.isPurchased === false)
   .map((item, index) => {
       return (
         <div key={index}>
         <RecipeIngredientContainer
-          index={shopListData.ingredients.indexOf(item)}
+          index={shopListIngredients.indexOf(item)}
           name={item.name}
           quantity={item.quantity}
           unit={item.unit}
-          toggleIsPurchased={() => toggleIsPurchased(id, shopListData.ingredients.indexOf(item), item)}
+          toggleIsPurchased={() => toggleIsPurchased(id, shopListIngredients.indexOf(item), item)}
           isPurchased={item.isPurchased}
           recipeIds={item.recipeIds}
           ingredientType={item.ingredientType}
@@ -92,20 +97,24 @@ export default function ShopListDetails() {
     )
   });
 
-  const sortByType = () => {
-    setIsSortedByType(true)
+  const toggleSortByName = () => {
+    setIsSortedByName(prevState => !prevState)
   }
 
-  const purchasedShopListIngredientsArr = shopListData?.ingredients.filter(item => item.isPurchased === true)
+  const toggleSortByType = () => {
+    setIsSortedByType(prevState => !prevState)
+  }
+
+  const purchasedShopListIngredientsArr = shopListIngredients && shopListIngredients.filter(item => item.isPurchased === true)
   .map((item, index) => {
     return (
       <div key={index}>
         <RecipeIngredientContainer
-          index={shopListData.ingredients.indexOf(item)}
+          index={shopListIngredients.indexOf(item)}
           name={item.name}
           quantity={item.quantity}
           unit={item.unit}
-          toggleIsPurchased={() => toggleIsPurchased(id, shopListData.ingredients.indexOf(item), item)}
+          toggleIsPurchased={() => toggleIsPurchased(id, shopListIngredients.indexOf(item), item)}
           isPurchased={item.isPurchased}
           recipeIds={item.recipeIds}
           ingredientType={item.ingredientType}
@@ -118,7 +127,8 @@ export default function ShopListDetails() {
     <main>
         <TopNavbar title='details' menuItems={topNavbarItems}/>
       <div className='content__container'>
-        <button onClick={sortByType}>sort by type</button>
+        <button onClick={toggleSortByName}>sort by name</button>
+        <button onClick={toggleSortByType}>sort by type</button>
         {!shopListFetchedData?.ingredients && <p>No ingredients</p>}
         {notPurchasedShopListIngredientsArr}
         {purchasedShopListIngredientsArr && purchasedShopListIngredientsArr?.length > 0 && <p>Purchased</p>}
