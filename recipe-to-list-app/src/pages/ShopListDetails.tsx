@@ -42,8 +42,9 @@ export default function ShopListDetails() {
   } = useModal();
 
   // state variables
-  const [isSortedByType, setIsSortedByType] = useState<boolean>(true);
-  const [isSortedByName, setIsSortedByName] = useState<boolean>(true);
+  const [isSortedByType, setIsSortedByType] = useState<boolean>(false);
+  const [isSortedByName, setIsSortedByName] = useState<boolean>(false);
+  const [unModifiedShopListIngredients, setUnModifiedShopListIngredients] = useState<ShopListIngredient[] | undefined>([]);
   const [shopListIngredients, setShopListIngredients] = useState<ShopListIngredient[] | undefined>([]);
 
   useEffect(() => {
@@ -51,10 +52,15 @@ export default function ShopListDetails() {
   }, [])
 
   useEffect(() => {
-    setShopListIngredients(shopListFetchedData?.ingredients)
-    setIsSortedByName(prevState => !prevState)
-    setIsSortedByType(prevState => !prevState);
+    setUnModifiedShopListIngredients(shopListFetchedData?.ingredients)
+    console.log(shopListFetchedData?.ingredients, " fetched data")
   }, [shopListFetchedData])
+
+  useEffect(() => {
+    setShopListIngredients(unModifiedShopListIngredients)
+    setIsSortedByName(prevState => !prevState);
+    setIsSortedByType(prevState => !prevState);
+  }, [unModifiedShopListIngredients])
 
   useEffect(() => {
     if (isSortedByType) {
@@ -74,21 +80,24 @@ export default function ShopListDetails() {
 
   // functions
   const toggleIsPurchased = (shopListId: string | undefined, ingredientIndex: number, editedObj: ShopListIngredient) => {
-    toggleShopListIngredientIsPurchased(shopListId, ingredientIndex, editedObj )
+    // toggleShopListIngredientIsPurchased(shopListId, ingredientIndex, editedObj )
+    console.log(unModifiedShopListIngredients, " unmodified...")
+    console.log(ingredientIndex, " edited ingredient index")
+    console.log(editedObj, " edited object")
   }
 
 
   // create an array of the ingredients that are not purchased yet
-  const notPurchasedShopListIngredientsArr = shopListIngredients && shopListIngredients.filter(item => item.isPurchased === false)
+  const notPurchasedShopListIngredientsArr = shopListIngredients && unModifiedShopListIngredients && unModifiedShopListIngredients.filter(item => item.isPurchased === false)
   .map((item, index) => {
       return (
         <div key={index}>
         <RecipeIngredientContainer
-          index={shopListIngredients.indexOf(item)}
+          index={unModifiedShopListIngredients.indexOf(item)}
           name={item.name}
           quantity={item.quantity}
           unit={item.unit}
-          toggleIsPurchased={() => toggleIsPurchased(id, shopListIngredients.indexOf(item), item)}
+          toggleIsPurchased={() => toggleIsPurchased(id, unModifiedShopListIngredients.indexOf(item), item)}
           isPurchased={item.isPurchased}
           recipeIds={item.recipeIds}
           ingredientType={item.ingredientType}
@@ -105,16 +114,16 @@ export default function ShopListDetails() {
     setIsSortedByType(prevState => !prevState)
   }
 
-  const purchasedShopListIngredientsArr = shopListIngredients && shopListIngredients.filter(item => item.isPurchased === true)
+  const purchasedShopListIngredientsArr = shopListIngredients && unModifiedShopListIngredients && unModifiedShopListIngredients.filter(item => item.isPurchased === true)
   .map((item, index) => {
     return (
       <div key={index}>
         <RecipeIngredientContainer
-          index={shopListIngredients.indexOf(item)}
+          index={unModifiedShopListIngredients.indexOf(item)}
           name={item.name}
           quantity={item.quantity}
           unit={item.unit}
-          toggleIsPurchased={() => toggleIsPurchased(id, shopListIngredients.indexOf(item), item)}
+          toggleIsPurchased={() => toggleIsPurchased(id, unModifiedShopListIngredients.indexOf(item), item)}
           isPurchased={item.isPurchased}
           recipeIds={item.recipeIds}
           ingredientType={item.ingredientType}
