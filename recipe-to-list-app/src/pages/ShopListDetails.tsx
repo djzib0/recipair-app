@@ -44,43 +44,50 @@ export default function ShopListDetails() {
   // state variables
   const [isSortedByType, setIsSortedByType] = useState<boolean>(false);
   const [isSortedByName, setIsSortedByName] = useState<boolean>(false);
-  const [unModifiedShopListIngredients, setUnModifiedShopListIngredients] = useState<ShopListIngredient[] | undefined>([]);
-  const [shopListIngredients, setShopListIngredients] = useState<ShopListIngredient[] | undefined>([]);
+  const [unModifiedShopListIngredients, setUnModifiedShopListIngredients] = useState<ShopListIngredient[]>([]);
+  const [shopListIngredients, setShopListIngredients] = useState<ShopListIngredient[]>([]);
 
   useEffect(() => {
     getShopListData(id)
-  }, [])
+  }, [id])
 
   useEffect(() => {
-    setUnModifiedShopListIngredients(shopListFetchedData?.ingredients)
+    setUnModifiedShopListIngredients(shopListFetchedData?.ingredients || [])
     console.log(shopListFetchedData?.ingredients, " fetched data")
   }, [shopListFetchedData])
 
   useEffect(() => {
-    setShopListIngredients(unModifiedShopListIngredients)
-    setIsSortedByName(prevState => !prevState);
-    setIsSortedByType(prevState => !prevState);
+    const sortedIngredients = [...(unModifiedShopListIngredients || [])]
+    setShopListIngredients(sortedIngredients)
+    console.log(unModifiedShopListIngredients, " original")
+    console.log(shopListIngredients, " sorted")
+    // setIsSortedByType(prevState => !prevState);
   }, [unModifiedShopListIngredients])
 
   useEffect(() => {
+    // console.log("someone wants to sort by type")
+    const sortedIngredients = [...(shopListIngredients || [])]
     if (isSortedByType) {
-      setShopListIngredients(prevState => prevState?.sort((a, b) => a.ingredientType.localeCompare(b.ingredientType)))
+      sortedIngredients.sort((a, b) => a.ingredientType.localeCompare(b.ingredientType))
     } else if (!isSortedByType) {
-      setShopListIngredients(prevState => prevState?.sort((a, b) => b.ingredientType.localeCompare(a.ingredientType)))
+      sortedIngredients.sort((a, b) => b.ingredientType.localeCompare(a.ingredientType))
     }
+    setShopListIngredients(sortedIngredients)
   }, [isSortedByType])
 
   useEffect(() => {
+    const sortedIngredients = [...(shopListIngredients || [])]
     if (isSortedByName) {
-      setShopListIngredients(prevState => prevState?.sort((a, b) => a.name.localeCompare(b.name)))
+      sortedIngredients.sort((a, b) => a.name.localeCompare(b.name))
     } else if (!isSortedByName) {
-      setShopListIngredients(prevState => prevState?.sort((a, b) => b.name.localeCompare(a.name)))
+      sortedIngredients.sort((a, b) => b.name.localeCompare(a.name))
     }
+    setShopListIngredients(sortedIngredients)
   }, [isSortedByName])
 
   // functions
   const toggleIsPurchased = (shopListId: string | undefined, ingredientIndex: number, editedObj: ShopListIngredient) => {
-    // toggleShopListIngredientIsPurchased(shopListId, ingredientIndex, editedObj )
+    toggleShopListIngredientIsPurchased(shopListId, ingredientIndex, editedObj )
     console.log(unModifiedShopListIngredients, " unmodified...")
     console.log(ingredientIndex, " edited ingredient index")
     console.log(editedObj, " edited object")
@@ -88,7 +95,7 @@ export default function ShopListDetails() {
 
 
   // create an array of the ingredients that are not purchased yet
-  const notPurchasedShopListIngredientsArr = shopListIngredients && unModifiedShopListIngredients && unModifiedShopListIngredients.filter(item => item.isPurchased === false)
+  const notPurchasedShopListIngredientsArr = shopListIngredients && unModifiedShopListIngredients && shopListIngredients.filter(item => item.isPurchased === false)
   .map((item, index) => {
       return (
         <div key={index}>
@@ -108,13 +115,14 @@ export default function ShopListDetails() {
 
   const toggleSortByName = () => {
     setIsSortedByName(prevState => !prevState)
+    console.log("toggling sort by name")
   }
 
   const toggleSortByType = () => {
     setIsSortedByType(prevState => !prevState)
   }
 
-  const purchasedShopListIngredientsArr = shopListIngredients && unModifiedShopListIngredients && unModifiedShopListIngredients.filter(item => item.isPurchased === true)
+  const purchasedShopListIngredientsArr = shopListIngredients && unModifiedShopListIngredients && shopListIngredients.filter(item => item.isPurchased === true)
   .map((item, index) => {
     return (
       <div key={index}>
