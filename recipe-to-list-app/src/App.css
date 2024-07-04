@@ -21,6 +21,7 @@ a {
 .content__container {
   padding: 1em;
   margin-bottom: 170px;
+  margin-top: 66px;
 }
 
 @keyframes logo-spin {
