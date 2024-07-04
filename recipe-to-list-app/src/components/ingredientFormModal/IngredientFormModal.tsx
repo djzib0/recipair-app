@@ -9,7 +9,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 // types import
-import { Ingredient } from '../../types/types';
+import { Ingredient, ShopListIngredient } from '../../types/types';
 // enum import
 import { Unit, IngredientType } from '../../enums/enums';
 
@@ -17,7 +17,9 @@ type IngredientFormModalProps = {
   classTitle: string;
   addIngredient?: (ingredient: Ingredient ) => void;
   editIngredient?: (index: number | undefined, newIngredient : Ingredient) => void;
+  addNotShopListIngredient?: (shopListId: string, newIngredient: ShopListIngredient) => void;
   closeModal: () => void;
+  editedShopListId?: string | undefined;
   isOn: boolean;
   defaultValue?: Ingredient | undefined;
   editedIndex?: number | undefined;
@@ -53,7 +55,8 @@ export default function IngredientFormModal(props: IngredientFormModalProps) {
 
    // destructuring props
    const { classTitle, addIngredient, closeModal, isOn,
-    editIngredient, editedIndex, defaultValue } = props;
+    editIngredient, editedIndex, defaultValue,
+    addNotShopListIngredient, editedShopListId} = props;
 
    // state variables
    const [defaultUnitValue, setDefaultUnitValue] = useState<string>(Unit['Gram']) 
@@ -92,7 +95,7 @@ export default function IngredientFormModal(props: IngredientFormModalProps) {
 
     // when edit ingredient function is passed as a prop
     // edit the existing ingredient, if the values are the same
-    // it meanse there are no changes, so do nothing
+    // it means there are no changes, so do nothing
     if (editIngredient) {
       const newIngredient = {
         name: data.description,
@@ -101,6 +104,20 @@ export default function IngredientFormModal(props: IngredientFormModalProps) {
         ingredientType: IngredientType[`${newIngredientType as keyof typeof IngredientType}`]
       }
       editIngredient(editedIndex, newIngredient)
+    }
+
+    // when addNotShopListIngredient function is passed as a prop
+    // add new ingredient to the shop list
+    if (addNotShopListIngredient && editedShopListId) {
+      const newIngredient: ShopListIngredient = {
+        name: data.description,
+        quantity: data.quantity,
+        portionQuantity: data.quantity,
+        isPurchased: false,
+        unit: Unit[`${newUnit as keyof typeof Unit}`],
+        ingredientType: IngredientType[`${newIngredientType as keyof typeof IngredientType}`]
+      }
+      addNotShopListIngredient(editedShopListId, newIngredient);
     }
     closeIngredientForm();
   }

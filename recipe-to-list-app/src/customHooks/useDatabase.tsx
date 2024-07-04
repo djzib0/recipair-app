@@ -80,9 +80,20 @@ export default function useDatabase() {
         getShopListData(shopListIndex)
     }
 
-    const deleteShopList = (shopListId: string | undefined) => {
+    const deleteShopList = async (shopListId: string | undefined) => {
         const exactItem = `shoplists/${shopListId}`
         remove(ref(database, exactItem))
+    }
+
+    const addNotShopListIngredient = async (shopListId: string | undefined, newObj: ShopListIngredient) => {
+        const exactItem = `shoplists/${shopListId}/ingredients`
+        const snapshot = await get(ref(database, `shoplists/${shopListId}`))
+        let data = await snapshot.val();
+        if (data) {
+            const newIngredientsArr: ShopListIngredient[] = data.ingredients;
+            newIngredientsArr.push({...newObj})
+            update(ref(database, exactItem), {...newIngredientsArr})
+        }
     }
 
     return {
@@ -97,7 +108,8 @@ export default function useDatabase() {
         addShopList,
         getShopListData,
         toggleShopListIngredientIsPurchased,
-        deleteShopList
+        deleteShopList,
+        addNotShopListIngredient
     }
 }
 

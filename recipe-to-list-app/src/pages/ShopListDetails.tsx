@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 // components import
 import TopNavbar from "../components/topNavbar/TopNavbar";
 import RecipeIngredientContainer from '../components/recipeIngredientContainer/RecipeIngredientContainer';
+import IngredientFormModal from '../components/ingredientFormModal/IngredientFormModal';
 // react router imports
 import { useParams } from "react-router-dom"
 // icons import
@@ -32,13 +33,16 @@ export default function ShopListDetails() {
   const {
     shopListFetchedData,
     getShopListData,
-    toggleShopListIngredientIsPurchased
+    toggleShopListIngredientIsPurchased,
+    addNotShopListIngredient,
   } = useDatabase();
 
   // utilize useModal custom hook
   const {
     // isShowIngredientRecipesModalOn,
     // toggleShowIngredientRecipes,
+    isAddIngredientModalOn,
+    toggleAddIngredientModal,
   } = useModal();
 
   // state variables
@@ -46,6 +50,7 @@ export default function ShopListDetails() {
   const [isSortedByName, setIsSortedByName] = useState<boolean>(false);
   const [unModifiedShopListIngredients, setUnModifiedShopListIngredients] = useState<ShopListIngredient[]>([]);
   const [shopListIngredients, setShopListIngredients] = useState<ShopListIngredient[]>([]);
+  const [isRefreshed, setIsRefreshed] = useState<boolean>(false);
 
   useEffect(() => {
     getShopListData(id)
@@ -53,19 +58,14 @@ export default function ShopListDetails() {
 
   useEffect(() => {
     setUnModifiedShopListIngredients(shopListFetchedData?.ingredients || [])
-    console.log(shopListFetchedData?.ingredients, " fetched data")
   }, [shopListFetchedData])
 
   useEffect(() => {
     const sortedIngredients = [...(unModifiedShopListIngredients || [])]
     setShopListIngredients(sortedIngredients)
-    console.log(unModifiedShopListIngredients, " original")
-    console.log(shopListIngredients, " sorted")
-    // setIsSortedByType(prevState => !prevState);
   }, [unModifiedShopListIngredients])
 
   useEffect(() => {
-    // console.log("someone wants to sort by type")
     const sortedIngredients = [...(shopListIngredients || [])]
     if (isSortedByType) {
       sortedIngredients.sort((a, b) => a.ingredientType.localeCompare(b.ingredientType))
@@ -88,11 +88,7 @@ export default function ShopListDetails() {
   // functions
   const toggleIsPurchased = (shopListId: string | undefined, ingredientIndex: number, editedObj: ShopListIngredient) => {
     toggleShopListIngredientIsPurchased(shopListId, ingredientIndex, editedObj )
-    console.log(unModifiedShopListIngredients, " unmodified...")
-    console.log(ingredientIndex, " edited ingredient index")
-    console.log(editedObj, " edited object")
   }
-
 
   // create an array of the ingredients that are not purchased yet
   const notPurchasedShopListIngredientsArr = shopListIngredients && unModifiedShopListIngredients && shopListIngredients.filter(item => item.isPurchased === false)
@@ -122,6 +118,11 @@ export default function ShopListDetails() {
     setIsSortedByType(prevState => !prevState)
   }
 
+  const toggleAddNotShopListIngredient = () => {
+    console.log("adding new item by opening new form...")
+    toggleAddIngredientModal(true);
+  }
+
   const purchasedShopListIngredientsArr = shopListIngredients && unModifiedShopListIngredients && shopListIngredients.filter(item => item.isPurchased === true)
   .map((item, index) => {
     return (
@@ -146,11 +147,22 @@ export default function ShopListDetails() {
       <div className='content__container'>
         <button onClick={toggleSortByName}>sort by name</button>
         <button onClick={toggleSortByType}>sort by type</button>
+        <button onClick={toggleAddNotShopListIngredient}>add new item</button>
         {!shopListFetchedData?.ingredients && <p>No ingredients</p>}
         {notPurchasedShopListIngredientsArr}
         {purchasedShopListIngredientsArr && purchasedShopListIngredientsArr?.length > 0 && <p>Purchased</p>}
         {purchasedShopListIngredientsArr}
       </div>
+      {isAddIngredientModalOn &&
+      <IngredientFormModal
+        classTitle={isAddIngredientModalOn ? "sliding-modal--bottom": "sliding-modal--bottom--disabled"}
+        // addIngredient={addIngredient}
+        addNotShopListIngredient={addNotShopListIngredient}
+        closeModal={() => toggleAddIngredientModal(false)}
+        isOn={isAddIngredientModalOn}
+        editedShopListId={id}
+       />
+      }
     </main>
   )
 }
