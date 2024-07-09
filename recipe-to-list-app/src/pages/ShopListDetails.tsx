@@ -53,8 +53,13 @@ export default function ShopListDetails() {
   const [isRefreshed, setIsRefreshed] = useState<boolean>(false);
 
   useEffect(() => {
-    getShopListData(id)
-  }, [id])
+    if (isRefreshed) {
+      getShopListData(id);
+    }
+    if (!isRefreshed) {
+      getShopListData(id);
+    }
+  }, [id, isRefreshed])
 
   useEffect(() => {
     setUnModifiedShopListIngredients(shopListFetchedData?.ingredients || [])
@@ -119,9 +124,17 @@ export default function ShopListDetails() {
   }
 
   const toggleAddNotShopListIngredient = () => {
-    console.log("adding new item by opening new form...")
     toggleAddIngredientModal(true);
   }
+
+  const refreshPage = async () => {
+    console.log("...refreshing... ")
+    setIsRefreshed(prevState => prevState === false ? true : false)
+    getShopListData(id);
+    setUnModifiedShopListIngredients(shopListFetchedData?.ingredients || [])
+  }
+
+  console.log(isRefreshed, " is refreshed?")
 
   const purchasedShopListIngredientsArr = shopListIngredients && unModifiedShopListIngredients && shopListIngredients.filter(item => item.isPurchased === true)
   .map((item, index) => {
@@ -148,6 +161,7 @@ export default function ShopListDetails() {
         <button onClick={toggleSortByName}>sort by name</button>
         <button onClick={toggleSortByType}>sort by type</button>
         <button onClick={toggleAddNotShopListIngredient}>add new item</button>
+        <button onClick={refreshPage}>refresh</button>
         {!shopListFetchedData?.ingredients && <p>No ingredients</p>}
         {notPurchasedShopListIngredientsArr}
         {purchasedShopListIngredientsArr && purchasedShopListIngredientsArr?.length > 0 && <p>Purchased</p>}
@@ -156,11 +170,11 @@ export default function ShopListDetails() {
       {isAddIngredientModalOn &&
       <IngredientFormModal
         classTitle={isAddIngredientModalOn ? "sliding-modal--bottom": "sliding-modal--bottom--disabled"}
-        // addIngredient={addIngredient}
         addNotShopListIngredient={addNotShopListIngredient}
         closeModal={() => toggleAddIngredientModal(false)}
         isOn={isAddIngredientModalOn}
         editedShopListId={id}
+        refreshPage={refreshPage}
        />
       }
     </main>

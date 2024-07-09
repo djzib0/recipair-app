@@ -19,6 +19,7 @@ type IngredientFormModalProps = {
   editIngredient?: (index: number | undefined, newIngredient : Ingredient) => void;
   addNotShopListIngredient?: (shopListId: string, newIngredient: ShopListIngredient) => void;
   closeModal: () => void;
+  refreshPage?: () => void;
   editedShopListId?: string | undefined;
   isOn: boolean;
   defaultValue?: Ingredient | undefined;
@@ -56,7 +57,7 @@ export default function IngredientFormModal(props: IngredientFormModalProps) {
    // destructuring props
    const { classTitle, addIngredient, closeModal, isOn,
     editIngredient, editedIndex, defaultValue,
-    addNotShopListIngredient, editedShopListId} = props;
+    addNotShopListIngredient, editedShopListId, refreshPage} = props;
 
    // state variables
    const [defaultUnitValue, setDefaultUnitValue] = useState<string>(Unit['Gram']) 
@@ -118,6 +119,8 @@ export default function IngredientFormModal(props: IngredientFormModalProps) {
         ingredientType: IngredientType[`${newIngredientType as keyof typeof IngredientType}`]
       }
       addNotShopListIngredient(editedShopListId, newIngredient);
+      refreshPage && refreshPage();
+
     }
     closeIngredientForm();
   }
