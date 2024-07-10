@@ -53,15 +53,11 @@ export default function ShopListDetails() {
   const [isRefreshed, setIsRefreshed] = useState<boolean>(false);
 
   useEffect(() => {
-    if (isRefreshed) {
-      getShopListData(id);
-    }
-    if (!isRefreshed) {
-      getShopListData(id);
-    }
-  }, [id, isRefreshed])
+    getShopListData(id);
+  }, [isRefreshed])
 
   useEffect(() => {
+    console.log(shopListFetchedData, "new shoplist Fetched Data")
     setUnModifiedShopListIngredients(shopListFetchedData?.ingredients || [])
   }, [shopListFetchedData])
 
@@ -116,7 +112,6 @@ export default function ShopListDetails() {
 
   const toggleSortByName = () => {
     setIsSortedByName(prevState => !prevState)
-    console.log("toggling sort by name")
   }
 
   const toggleSortByType = () => {
@@ -127,14 +122,10 @@ export default function ShopListDetails() {
     toggleAddIngredientModal(true);
   }
 
-  const refreshPage = async () => {
+  const refreshPage = () => {
     console.log("...refreshing... ")
     setIsRefreshed(prevState => prevState === false ? true : false)
-    getShopListData(id);
-    setUnModifiedShopListIngredients(shopListFetchedData?.ingredients || [])
   }
-
-  console.log(isRefreshed, " is refreshed?")
 
   const purchasedShopListIngredientsArr = shopListIngredients && unModifiedShopListIngredients && shopListIngredients.filter(item => item.isPurchased === true)
   .map((item, index) => {
@@ -174,7 +165,7 @@ export default function ShopListDetails() {
         closeModal={() => toggleAddIngredientModal(false)}
         isOn={isAddIngredientModalOn}
         editedShopListId={id}
-        refreshPage={refreshPage}
+        refreshPage={() => refreshPage}
        />
       }
     </main>

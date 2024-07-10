@@ -19,7 +19,7 @@ type IngredientFormModalProps = {
   editIngredient?: (index: number | undefined, newIngredient : Ingredient) => void;
   addNotShopListIngredient?: (shopListId: string, newIngredient: ShopListIngredient) => void;
   closeModal: () => void;
-  refreshPage?: () => void;
+  refreshPage: () => void;
   editedShopListId?: string | undefined;
   isOn: boolean;
   defaultValue?: Ingredient | undefined;
@@ -82,8 +82,6 @@ export default function IngredientFormModal(props: IngredientFormModalProps) {
       return IngredientType[`${k as keyof typeof IngredientType}`] === data.ingredientType
     })
 
-    console.log(newIngredientType, " new ingredient")
-
     if (addIngredient) {
       const newIngredient = {
         name: data.description,
@@ -92,6 +90,7 @@ export default function IngredientFormModal(props: IngredientFormModalProps) {
         ingredientType: IngredientType[`${newIngredientType as keyof typeof IngredientType}`]
       }
       addIngredient(newIngredient)
+      refreshPage();
     }
 
     // when edit ingredient function is passed as a prop
@@ -105,6 +104,7 @@ export default function IngredientFormModal(props: IngredientFormModalProps) {
         ingredientType: IngredientType[`${newIngredientType as keyof typeof IngredientType}`]
       }
       editIngredient(editedIndex, newIngredient)
+      refreshPage();
     }
 
     // when addNotShopListIngredient function is passed as a prop
@@ -119,10 +119,11 @@ export default function IngredientFormModal(props: IngredientFormModalProps) {
         ingredientType: IngredientType[`${newIngredientType as keyof typeof IngredientType}`]
       }
       addNotShopListIngredient(editedShopListId, newIngredient);
-      refreshPage && refreshPage();
-
+      console.log(("why it's not refreshing?"))
+      refreshPage();
     }
     closeIngredientForm();
+    refreshPage();
   }
 
   // functions

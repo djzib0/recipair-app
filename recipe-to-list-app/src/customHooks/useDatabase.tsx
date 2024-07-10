@@ -59,8 +59,10 @@ export default function useDatabase() {
     }
 
     async function getShopListData(id: string | undefined) {
+        console.log(shopListFetchedData, " before")
         const snapshot = await get(ref(database, `shoplists/${id}`))
         const data = await snapshot.val();
+        console.log(shopListFetchedData, " after ")
         setShopListFetchedData(data);
     }
 
