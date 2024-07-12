@@ -36,7 +36,7 @@ export default function YesNoModal(props: YesNoModalProps) {
       {
       <div className='yesno-modal-btn__container'>
         <button
-          // onClick={() => handlingConfirm()}
+          onClick={() => handlingConfirm()}
           className={`confirm-modal__btn`}
         >
           YES
