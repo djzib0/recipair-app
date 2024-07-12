@@ -92,6 +92,7 @@ export default function useDatabase() {
         const snapshot = await get(ref(database, `shoplists/${shopListId}`))
         let data = await snapshot.val();
         if (data) {
+            setFechtedData(data)
             const newIngredientsArr: ShopListIngredient[] = data.ingredients;
             newIngredientsArr.push({...newObj})
             update(ref(database, exactItem), {...newIngredientsArr})

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 // types import
-import { Ingredient, ShopListItem, ShopList, Modal} from '../types/types';
+import { Ingredient, ShopListItem, Modal} from '../types/types';
 // enums import
 import { ModalType } from '../enums/enums';
 
@@ -31,8 +31,6 @@ export default function useModal() {
   const [editedShopListItem, setEditedShopListItem] = useState<ShopListItem>({recipeId: "", portionQuantity: 0, isPurchased: false})
   const [isAddToShopListModalOn, setIsAddToShopListModalOn] = useState(false);
   const [isYesNoModalOn, setIsYesNoModalOn] = useState<boolean>();
-  const [yesNoModalItem, setYesNoModalItem] = useState<string>();
-  const [editedShopList, setEditedShopList] = useState<ShopList>()
   const [modalData, setModalData] = useState<Modal>(initialModalObj)
 
   const toggleModalMenu = (isOn: boolean) => {

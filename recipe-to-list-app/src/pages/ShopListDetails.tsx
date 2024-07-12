@@ -11,8 +11,8 @@ import { BiArrowBack } from "react-icons/bi";
 import useDatabase from '../customHooks/useDatabase';
 import useModal from '../customHooks/useModal';
 // types import
-import { Ingredient, ShopList, ShopListIngredient } from '../types/types';
-import { IngredientType } from '../enums/enums';
+import { ShopListIngredient } from '../types/types';
+
 
 // array with object for topnavbar
 const topNavbarItems = [
@@ -31,6 +31,7 @@ export default function ShopListDetails() {
 
   // utilize database
   const {
+    fetchedData,
     shopListFetchedData,
     getShopListData,
     toggleShopListIngredientIsPurchased,
@@ -54,7 +55,7 @@ export default function ShopListDetails() {
 
   useEffect(() => {
     getShopListData(id);
-  }, [isRefreshed])
+  }, [isRefreshed, fetchedData])
 
   useEffect(() => {
     console.log(shopListFetchedData, "new shoplist Fetched Data")
@@ -123,7 +124,6 @@ export default function ShopListDetails() {
   }
 
   const refreshPage = () => {
-    console.log("...refreshing... ")
     setIsRefreshed(prevState => prevState === false ? true : false)
   }
 
