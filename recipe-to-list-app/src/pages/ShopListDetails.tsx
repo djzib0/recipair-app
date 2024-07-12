@@ -154,8 +154,13 @@ export default function ShopListDetails() {
         <button onClick={toggleAddNotShopListIngredient}>add new item</button>
         <button onClick={refreshPage}>refresh</button>
         {!shopListFetchedData?.ingredients && <p>No ingredients</p>}
+        {notPurchasedShopListIngredientsArr && notPurchasedShopListIngredientsArr.length > 0 && <p>To buy</p>}
         {notPurchasedShopListIngredientsArr}
-        {purchasedShopListIngredientsArr && purchasedShopListIngredientsArr?.length > 0 && <p>Purchased</p>}
+        {purchasedShopListIngredientsArr && purchasedShopListIngredientsArr?.length > 0 
+        && notPurchasedShopListIngredientsArr.length != 0&& <p>Purchased</p>}
+        {purchasedShopListIngredientsArr && purchasedShopListIngredientsArr?.length > 0 
+        && notPurchasedShopListIngredientsArr.length === 0 && <p>All items are purchased.</p>}
+
         {purchasedShopListIngredientsArr}
       </div>
       {isAddIngredientModalOn &&

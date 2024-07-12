@@ -52,10 +52,11 @@
 }
 
 .yesno-modal-btn__container > button {
-    margin: 0 .5em;
-    font-family: 'Montserrat', Times, serif, sans-serif;
+    margin: 0 .9em;
+    font-family: Arial, Helvetica, sans-serif, Times, serif, sans-serif;
     font-weight: bolder;
     width: 100px;
+    height: 35px;
     border: none;
     border-radius: .5em;
     padding: 4px 0;
