@@ -49,6 +49,7 @@ export default function ShopListDetails() {
   // state variables
   const [isSortedByType, setIsSortedByType] = useState<boolean>(false);
   const [isSortedByName, setIsSortedByName] = useState<boolean>(false);
+  const [activeSort, setActiveSort] = useState<string>();
   const [unModifiedShopListIngredients, setUnModifiedShopListIngredients] = useState<ShopListIngredient[]>([]);
   const [shopListIngredients, setShopListIngredients] = useState<ShopListIngredient[]>([]);
   const [isRefreshed, setIsRefreshed] = useState<boolean>(false);
@@ -112,10 +113,12 @@ export default function ShopListDetails() {
   });
 
   const toggleSortByName = () => {
+    setActiveSort("name")
     setIsSortedByName(prevState => !prevState)
   }
 
   const toggleSortByType = () => {
+    setActiveSort("type")
     setIsSortedByType(prevState => !prevState)
   }
 
@@ -149,10 +152,21 @@ export default function ShopListDetails() {
     <main>
         <TopNavbar title='details' menuItems={topNavbarItems}/>
       <div className='content__container'>
-        <button onClick={toggleSortByName}>sort by name</button>
-        <button onClick={toggleSortByType}>sort by type</button>
-        <button onClick={toggleAddNotShopListIngredient}>add new item</button>
-        <button onClick={refreshPage}>refresh</button>
+        <div className='sort__container'>
+          <p>SORT BY:</p>
+          <button 
+            onClick={toggleSortByName}
+            className={activeSort === "name" ? `sort__btn-active` : `sort__btn`}
+          >
+            Name
+          </button>
+          <button 
+            onClick={toggleSortByType}
+            className={activeSort === "type" ? `sort__btn-active` : `sort__btn`}
+          >
+            Type
+          </button>
+        </div>
         {!shopListFetchedData?.ingredients && <p>No ingredients</p>}
         {notPurchasedShopListIngredientsArr && notPurchasedShopListIngredientsArr.length > 0 && <p>To buy</p>}
         {notPurchasedShopListIngredientsArr}
@@ -162,6 +176,14 @@ export default function ShopListDetails() {
         && notPurchasedShopListIngredientsArr.length === 0 && <p>All items are purchased.</p>}
 
         {purchasedShopListIngredientsArr}
+      </div>
+      <div className="cta-btn__container">  
+        <button 
+          className="toggle-modal-menu__btn"
+          onClick={toggleAddNotShopListIngredient}
+        >
+          +
+        </button>      
       </div>
       {isAddIngredientModalOn &&
       <IngredientFormModal
