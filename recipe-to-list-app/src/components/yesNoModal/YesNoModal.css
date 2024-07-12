@@ -53,12 +53,18 @@
 
 .yesno-modal-btn__container > button {
     margin: 0 .5em;
+    font-family: 'Montserrat', Times, serif, sans-serif;
+    font-weight: bolder;
     width: 100px;
     border: none;
-    border-radius: .2em;
+    border-radius: .5em;
     padding: 4px 0;
     text-transform: uppercase;
-    color: #384047;
+}
+
+.confirm-modal__btn {
+    background-color: #ff5757;
+    color: rgb(255, 255, 255);
 }
 
 @keyframes bottom-appear {
