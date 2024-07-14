@@ -1,0 +1,34 @@
+.info-modal-main__container {
+    background-color: greenyellow;
+    position: fixed;
+    bottom: 55px;
+    padding: .5em;
+    z-index: 300;
+    margin: 0 1em;
+    left: 0;
+}
+
+.validation__container {
+    background-color: #fecbb7;
+    border: 1px solid #f01917;
+    border-radius: .2em;
+    color: #f01917;
+    font-size: 14px;
+}
+
+.visibility--hidden {
+    animation-name: modal-disappear;
+    animation-duration: .1s;
+    /* visibility: hidden; */
+}
+
+.visibility--none {
+    display: none;
+}
+
+@keyframes modal-disappear {
+    0% {opacity: 100%}
+    20% {opacity: 50%}
+    100% {opacity: 0%}
+    100% {visibility: hidden}
+}

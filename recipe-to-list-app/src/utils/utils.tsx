@@ -15,7 +15,10 @@ import other from '../../images/icons/stepscolicon.png'
 
 
 export const firstLetterToUpperCase = (str: string) : string => {
-    return str.slice(0, 1).toUpperCase() + str.slice(1);
+    if (str) {
+        return str.slice(0, 1).toUpperCase() + str.slice(1);
+    }
+    return "";
 }
 
 export const addPeriodSuffix = (str: string | undefined) : string | undefined => {

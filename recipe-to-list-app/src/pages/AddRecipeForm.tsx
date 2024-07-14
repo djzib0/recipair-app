@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 // components import
 import TopNavbar from "../components/topNavbar/TopNavbar";
+import InfoModal from "../components/infoModal/InfoModal";
 // custom hooks import
 import useModal from "../customHooks/useModal";
 import useDatabase from "../customHooks/useDatabase"
@@ -25,8 +26,8 @@ import noPhotoImg from '../../images/nophoto.jpg'
 import ImgUrlFormModal from "../components/imgUrlFormModal/ImgUrlFormModal";
 
 const schema = z.object({
-  title: z.string().min(1),
-  description: z.string().min(1)
+  title: z.string().min(1, {message: "must contain at least 1 character"}),
+  description: z.string().min(1, {message: "must contain at least 1 character"})
 })
 
 type FormFields = z.infer<typeof schema>
@@ -60,7 +61,9 @@ export default function AddRecipeForm() {
     toggleEditIngredientModal,
     isEditIngredientModalOn,
     isImgUrlModalOn,
-    toggleImgUrlModalOn
+    toggleImgUrlModalOn,
+    isInfoModalOn,
+    toggleInfoModal
   } = useModal();
 
   // state variables
@@ -76,9 +79,19 @@ export default function AddRecipeForm() {
   const [steps, setSteps] = useState<CookingStep[]>([]);
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
   const [refreshPage, setRefreshPage] = useState(true);
+  const [showInfoModal, setShowInfoModal] = useState<boolean>(false);
+  const [errorsData, setErrorsData] = useState(errors);
 
   useEffect(() => {
-  }, [refreshPage] )
+    setErrorsData(errors);
+    if (Object.keys(errors).length > 0) {
+      // toggleInfoModal(true);
+      setShowInfoModal(true);
+    } else if (Object.keys(errors).length > 0) {
+      setShowInfoModal(false);
+    }
+  }, [refreshPage, errors] )
+
 
   // array with object for topnavbar
   const topNavbarItems = [
@@ -336,7 +349,11 @@ export default function AddRecipeForm() {
         closeModal={() => toggleImgUrlModalOn(false)}
         isOn={isImgUrlModalOn}
       />
-
+      {Object.keys(errorsData).length > 0 && 
+            <InfoModal
+            isError={true}
+            errors={errors}
+          />}
     </main>
   )
 }

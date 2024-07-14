@@ -30,8 +30,9 @@ export default function useModal() {
   const [isImgUrlModalOn, setIsImgUrlModalOn] = useState(false);
   const [editedShopListItem, setEditedShopListItem] = useState<ShopListItem>({recipeId: "", portionQuantity: 0, isPurchased: false})
   const [isAddToShopListModalOn, setIsAddToShopListModalOn] = useState(false);
-  const [isYesNoModalOn, setIsYesNoModalOn] = useState<boolean>();
-  const [modalData, setModalData] = useState<Modal>(initialModalObj)
+  const [isYesNoModalOn, setIsYesNoModalOn] = useState<boolean>(false);
+  const [modalData, setModalData] = useState<Modal>(initialModalObj);
+  const [isInfoModalOn, setIsInfoModalOn] = useState<boolean>(false);
 
   const toggleModalMenu = (isOn: boolean) => {
     setIsModalMenuOn(isOn)
@@ -90,6 +91,10 @@ export default function useModal() {
     setIsYesNoModalOn(isOn)
   }
 
+  const toggleInfoModal = (isOn: boolean) => {
+    setIsInfoModalOn(isOn);
+  }
+
   // const toggleShowIngredientRecipes = (recipeIds?: (string | undefined)[] | undefined) => {
   //   setIsShowIngredientRecipesModalOn(prevState => !prevState);
   //   console.log(recipeIds, " recipe Ids are:")
@@ -123,5 +128,7 @@ export default function useModal() {
     toggleYesNoModal,
     modalData,
     setModalData,
+    isInfoModalOn,
+    toggleInfoModal
   }
 }
