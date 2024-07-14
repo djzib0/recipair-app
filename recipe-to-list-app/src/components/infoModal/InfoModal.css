@@ -16,11 +16,9 @@
     color: #f01917;
 }
 
-.validation__container
-
 .visibility--hidden {
     animation-name: modal-disappear;
-    animation-duration: 3s;
+    animation-duration: .2s;
     /* visibility: hidden; */
 }
 
@@ -32,5 +30,5 @@
     0% {opacity: 100%}
     20% {opacity: 50%}
     100% {opacity: 0%}
-    100% {visibility: hidden}
+    100% {display: none}
 }

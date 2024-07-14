@@ -39,20 +39,21 @@ export default function InfoModal(props: InfoModalProps) {
 
     setTimeout(() => {
       setClassHidden(`visibility--hidden`)
-    }, 5000);
-4
-    // setTimeout(() => {
-    //   closeModal()
-    // }, 8000);
+      console.log(classHidden, " class hidden")
+    }, 2000);
+
+    setTimeout(() => {
+      closeModal()
+    }, 2200);
   }, [])
 
   useEffect(() => {
-    console.log("changing after 5 seconds")
+    console.log(classHidden, "current class hidden")
   }, [classHidden]) 
 
   return (
     <div className={`content__container`}>
-      <div className={`info-modal-main__container ${classVariant} visibility--hidden`}>
+      <div className={`info-modal-main__container ${classVariant} ${classHidden}`}>
         {errorItemFieldsArr && errorItemMessagesArr 
         && errorItemFieldsArr.length > 0 && errorItemMessagesArr.length > 0 
         && <p>Field '{firstLetterToUpperCase(errorItemFieldsArr[0])}' {errorItemMessagesArr[0].message}</p>}
