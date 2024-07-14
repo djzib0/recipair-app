@@ -85,10 +85,9 @@ export default function AddRecipeForm() {
   useEffect(() => {
     setErrorsData(errors);
     if (Object.keys(errors).length > 0) {
-      // toggleInfoModal(true);
-      setShowInfoModal(true);
+      toggleInfoModal(true);
     } else if (Object.keys(errors).length > 0) {
-      setShowInfoModal(false);
+      toggleInfoModal(false);
     }
   }, [refreshPage, errors] )
 
@@ -137,7 +136,6 @@ export default function AddRecipeForm() {
   }
 
   const addIngredient = (newIngredient: Ingredient) => {
-    console.log(console.log(newIngredient, " new ingredient"))
     const newArr: Ingredient[] = ingredients.concat(newIngredient)
     setIngredients(newArr);
     setNewRecipe(prevState => {
@@ -349,10 +347,11 @@ export default function AddRecipeForm() {
         closeModal={() => toggleImgUrlModalOn(false)}
         isOn={isImgUrlModalOn}
       />
-      {Object.keys(errorsData).length > 0 && 
+      {isInfoModalOn && 
             <InfoModal
             isError={true}
             errors={errors}
+            closeModal={() => toggleInfoModal(false)}
           />}
     </main>
   )

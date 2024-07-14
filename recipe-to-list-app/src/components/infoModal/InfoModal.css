@@ -6,19 +6,21 @@
     z-index: 300;
     margin: 0 1em;
     left: 0;
+    font-size: 14px;
+    border-radius: .2em;
 }
 
-.validation__container {
+.error__container {
     background-color: #fecbb7;
     border: 1px solid #f01917;
-    border-radius: .2em;
     color: #f01917;
-    font-size: 14px;
 }
+
+.validation__container
 
 .visibility--hidden {
     animation-name: modal-disappear;
-    animation-duration: .1s;
+    animation-duration: 3s;
     /* visibility: hidden; */
 }
 

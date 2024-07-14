@@ -8,8 +8,10 @@ type InfoModalProps = {
   isError?: boolean;
   isInformation?: boolean;
   isConfirmation?: boolean;
+  isWarninig?: boolean;
   errors?: any;
   message?: string;
+  closeModal: () => void;
 }
 
 export default function InfoModal(props: InfoModalProps) {
@@ -21,11 +23,11 @@ export default function InfoModal(props: InfoModalProps) {
   const [errorItemMessagesArr, setErrorItemMessagesArr] = useState<any[]>();
 
   // destructuring props
-  const {isError, errors} = props;
+  const {isError, errors, closeModal} = props;
 
   useEffect(() => {
     if (isError) {
-      setClassVariant(`validation__container`);
+      setClassVariant(`error__container`);
     }
     // set up the error message IF errors are passed
     try {
@@ -37,15 +39,20 @@ export default function InfoModal(props: InfoModalProps) {
 
     setTimeout(() => {
       setClassHidden(`visibility--hidden`)
-    }, 2000);
-    setTimeout(() => {
-      setClassHidden(`visibility--none`)
-    }, 2100);
+    }, 5000);
+4
+    // setTimeout(() => {
+    //   closeModal()
+    // }, 8000);
   }, [])
+
+  useEffect(() => {
+    console.log("changing after 5 seconds")
+  }, [classHidden]) 
 
   return (
     <div className={`content__container`}>
-      <div className={`info-modal-main__container ${classVariant} ${classHidden}`}>
+      <div className={`info-modal-main__container ${classVariant} visibility--hidden`}>
         {errorItemFieldsArr && errorItemMessagesArr 
         && errorItemFieldsArr.length > 0 && errorItemMessagesArr.length > 0 
         && <p>Field '{firstLetterToUpperCase(errorItemFieldsArr[0])}' {errorItemMessagesArr[0].message}</p>}
