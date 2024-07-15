@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 // components import
 import InfoModal from '../infoModal/InfoModal';
 // custom hooks import
