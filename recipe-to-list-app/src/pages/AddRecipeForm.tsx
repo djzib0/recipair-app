@@ -79,7 +79,6 @@ export default function AddRecipeForm() {
   const [steps, setSteps] = useState<CookingStep[]>([]);
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
   const [refreshPage, setRefreshPage] = useState(true);
-  const [showInfoModal, setShowInfoModal] = useState<boolean>(false);
   const [errorsData, setErrorsData] = useState(errors);
 
   useEffect(() => {
@@ -262,7 +261,7 @@ export default function AddRecipeForm() {
             htmlFor="recipe_title"
             className="modal__form__label"
           >
-            {errors.title ? `${errors.title.message}` : "Title"}
+            Title
           </label>
           <textarea 
             {...register("title")}
@@ -273,7 +272,7 @@ export default function AddRecipeForm() {
             htmlFor="recipe_description"
             className="modal__form__label"
           >
-            {errors.description ? `${errors.description.message}` : "Description"}
+            Description
           </label>
           <textarea 
             {...register("description")}
@@ -349,7 +348,7 @@ export default function AddRecipeForm() {
       />
       {isInfoModalOn && 
             <InfoModal
-            isError={true}
+            isValidation={true}
             errors={errors}
             closeModal={() => toggleInfoModal(false)}
           />}

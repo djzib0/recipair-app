@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
+// components import
+import InfoModal from '../infoModal/InfoModal';
+//custom hooks import
+import useModal from '../../customHooks/useModal';
 // styles import
-// import './IngredientFormModal.css'
 import '../../App.css'
 // icons import
 import { IoMdCloseCircleOutline } from "react-icons/io";
@@ -27,8 +30,8 @@ type IngredientFormModalProps = {
 }
 
 const schema = z.object({
-  description: z.string().min(1),
-  quantity: z.coerce.number().min(0.1),
+  description: z.string().min(1, {message: "must contain at least 1 character"}),
+  quantity: z.coerce.number().min(0.1, {message: "must be greater than 0.1"}),
   unit: z.string().min(1),
   ingredientType: z.string().min(1)
 })
@@ -37,6 +40,11 @@ type FormFields = z.infer<typeof schema>
 
 export default function IngredientFormModal(props: IngredientFormModalProps) {
 
+  // utilizing useModal
+  const {
+    isInfoModalOn,
+    toggleInfoModal
+  } = useModal();
 
   // destructuring useForm
   const {
@@ -60,7 +68,8 @@ export default function IngredientFormModal(props: IngredientFormModalProps) {
     addNotShopListIngredient, editedShopListId, refreshPage} = props;
 
    // state variables
-   const [defaultUnitValue, setDefaultUnitValue] = useState<string>(Unit['Gram']) 
+   const [defaultUnitValue, setDefaultUnitValue] = useState<string>(Unit['Gram'])
+   const [errorsData, setErrorsData] = useState(errors);
 
    useEffect(() => {
     for (let key of Object.keys(Unit)) {
@@ -69,6 +78,15 @@ export default function IngredientFormModal(props: IngredientFormModalProps) {
       }
     }
    }, [defaultUnitValue])
+
+   useEffect(() => {
+    setErrorsData(errors);
+    if (Object.keys(errors).length > 0) {
+      toggleInfoModal(true);
+    } else if (Object.keys(errors).length > 0) {
+      toggleInfoModal(false);
+    }
+  }, [errors])
 
 
   const onSubmit: SubmitHandler<FormFields> = (data) => {
@@ -169,7 +187,7 @@ export default function IngredientFormModal(props: IngredientFormModalProps) {
           htmlFor='ingredient'
           className='modal__form__label'
           >
-          {errors.description ? errors.description.message : "Ingredient"}
+          Ingredient
         </label>
         <textarea {...register("description")} 
           id='ingredient'
@@ -180,7 +198,7 @@ export default function IngredientFormModal(props: IngredientFormModalProps) {
           htmlFor='quantity'
           className='modal__form__label'
         >
-          {errors.quantity ? errors.quantity.message : "Quantity"}
+          Quantity
         </label>
         <input
           {...register("quantity")}
@@ -192,7 +210,7 @@ export default function IngredientFormModal(props: IngredientFormModalProps) {
           htmlFor='unit'
           className='modal__form__label'
         >
-          {errors.unit ? errors.unit.message : "Unit" }
+          Unit
         </label>
         <select
           {...register("unit")}
@@ -205,7 +223,7 @@ export default function IngredientFormModal(props: IngredientFormModalProps) {
           htmlFor='ingredientType'
           className='modal__form__label'
         >
-          {errors.unit ? errors.unit.message : "Ingredient type" }
+          Ingredient type
         </label>
         <select
           {...register("ingredientType")}
@@ -221,6 +239,12 @@ export default function IngredientFormModal(props: IngredientFormModalProps) {
           {editIngredient && "Save"}
         </button>
       </form>}
+    {isInfoModalOn &&
+    <InfoModal 
+      isError={true}
+      errors={errors}
+      closeModal={() => toggleInfoModal(false)}
+    />}
     </div>
   )
 }

@@ -1,3 +1,8 @@
+import { useState, useEffect } from 'react';
+// components import
+import InfoModal from '../infoModal/InfoModal';
+// custom hooks import
+import useModal from '../../customHooks/useModal';
 // styles import
 import './StepFormModal.css'
 import '../../App.css'
@@ -19,7 +24,7 @@ type StepFormModalProps = {
 }
 
 const schema = z.object({
-  description: z.string().min(1),
+  description: z.string().min(1, {message: "must contain at least 1 character"}),
 })
 
 type FormFields = z.infer<typeof schema>
@@ -38,6 +43,24 @@ export default function StepFormModal(props: StepFormModalProps) {
     },
     resolver: zodResolver(schema)}
   )
+
+  // utilizing useModal
+  const {
+    isInfoModalOn,
+    toggleInfoModal
+  } = useModal();
+
+  // state variables
+  const [errorsData, setErrorsData] = useState(errors);
+
+  useEffect(() => {
+    setErrorsData(errors);
+    if (Object.keys(errors).length > 0) {
+      toggleInfoModal(true);
+    } else if (Object.keys(errors).length > 0) {
+      toggleInfoModal(false);
+    }
+  }, [errors])
 
   const onSubmit: SubmitHandler<FormFields> = (data) => {
     // when addStep function is passed as a prop
@@ -60,6 +83,7 @@ export default function StepFormModal(props: StepFormModalProps) {
 
   // destructuring props
   const { classTitle, addStep, editStep, closeModal, isOn, editedIndex } = props;
+
   return (
     <div className={classTitle}>
       <button className='close-modal__btn'>
@@ -70,7 +94,7 @@ export default function StepFormModal(props: StepFormModalProps) {
           htmlFor='step_description'
           className='modal__form__label'
           >
-          {errors.description ? errors.description.message : "Step description"}
+          Step description
         </label>
         <textarea {...register("description")} 
           id='step_description'
@@ -83,6 +107,12 @@ export default function StepFormModal(props: StepFormModalProps) {
           {editStep && "Save"}
         </button>
       </form>}
+      {isInfoModalOn && 
+      <InfoModal 
+        isError={true}
+        errors={errors}
+        closeModal={() => toggleInfoModal(false)}
+      />}
     </div>
   )
 }

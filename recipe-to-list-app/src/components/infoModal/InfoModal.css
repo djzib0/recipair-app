@@ -1,7 +1,10 @@
 .info-modal-main__container {
     background-color: greenyellow;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: fixed;
-    bottom: 55px;
+    bottom: 56px;
     padding: .5em;
     z-index: 300;
     margin: 0 1em;
@@ -10,10 +13,39 @@
     border-radius: .2em;
 }
 
+.info-modal__icon {
+    height: 40px;
+    margin: 0 .8em;
+}
+
 .error__container {
-    background-color: #fecbb7;
-    border: 1px solid #f01917;
-    color: #f01917;
+    background-color: #ffb2b6;
+    border: 1px solid #f30000;
+    color: #f30000;
+}
+
+.validation__container {
+    background-color: #ffcab7;
+    border: 1px solid #ef0000;
+    color: #ef0000;
+}
+
+.warning__container {
+    background-color: #fdf7b0;
+    border: 1px solid #aa6100;
+    color: #aa6100;
+}
+
+.successful__container {
+    background-color: #d3fcbf;
+    border: 1px solid #009915;
+    color: #009915;
+}
+
+.info__container {
+    background-color: #b2e4fa;
+    border: 1px solid #053c9d;
+    color: #053c9d;
 }
 
 .visibility--hidden {
