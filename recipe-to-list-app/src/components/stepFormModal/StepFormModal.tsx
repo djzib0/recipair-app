@@ -60,6 +60,7 @@ export default function StepFormModal(props: StepFormModalProps) {
     } else if (Object.keys(errors).length > 0) {
       toggleInfoModal(false);
     }
+    console.log(errorsData)
   }, [errors])
 
   const onSubmit: SubmitHandler<FormFields> = (data) => {

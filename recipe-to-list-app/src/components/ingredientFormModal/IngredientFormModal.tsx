@@ -77,7 +77,7 @@ export default function IngredientFormModal(props: IngredientFormModalProps) {
         setDefaultUnitValue(Unit[`${key as keyof typeof Unit}`])
       }
     }
-   }, [defaultUnitValue])
+   }, [defaultUnitValue, errorsData])
 
    useEffect(() => {
     setErrorsData(errors);
