@@ -69,7 +69,6 @@ export default function IngredientFormModal(props: IngredientFormModalProps) {
 
    // state variables
    const [defaultUnitValue, setDefaultUnitValue] = useState<string>(Unit['Gram'])
-   const [errorsData, setErrorsData] = useState(errors);
 
    useEffect(() => {
     for (let key of Object.keys(Unit)) {
@@ -77,10 +76,9 @@ export default function IngredientFormModal(props: IngredientFormModalProps) {
         setDefaultUnitValue(Unit[`${key as keyof typeof Unit}`])
       }
     }
-   }, [defaultUnitValue, errorsData])
+   }, [defaultUnitValue])
 
    useEffect(() => {
-    setErrorsData(errors);
     if (Object.keys(errors).length > 0) {
       toggleInfoModal(true);
     } else if (Object.keys(errors).length > 0) {

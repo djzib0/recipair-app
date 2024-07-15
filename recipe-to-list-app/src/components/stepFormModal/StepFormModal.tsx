@@ -50,17 +50,12 @@ export default function StepFormModal(props: StepFormModalProps) {
     toggleInfoModal
   } = useModal();
 
-  // state variables
-  const [errorsData, setErrorsData] = useState(errors);
-
   useEffect(() => {
-    setErrorsData(errors);
     if (Object.keys(errors).length > 0) {
       toggleInfoModal(true);
     } else if (Object.keys(errors).length > 0) {
       toggleInfoModal(false);
     }
-    console.log(errorsData)
   }, [errors])
 
   const onSubmit: SubmitHandler<FormFields> = (data) => {

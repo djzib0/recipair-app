@@ -79,10 +79,8 @@ export default function AddRecipeForm() {
   const [steps, setSteps] = useState<CookingStep[]>([]);
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
   const [refreshPage, setRefreshPage] = useState(true);
-  const [errorsData, setErrorsData] = useState(errors);
 
   useEffect(() => {
-    setErrorsData(errors);
     if (Object.keys(errors).length > 0) {
       toggleInfoModal(true);
     } else if (Object.keys(errors).length > 0) {
