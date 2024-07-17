@@ -19,7 +19,6 @@ import { Recipe } from "../types/types";
 // enums import
 import { ModalType } from "../enums/enums";
 // images import
-import editIcon from '../../images/icons/edit.png';
 import binIcon from '../../images/icons/bin.png';
 // styles import
 import './Recipes.css'
