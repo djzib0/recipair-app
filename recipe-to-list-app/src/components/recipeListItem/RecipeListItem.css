@@ -11,7 +11,6 @@
 .recipe-list-item__container,
 .recipe-list__img {
     height: 80px;
-    width: 100%;
     border-top-left-radius: .5em;
     border-bottom-left-radius: .5em;
 }
@@ -72,13 +71,6 @@
     display: block;
     margin: 0;
     padding: 0;
-}
-
-.recipe-list-item__cta {
-    display: flex;
-    width: 100%;
-    justify-content: space-around;
-    align-items: center;
 }
 
 .recipe-list-item__btn {

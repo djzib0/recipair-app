@@ -10,9 +10,9 @@ export default function EventExample() {
     console.log(e.target.value)
   }
 
-  const deletePost = ((e: React.MouseEvent<HTMLButtonElement>, postId: number) => {
-    e.preventDefault();
-  })
+  // const deletePost = ((e: React.MouseEvent<HTMLButtonElement>, postId: number) => {
+  //   e.preventDefault();
+  // })
 
   const postsArr = [
     {
@@ -33,7 +33,7 @@ export default function EventExample() {
         <h3>{post.title}</h3>
         <p>{post.body}</p>
         <form>
-        <button onClick={(e) => deletePost(e, post.id)}>Press me</button>
+        {/* <button onClick={(e) => deletePost(e, post.id)}>Press me</button> */}
       </form>
       </div>
     )

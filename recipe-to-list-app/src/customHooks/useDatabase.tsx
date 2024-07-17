@@ -51,6 +51,12 @@ export default function useDatabase() {
         update(ref(database, exactItem), obj)
     }
 
+    async function deleteRecipe(recipeId: string | undefined) {
+        const exactItem = `recipes/${recipeId}`
+        remove(ref(database, exactItem))
+    }
+
+
     async function getShopListsData() {
         onValue(shopListsInDB, (snapshot) => {
             const data = snapshot.val();
@@ -105,6 +111,7 @@ export default function useDatabase() {
         addRecipe,
         getRecipeData,
         editRecipe,
+        deleteRecipe,
         getShopListsData,
         addShopList,
         getShopListData,

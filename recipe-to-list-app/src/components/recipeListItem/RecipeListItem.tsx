@@ -3,8 +3,6 @@ import './RecipeListItem.css';
 // images import
 import stepsIconCol from '../../../images/icons/stepscolicon.png';
 import ingredientIconCol from '../../../images/icons/ingredientsiconcol.png';
-import editIcon from '../../../images/icons/edit.png';
-import binIcon from '../../../images/icons/bin.png';
 import noPhotoImg from '../../../images/nophoto.jpg'
  
 
@@ -27,11 +25,6 @@ export default function RecipeListItem(props: RecipeListItemProps) {
     e.target.src = "../../../images/placeholderImg.jpg"
   }
 
-  // click handling functions
-  const handleEdit = () => {
-    console.log("edit button was clicked")
-  }
-
   return (
     <div className='recipe-list-item__container'>
       {/* <img 
@@ -41,10 +34,16 @@ export default function RecipeListItem(props: RecipeListItemProps) {
       /> */}
       <div className='recipe-list-img__container'>
         {imgUrl.length === 0 ?
-        <img src={noPhotoImg} className="recipe-list__img"/> :
+        <img src={noPhotoImg} 
+          className="recipe-list__img"
+          alt='default image when photo is not added'
+        /> 
+        :
         <img src={imgUrl} 
           className="recipe-list__img" 
-          onError={onImageError} />
+          onError={onImageError}
+          alt='default image when error occurs during loading image'
+        />
         }
       </div>
       
@@ -66,20 +65,6 @@ export default function RecipeListItem(props: RecipeListItemProps) {
               className='stats__icon' 
             />
             <p className='stats__text'>{stepsNumber ? stepsNumber : "0"}</p>
-          </div>
-          <div className='recipe-list-item__cta'>
-            <button 
-              onClick={handleEdit}
-              className='recipe-list-item__btn'
-            >
-              <img src={editIcon} />
-            </button>
-            <button 
-              onClick={handleEdit}
-              className='recipe-list-item__btn'
-            >
-              <img src={binIcon} />
-            </button>
           </div>
         </div>
       </div>
