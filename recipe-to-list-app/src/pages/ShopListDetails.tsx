@@ -59,7 +59,6 @@ export default function ShopListDetails() {
   }, [isRefreshed, fetchedData])
 
   useEffect(() => {
-    console.log(shopListFetchedData, "new shoplist Fetched Data")
     setUnModifiedShopListIngredients(shopListFetchedData?.ingredients || [])
   }, [shopListFetchedData])
 

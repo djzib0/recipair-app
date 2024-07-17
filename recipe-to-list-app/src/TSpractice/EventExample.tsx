@@ -4,17 +4,14 @@ export default function EventExample() {
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    console.log("the button has been clicked!")
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("the change has been made!")
     console.log(e.target.value)
   }
 
   const deletePost = ((e: React.MouseEvent<HTMLButtonElement>, postId: number) => {
     e.preventDefault();
-    console.log("removing Post with id " + postId)
   })
 
   const postsArr = [

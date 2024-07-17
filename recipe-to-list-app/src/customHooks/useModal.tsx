@@ -47,7 +47,6 @@ export default function useModal() {
   }
 
   const toggleAddStepModal = (isOn: boolean) => {
-    console.log("passing =>", isOn)
     setIsAddStepModalOn(isOn);
   }
 
@@ -94,11 +93,6 @@ export default function useModal() {
   const toggleInfoModal = (isOn: boolean) => {
     setIsInfoModalOn(isOn);
   }
-
-  // const toggleShowIngredientRecipes = (recipeIds?: (string | undefined)[] | undefined) => {
-  //   setIsShowIngredientRecipesModalOn(prevState => !prevState);
-  //   console.log(recipeIds, " recipe Ids are:")
-  // }
 
   return {
     isModalMenuOn,

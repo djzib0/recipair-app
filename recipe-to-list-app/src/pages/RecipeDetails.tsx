@@ -249,7 +249,6 @@ export default function RecipeDetails() {
   }
 
   const editDescription = (newDescription: string) => {
-    console.log("description has been edited")
     setRecipeData(prevState => {
       return {
         ...prevState,

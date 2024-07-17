@@ -69,9 +69,6 @@ export default function StepFormModal(props: StepFormModalProps) {
     // it means there are no changes so do nothing
     if ( editStep && data.description !== props.defaultValue) {
       editStep(editedIndex, data.description);
-      console.log(editedIndex, " edited Index")
-      console.log(data.description, " step description")
-      console.log("editing")
     }
     resetField("description");
     closeModal();

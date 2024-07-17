@@ -209,7 +209,6 @@ export default function AddShopListForm() {
       return acc;
     }, {});
     const result: ShopListIngredient[] = Object.values(summedIngredients);
-    console.log(result)
 
     // setShopListIngredients(shopListIngredientsArr)
     let newShopList: ShopList = {
