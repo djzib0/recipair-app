@@ -2,6 +2,7 @@
 [General info](#general-info)
 [Technologies](#technologies)
 [Setup](#setup)
+[Contact](#contact)
 
 ## General Info
 Recipair app is a mobile application that allows users to add recipes and create a shop list with ingredients for the selected recipes.
@@ -22,7 +23,7 @@ To manage state and encapsulate logic.
 ### React Router
 React Router enables us to implement dynamic routing, allowing users to navigate between different pages and components seamlessly.
 
-### Setup
+## Setup
 1. Clone this repository.
 2. Open the project in Visual Studio Code (or console) and enter the folder recipe-to-list-app.
 3. Enter the command 'npm install'.
@@ -53,4 +54,12 @@ const firebaseConfig = {
 7. Enter commnad 'npm run dev'
 8. Enjoy the app.
 
-I suggest deploying it on Vercel and using it as a mobile app.
+PS. I suggest deploying it on Vercel and using it as a mobile app.
+
+## Contact
+Piotr Sabatura
+Email: piotrsabatura@gmail.com
+Website: https://piotrfolio.eu/
+Github: https://github.com/djzib0
+
+
