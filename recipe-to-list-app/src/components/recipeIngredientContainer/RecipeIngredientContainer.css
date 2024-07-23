@@ -59,9 +59,19 @@
     height: 25px;
 }
 
+.cta__btn--large {
+    width: 30px;
+    height: 30px;
+}
+
 .btn-icon--medium {
     width: 10px;
     height: 10px;
+}
+
+.btn-icon--large {
+    width: 30px;
+    height: 30px;
 }
 
 

@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, lazy, Suspense } from "react";
 // react router imports
 import { Link } from "react-router-dom";
 // components import
 import TopNavbar from "../components/topNavbar/TopNavbar";
-import RecipeListItem from "../components/recipeListItem/RecipeListItem";
+// import RecipeListItem from "../components/recipeListItem/RecipeListItem";
 import YesNoModal from "../components/yesNoModal/YesNoModal";
 // react form hook and zod imports
 import { useForm } from 'react-hook-form';
@@ -20,6 +20,7 @@ import { Recipe } from "../types/types";
 import { ModalType } from "../enums/enums";
 // images import
 import binIcon from '../../images/icons/bin.png';
+import loadingAnim from '../../images/icons/loadingAnim.gif'
 // styles import
 import './Recipes.css'
 
@@ -28,6 +29,10 @@ const schema = z.object({
 });
 
 type FormFields = z.infer<typeof schema>
+
+const RecipeListItem =  lazy(() => {
+  return import("../components/recipeListItem/RecipeListItem")
+})
 
 export default function Recipes() {
 
@@ -108,6 +113,13 @@ export default function Recipes() {
 
   const recipesArr = filteredRecipesArr && filteredRecipesArr.map((item) => {
     return (
+      <Suspense fallback={
+        <img 
+        src={loadingAnim} 
+        alt="animated loading icon"
+        className="btn-icon--large loading-icon--centered"
+        />}
+      >
       <div
         key={item.id}
         className="recipes-list__item"
@@ -128,7 +140,8 @@ export default function Recipes() {
               <img src={binIcon} />
             </button>
           </div>
-      </div>
+      </div>    
+      </Suspense>
     )
   })
 
@@ -145,7 +158,9 @@ export default function Recipes() {
           id="recipeTitle"
           />
       </form>
-        {recipesArr}
+        <div className="recipes-arr__container">
+          {recipesArr}
+        </div>
       </main>
       {isYesNoModalOn && 
       <YesNoModal 
