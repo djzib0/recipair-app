@@ -113,15 +113,16 @@ export default function Recipes() {
 
   const recipesArr = filteredRecipesArr && filteredRecipesArr.map((item) => {
     return (
-      <Suspense fallback={
+      <Suspense 
+      fallback={
         <img 
         src={loadingAnim} 
         alt="animated loading icon"
         className="btn-icon--large loading-icon--centered"
         />}
+      key={item.id}
       >
       <div
-        key={item.id}
         className="recipes-list__item"
       >
         <Link to={`/recipe/${item.id}`} key={item.id}>
