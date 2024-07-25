@@ -81,6 +81,7 @@ export default function Recipes() {
     setFilterSearch(e.currentTarget.value)
   }
 
+
   const handleDelete = (item: Recipe) => {
     console.log(item.id, "has been clicked")
     setModalData(prevState => {
